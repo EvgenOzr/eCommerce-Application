@@ -1,6 +1,18 @@
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import "./LoginPage.scss";
 
+interface LoginFormData extends FieldValues {
+  email: string;
+  password: string;
+}
+
 export default function LoginPage() {
+  const { register, handleSubmit } = useForm<LoginFormData>();
+
+  const formSubmit: SubmitHandler<LoginFormData> = (data) => {
+    console.log(data);
+  };
+
   return (
     <>
       <div className="login-wrapper">
@@ -8,13 +20,24 @@ export default function LoginPage() {
         <div className="login-container">
           <div className="form-container">
             <h2 className="form-title">Sign In</h2>
-            <form className="form-submit" action="submit">
+            <form
+              className="form-submit"
+              action="submit"
+              onSubmit={handleSubmit(formSubmit)}
+            >
               <div className="input-name-container">
                 <label className="input-name-title">EMAIL</label>
                 <input
                   className="input-name"
                   type="text"
                   placeholder="example@mail.com"
+                  {...register("email", {
+                    required: "Email is required",
+                    pattern: {
+                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                      message: "Invalid email address",
+                    },
+                  })}
                 />
               </div>
               <div className="input-password-container">
@@ -23,7 +46,13 @@ export default function LoginPage() {
                   className="input-password"
                   type="password"
                   placeholder="******"
-                  autoComplete=""
+                  {...register("password", {
+                    required: "Password is required",
+                    minLength: {
+                      value: 6,
+                      message: "Password must be at least 6 characters",
+                    },
+                  })}
                 />
               </div>
               <div className="button-login-container">
