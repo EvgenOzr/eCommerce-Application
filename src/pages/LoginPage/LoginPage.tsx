@@ -7,7 +7,11 @@ interface LoginFormData extends FieldValues {
 }
 
 export default function LoginPage() {
-  const { register, handleSubmit } = useForm<LoginFormData>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormData>();
 
   const formSubmit: SubmitHandler<LoginFormData> = (data) => {
     console.log(data);
@@ -39,6 +43,9 @@ export default function LoginPage() {
                     },
                   })}
                 />
+                {errors.email && (
+                  <span className="error-message">{errors.email.message}</span>
+                )}
               </div>
               <div className="input-password-container">
                 <label className="input-password-title">PASSWORD</label>
@@ -54,6 +61,11 @@ export default function LoginPage() {
                     },
                   })}
                 />
+                {errors.password && (
+                  <span className="error-message">
+                    {errors.password.message}
+                  </span>
+                )}
               </div>
               <div className="button-login-container">
                 <button type="submit" className="login-button">
