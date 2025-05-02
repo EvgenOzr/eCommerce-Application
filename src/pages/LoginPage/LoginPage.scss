@@ -1,7 +1,5 @@
 @use "../../assets/variables.scss" as *;
 
-$text-color: #3e3e3e;
-
 .login-wrapper {
   display: flex;
 }
@@ -21,10 +19,10 @@ $text-color: #3e3e3e;
 }
 
 .form-title {
-  font-family: $primary-font;
+  font-family: $primaryFont;
   font-size: 76px;
   font-weight: 100;
-  color: $text-color;
+  color: $textColor;
   text-transform: uppercase;
 }
 
@@ -54,8 +52,8 @@ $text-color: #3e3e3e;
 
 .input-name-title,
 .input-password-title {
-  font-family: $secondary-font;
-  color: $text-color;
+  font-family: $secondaryFont;
+  color: $textColor;
   font-size: 16px;
   line-height: 130%;
   padding-bottom: 1%;
@@ -73,7 +71,7 @@ $text-color: #3e3e3e;
   color: #fff;
   width: 100%;
   height: 3rem;
-  font-family: $secondary-font;
+  font-family: $secondaryFont;
   font-size: 20px;
   border: none;
   cursor: pointer;
@@ -85,8 +83,8 @@ $text-color: #3e3e3e;
 }
 
 .register-link {
-  font-family: $primary-font;
+  font-family: $primaryFont;
   font-weight: 100;
-  color: $text-color;
+  color: $textColor;
   font-size: 1.6em;
 }
