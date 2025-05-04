@@ -1,6 +1,5 @@
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { Tooltip } from "react-tooltip";
-// import 'react-tooltip/dist/react-tooltip.css';
 import "./LoginPage.scss";
 
 interface LoginFormData extends FieldValues {
