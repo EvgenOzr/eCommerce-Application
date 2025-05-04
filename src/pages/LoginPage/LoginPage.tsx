@@ -11,7 +11,7 @@ export default function LoginPage() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormData>();
+  } = useForm<LoginFormData>({ mode: "all" });
 
   const formSubmit: SubmitHandler<LoginFormData> = (data) => {
     console.log(data);
