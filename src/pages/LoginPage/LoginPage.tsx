@@ -73,7 +73,7 @@ export default function LoginPage() {
                   id="password-tooltip"
                   place="top"
                   variant="error"
-                  isOpen={!!errors.email}
+                  isOpen={!!errors.password}
                 />
               </div>
               <div className="button-login-container">
@@ -81,7 +81,6 @@ export default function LoginPage() {
                   Login
                 </button>
               </div>
-
               <h2 className="register-link">
                 Don’t have account? Register here
               </h2>
