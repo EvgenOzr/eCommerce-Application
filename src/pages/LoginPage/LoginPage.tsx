@@ -1,4 +1,6 @@
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { Tooltip } from "react-tooltip";
+// import 'react-tooltip/dist/react-tooltip.css';
 import "./LoginPage.scss";
 
 interface LoginFormData extends FieldValues {
@@ -35,6 +37,8 @@ export default function LoginPage() {
                   className="input-name"
                   type="text"
                   placeholder="example@mail.com"
+                  data-tooltip-id="email-tooltip"
+                  data-tooltip-content={errors.email?.message}
                   {...register("email", {
                     required: "Email is required",
                     pattern: {
@@ -43,9 +47,12 @@ export default function LoginPage() {
                     },
                   })}
                 />
-                {errors.email && (
-                  <span className="error-message">{errors.email.message}</span>
-                )}
+                <Tooltip
+                  id="email-tooltip"
+                  place="top"
+                  variant="error"
+                  isOpen={!!errors.email}
+                />
               </div>
               <div className="input-password-container">
                 <label className="input-password-title">PASSWORD</label>
@@ -53,6 +60,8 @@ export default function LoginPage() {
                   className="input-password"
                   type="password"
                   placeholder="******"
+                  data-tooltip-id="password-tooltip"
+                  data-tooltip-content={errors.password?.message}
                   {...register("password", {
                     required: "Password is required",
                     minLength: {
@@ -61,11 +70,12 @@ export default function LoginPage() {
                     },
                   })}
                 />
-                {errors.password && (
-                  <span className="error-message">
-                    {errors.password.message}
-                  </span>
-                )}
+                <Tooltip
+                  id="password-tooltip"
+                  place="top"
+                  variant="error"
+                  isOpen={!!errors.email}
+                />
               </div>
               <div className="button-login-container">
                 <button type="submit" className="login-button">
