@@ -1,6 +1,7 @@
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { Tooltip } from "react-tooltip";
 import "./LoginPage.scss";
+import { Link } from "react-router";
 
 interface LoginFormData extends FieldValues {
   email: string;
@@ -82,7 +83,11 @@ export default function LoginPage() {
                 </button>
               </div>
               <h2 className="register-link">
-                Don’t have account? Register here
+                Don’t have account?{" "}
+                <Link className="link-registration" to={"/registration"}>
+                  {" "}
+                  Register here{" "}
+                </Link>
               </h2>
             </form>
           </div>
