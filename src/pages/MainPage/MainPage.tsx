@@ -1,5 +1,5 @@
 import React from 'react';
-import Banner from '../../components/bunner/Banner';
+import Banner from '../../components/banner/Banner';
 import './MainPage.scss';
 
 const MainPage = () => {
