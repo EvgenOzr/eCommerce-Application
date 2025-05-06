@@ -1,7 +1,4 @@
-@use "./assets/abstract/normalize";
-@use './assets/abstract/fonts';
-
-.container {
+.main-container {
     display: flex;
     justify-content: center;
     flex-direction: column;
