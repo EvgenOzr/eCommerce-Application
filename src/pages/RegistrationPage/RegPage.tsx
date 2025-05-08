@@ -1,21 +1,17 @@
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { Tooltip } from "react-tooltip";
 import "./RegPage.scss";
 import { Link } from "react-router";
-
-interface LoginFormData extends FieldValues {
-  email: string;
-  password: string;
-}
+import { RegistrationFormData } from "../../types/shopTypes";
 
 export default function RegPage() {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormData>({ mode: "all" });
+  } = useForm<RegistrationFormData>({ mode: "all" });
 
-  const formSubmit: SubmitHandler<LoginFormData> = (data) => {
+  const formSubmit: SubmitHandler<RegistrationFormData> = (data) => {
     console.log(data);
   };
 
