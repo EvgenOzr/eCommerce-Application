@@ -21,11 +21,11 @@ export default function RegPage() {
 
   return (
     <>
-      <div className="login-wrapper">
-        <div className="login-image"></div>
-        <div className="login-container">
+      <div className="register-wrapper">
+        <div className="register-image"></div>
+        <div className="register-container">
           <div className="form-container">
-            <h2 className="form-title">Sign In</h2>
+            <h2 className="form-title">Register</h2>
             <form
               className="form-submit"
               action="submit"
@@ -79,16 +79,14 @@ export default function RegPage() {
               </div>
               <div className="button-login-container">
                 <button type="submit" className="login-button">
-                  Login
+                  Register
                 </button>
               </div>
-              <h2 className="register-link">
-                Don’t have account?{" "}
-                <Link className="link-registration" to={"/registration"}>
-                  {" "}
-                  Register here{" "}
-                </Link>
-              </h2>
+              <div className="nav-link">
+                <h2 className="login-link">
+                  Already have an account? <Link to={"/login"}>Login!</Link>
+                </h2>
+              </div>
             </form>
           </div>
         </div>

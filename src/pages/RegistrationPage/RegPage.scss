@@ -1,10 +1,10 @@
 @use "../../assets/variables.scss" as *;
 
-.login-wrapper {
+.register-wrapper {
   display: flex;
 }
 
-.login-image {
+.register-image {
   background: url("../../assets/images/LoginPage/loginbg.png");
   width: 50%;
   height: 100vh;
@@ -12,7 +12,7 @@
   background-position: center;
 }
 
-.login-container {
+.register-container {
   width: 50%;
   display: flex;
   justify-content: center;
@@ -83,19 +83,19 @@
   }
 }
 
-.register-link {
+.login-link {
   font-family: $primaryFont;
   font-weight: 100;
   color: $textColor;
   font-size: 1.6em;
 }
 
-.error-message {
-  color: red;
-}
-
-.link-registration {
+.nav-link a {
   text-decoration: none;
   color: inherit;
-  transition: 0.3 ease-in-out;
+  transition: 0.3s ease-in-out;
+
+  &:hover {
+    color: $mainColor;
+  }
 }
