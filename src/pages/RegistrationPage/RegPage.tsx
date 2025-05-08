@@ -24,15 +24,15 @@ export default function RegPage() {
       <div className="register-wrapper">
         <div className="register-image"></div>
         <div className="register-container">
-          <div className="form-container">
-            <h2 className="form-title">Register</h2>
+          <div className="register-form-container">
+            <h2 className="register-form-title">Register</h2>
             <form
-              className="form-submit"
+              className="register-form-submit"
               action="submit"
               onSubmit={handleSubmit(formSubmit)}
             >
-              <div className="input-name-container">
-                <label className="input-name-title">EMAIL</label>
+              <div className="register-input-name-container">
+                <label className="register-input-name-title">EMAIL</label>
                 <input
                   className="input-name"
                   type="text"

@@ -18,7 +18,7 @@
   justify-content: center;
 }
 
-.form-title {
+.register-form-title {
   font-family: $primaryFont;
   font-size: 76px;
   font-weight: 100;
@@ -26,7 +26,7 @@
   text-transform: uppercase;
 }
 
-.form-container {
+.register-form-container {
   display: flex;
   gap: 48px;
   justify-content: center;
@@ -37,22 +37,22 @@
   align-items: flex-start;
 }
 
-.form-submit {
+.register-form-submit {
   display: flex;
   flex-direction: column;
   gap: 30px;
 }
 
-.input-name-container,
-.input-password-container {
+.register-input-name-container,
+.register-input-password-container {
   display: flex;
   flex-direction: column;
   gap: 5px;
   height: 100px;
 }
 
-.input-name-title,
-.input-password-title {
+.register-input-name-title,
+.register-input-password-title {
   font-family: $secondaryFont;
   color: $textColor;
   font-size: 16px;
@@ -60,14 +60,14 @@
   padding-bottom: 1%;
 }
 
-.input-name,
-.input-password {
+.register-input-name,
+.register-input-password {
   width: 90%;
   height: 45px;
   padding: 0% 4% 0%;
 }
 
-.login-button {
+.registerlogin-button {
   background-color: $mainColor;
   color: #fff;
   width: 100%;
