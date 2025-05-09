@@ -27,7 +27,7 @@ export default function RegPage() {
               action="submit"
               onSubmit={handleSubmit(formSubmit)}
             >
-              <div className="register-input-name-container">
+              <div className="register-input-firstname-container">
                 <label className="register-input-name-title">NAME</label>
                 <input
                   className="input-name"
@@ -54,7 +54,7 @@ export default function RegPage() {
                   isOpen={!!errors.firstName}
                 />
               </div>
-              <div className="register-input-name-container">
+              <div className="register-input-lastname-container">
                 <label className="register-input-name-title">LASTNAME</label>
                 <input
                   className="input-name"
@@ -81,7 +81,24 @@ export default function RegPage() {
                   isOpen={!!errors.lastName}
                 />
               </div>
-              <div className="register-input-name-container">
+              <div className="register-input-adress-container">
+                <label className="input-country-title">ADRESS</label>
+                <div className="adress-containers">
+                  <div className="register-input-country">
+                    <input type="text" className="adress-input" />
+                  </div>
+                  <div className="register-input-postalcode">
+                    <input type="number" className="adress-input" />
+                  </div>
+                  <div className="register-input-city">
+                    <input type="text" className="adress-input" />
+                  </div>
+                  <div className="register-input-street">
+                    <input type="text" className="adress-input" />
+                  </div>
+                </div>
+              </div>
+              <div className="register-input-date-container">
                 <label className="register-input-name-title">BIRTHDAY</label>
                 <input
                   className="input-name"
@@ -113,7 +130,7 @@ export default function RegPage() {
                   isOpen={!!errors.date}
                 />
               </div>
-              <div className="register-input-name-container">
+              <div className="register-input-email-container">
                 <label className="register-input-name-title">EMAIL</label>
                 <input
                   className="input-name"
@@ -136,7 +153,7 @@ export default function RegPage() {
                   isOpen={!!errors.email}
                 />
               </div>
-              <div className="input-password-container">
+              <div className="register-input-password-container">
                 <label className="input-password-title">PASSWORD</label>
                 <input
                   className="input-password"

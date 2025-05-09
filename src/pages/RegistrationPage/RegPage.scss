@@ -30,10 +30,10 @@
   display: flex;
   gap: 24px;
   justify-content: center;
-  align-items: center;
   flex-direction: column;
   margin: 0 2%;
   align-items: flex-start;
+  max-width: 430px;
 }
 
 .register-form-submit {
@@ -41,8 +41,12 @@
   flex-direction: column;
 }
 
-.register-input-name-container,
-.register-input-password-container {
+.register-input-date-container,
+.register-input-firstname-container,
+.register-input-lastname-container,
+.register-input-password-container,
+.register-input-email-container,
+.register-input-adress-container {
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -50,7 +54,8 @@
 }
 
 .register-input-name-title,
-.register-input-password-title {
+.register-input-password-title,
+.input-country-title {
   font-family: $secondaryFont;
   color: $textColor;
   font-size: 16px;
@@ -96,4 +101,15 @@
   &:hover {
     color: $mainColor;
   }
+}
+
+.adress-containers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 3px;
+}
+
+.adress-input {
+  width: 203px;
+  height: 22px;
 }

@@ -11,7 +11,12 @@ export interface LoginFormData {
 export interface RegistrationFormData {
   firstName: string;
   lastName: string;
-  adresses?: [];
+  adresses?: {
+    country: string;
+    city: string;
+    street: string;
+    postalcode: number;
+  };
   date: string;
   email: string;
   password: string;
