@@ -1,4 +1,4 @@
 export interface BannerProps {
-    textMain: string;
-    textAdd: string;
+  textMain: string;
+  textAdd: string;
 }

@@ -2,6 +2,7 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { Tooltip } from "react-tooltip";
 import "./LoginPage.scss";
 import { Link } from "react-router";
+import { authenticateUser } from "../../API/AuthUser";
 
 interface LoginFormData extends FieldValues {
   email: string;
@@ -15,8 +16,8 @@ export default function LoginPage() {
     formState: { errors },
   } = useForm<LoginFormData>({ mode: "all" });
 
-  const formSubmit: SubmitHandler<LoginFormData> = (data) => {
-    console.log(data);
+  const formSubmit: SubmitHandler<LoginFormData> = async (data) => {
+    await authenticateUser(data.email, data.password);
   };
 
   return (
