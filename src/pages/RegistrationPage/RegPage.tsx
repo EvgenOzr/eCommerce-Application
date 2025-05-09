@@ -106,7 +106,21 @@ export default function RegPage() {
                       type="text"
                       className="adress-input"
                       placeholder="City"
-                      {...register("adresses.city")}
+                      data-tooltip-id="city-tooltip"
+                      data-tooltip-content={errors.adresses?.city?.message}
+                      {...register("adresses.city", {
+                        required: "City is required",
+                        pattern: {
+                          value: /^[A-Za-zА-Яа-я\s]+$/,
+                          message: "Must contain only letters",
+                        },
+                      })}
+                    />
+                    <Tooltip
+                      id="city-tooltip"
+                      place="top"
+                      variant="error"
+                      isOpen={!!errors.adresses?.city}
                     />
                   </div>
                   <div className="register-input-street">
