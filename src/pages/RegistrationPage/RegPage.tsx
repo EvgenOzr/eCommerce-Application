@@ -146,9 +146,13 @@ export default function RegPage() {
                   data-tooltip-content={errors.password?.message}
                   {...register("password", {
                     required: "Password is required",
+                    pattern: {
+                      value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/,
+                      message: "Must contain 1 uppercase, and 1 number",
+                    },
                     minLength: {
-                      value: 6,
-                      message: "Password must be at least 6 characters",
+                      value: 8,
+                      message: "Password must be at least 8 characters",
                     },
                   })}
                 />
