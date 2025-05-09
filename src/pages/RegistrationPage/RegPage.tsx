@@ -66,6 +66,24 @@ export default function RegPage() {
                 />
               </div>
               <div className="register-input-name-container">
+                <label className="register-input-name-title">BIRTHDAY</label>
+                <input
+                  className="input-name"
+                  type="date"
+                  data-tooltip-id="date-tooltip"
+                  data-tooltip-content={errors.date?.message}
+                  {...register("date", {
+                    required: "Date is required",
+                  })}
+                />
+                <Tooltip
+                  id="date-tooltip"
+                  place="top"
+                  variant="error"
+                  isOpen={!!errors.date}
+                />
+              </div>
+              <div className="register-input-name-container">
                 <label className="register-input-name-title">EMAIL</label>
                 <input
                   className="input-name"
