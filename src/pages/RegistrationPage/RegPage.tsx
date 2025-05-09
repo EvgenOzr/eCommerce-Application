@@ -90,6 +90,20 @@ export default function RegPage() {
                   data-tooltip-content={errors.date?.message}
                   {...register("date", {
                     required: "Date is required",
+                    validate: (value) => {
+                      const birthDate = new Date(value);
+                      const today = new Date();
+                      const minAgeDate = new Date(
+                        today.getFullYear() - 13,
+                        today.getMonth(),
+                        today.getDate()
+                      );
+
+                      if (birthDate > minAgeDate) {
+                        return "You must be at least 13 years old";
+                      }
+                      return true;
+                    },
                   })}
                 />
                 <Tooltip
