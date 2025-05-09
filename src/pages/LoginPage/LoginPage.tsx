@@ -4,6 +4,7 @@ import "./LoginPage.scss";
 import { Link } from "react-router";
 import { LoginFormData } from "../../types/shopTypes";
 
+
 export default function LoginPage() {
   const {
     register,
@@ -11,8 +12,8 @@ export default function LoginPage() {
     formState: { errors },
   } = useForm<LoginFormData>({ mode: "all" });
 
-  const formSubmit: SubmitHandler<LoginFormData> = (data) => {
-    console.log(data);
+  const formSubmit: SubmitHandler<LoginFormData> = async (data) => {
+    await authenticateUser(data.email, data.password);
   };
 
   return (
