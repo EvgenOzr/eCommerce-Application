@@ -14,7 +14,6 @@ export default function RegPage() {
   const formSubmit: SubmitHandler<RegistrationFormData> = (data) => {
     console.log(data);
   };
-  console.log(errors);
 
   return (
     <>
@@ -86,13 +85,26 @@ export default function RegPage() {
                 <label className="input-country-title">ADRESS</label>
                 <div className="adress-containers">
                   <div className="register-input-country">
-                    <input
-                      type="text"
-                      className="adress-input"
-                      placeholder="Country"
-                      {...register("adresses.country")}
+                    <select
+                      className="adress-select"
+                      data-tooltip-id="country-tooltip"
+                      data-tooltip-content={errors.adresses?.country?.message}
+                      {...register("adresses.country", {
+                        required: "Contry is required",
+                      })}
+                    >
+                      <option value="">Choose country</option>
+                      <option value="US">United States</option>
+                      <option value="GB">Great Britain</option>
+                    </select>
+                    <Tooltip
+                      id="country-tooltip"
+                      place="top"
+                      variant="error"
+                      isOpen={!!errors.adresses?.country}
                     />
                   </div>
+
                   <div className="register-input-postalcode">
                     <input
                       type="text"
