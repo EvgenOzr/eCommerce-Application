@@ -85,16 +85,32 @@ export default function RegPage() {
                 <label className="input-country-title">ADRESS</label>
                 <div className="adress-containers">
                   <div className="register-input-country">
-                    <input type="text" className="adress-input" />
+                    <input
+                      type="text"
+                      className="adress-input"
+                      placeholder="Country"
+                    />
                   </div>
                   <div className="register-input-postalcode">
-                    <input type="number" className="adress-input" />
+                    <input
+                      type="number"
+                      className="adress-input"
+                      placeholder="Postal Code"
+                    />
                   </div>
                   <div className="register-input-city">
-                    <input type="text" className="adress-input" />
+                    <input
+                      type="text"
+                      className="adress-input"
+                      placeholder="City"
+                    />
                   </div>
                   <div className="register-input-street">
-                    <input type="text" className="adress-input" />
+                    <input
+                      type="text"
+                      className="adress-input"
+                      placeholder="Street"
+                    />
                   </div>
                 </div>
               </div>

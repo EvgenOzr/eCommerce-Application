@@ -28,7 +28,7 @@
 
 .register-form-container {
   display: flex;
-  gap: 24px;
+  gap: 15px;
   justify-content: center;
   flex-direction: column;
   margin: 0 2%;
@@ -39,6 +39,7 @@
 .register-form-submit {
   display: flex;
   flex-direction: column;
+  gap: 5px;
 }
 
 .register-input-date-container,
@@ -50,7 +51,11 @@
   display: flex;
   flex-direction: column;
   gap: 5px;
-  height: 100px;
+  height: 80px;
+}
+
+.register-input-adress-container {
+  margin-bottom: 15px;
 }
 
 .register-input-name-title,
@@ -107,6 +112,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px 3px;
+
 }
 
 .adress-input {
