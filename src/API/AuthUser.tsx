@@ -26,7 +26,7 @@ export const authenticateUser = async (
         password: password,
       },
     },
-    scopes: ["openid", "email", "profile", "customers"],
+    scopes: import.meta.env.VITE_CTP_SCOPES.split(","),
   };
 
   const client = new ClientBuilder()
