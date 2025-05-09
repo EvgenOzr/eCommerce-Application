@@ -95,10 +95,27 @@ export default function RegPage() {
                   </div>
                   <div className="register-input-postalcode">
                     <input
-                      type="number"
+                      type="text"
                       className="adress-input"
-                      placeholder="Postal Code"
-                      {...register("adresses.postalcode")}
+                      placeholder="Postal Code, ex. 12345"
+                      data-tooltip-id="postalcode-tooltip"
+                      data-tooltip-content={
+                        errors.adresses?.postalcode?.message
+                      }
+                      {...register("adresses.postalcode", {
+                        required: "City is required",
+                        pattern: {
+                          value:
+                            /^(?:\d{5}(?:-\d{4})?|[A-Za-z]\d[A-Za-z] \d[A-Za-z]\d)$/,
+                          message: "Incorrect postal code format",
+                        },
+                      })}
+                    />
+                    <Tooltip
+                      id="postalcode-tooltip"
+                      place="top"
+                      variant="error"
+                      isOpen={!!errors.adresses?.postalcode}
                     />
                   </div>
                   <div className="register-input-city">
