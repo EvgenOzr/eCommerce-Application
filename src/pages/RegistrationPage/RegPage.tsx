@@ -64,6 +64,14 @@ export default function RegPage() {
                   data-tooltip-content={errors.lastName?.message}
                   {...register("lastName", {
                     required: "Lastname is required",
+                    pattern: {
+                      value: /^[A-Za-zА-Яа-яЁё]+$/,
+                      message: "No numbers or special characters allowed",
+                    },
+                    minLength: {
+                      value: 1,
+                      message: "Must contain at least one character",
+                    },
                   })}
                 />
                 <Tooltip
