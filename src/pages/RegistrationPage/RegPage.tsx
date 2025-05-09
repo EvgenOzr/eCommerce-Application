@@ -14,6 +14,7 @@ export default function RegPage() {
   const formSubmit: SubmitHandler<RegistrationFormData> = (data) => {
     console.log(data);
   };
+  console.log(errors);
 
   return (
     <>
@@ -89,6 +90,7 @@ export default function RegPage() {
                       type="text"
                       className="adress-input"
                       placeholder="Country"
+                      {...register("adresses.country")}
                     />
                   </div>
                   <div className="register-input-postalcode">
@@ -96,6 +98,7 @@ export default function RegPage() {
                       type="number"
                       className="adress-input"
                       placeholder="Postal Code"
+                      {...register("adresses.postalcode")}
                     />
                   </div>
                   <div className="register-input-city">
@@ -103,6 +106,7 @@ export default function RegPage() {
                       type="text"
                       className="adress-input"
                       placeholder="City"
+                      {...register("adresses.city")}
                     />
                   </div>
                   <div className="register-input-street">
@@ -110,6 +114,17 @@ export default function RegPage() {
                       type="text"
                       className="adress-input"
                       placeholder="Street"
+                      data-tooltip-id="street-tooltip"
+                      data-tooltip-content={errors.adresses?.street?.message}
+                      {...register("adresses.street", {
+                        required: "Street is required",
+                      })}
+                    />
+                    <Tooltip
+                      id="street-tooltip"
+                      place="top"
+                      variant="error"
+                      isOpen={!!errors.adresses?.street}
                     />
                   </div>
                 </div>
