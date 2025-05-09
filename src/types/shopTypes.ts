@@ -11,7 +11,7 @@ export interface LoginFormData {
 export interface RegistrationFormData {
   firstName: string;
   lastName: string;
-  adresses: [];
+  adresses?: [];
   date: string;
   email: string;
   password: string;

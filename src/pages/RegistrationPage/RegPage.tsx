@@ -28,6 +28,44 @@ export default function RegPage() {
               onSubmit={handleSubmit(formSubmit)}
             >
               <div className="register-input-name-container">
+                <label className="register-input-name-title">NAME</label>
+                <input
+                  className="input-name"
+                  type="text"
+                  placeholder="Ivan"
+                  data-tooltip-id="name-tooltip"
+                  data-tooltip-content={errors.firstName?.message}
+                  {...register("firstName", {
+                    required: "Name is required",
+                  })}
+                />
+                <Tooltip
+                  id="name-tooltip"
+                  place="top"
+                  variant="error"
+                  isOpen={!!errors.firstName}
+                />
+              </div>
+              <div className="register-input-name-container">
+                <label className="register-input-name-title">LASTNAME</label>
+                <input
+                  className="input-name"
+                  type="text"
+                  placeholder="Ivanov"
+                  data-tooltip-id="lastname-tooltip"
+                  data-tooltip-content={errors.lastName?.message}
+                  {...register("lastName", {
+                    required: "Lastname is required",
+                  })}
+                />
+                <Tooltip
+                  id="lastname-tooltip"
+                  place="top"
+                  variant="error"
+                  isOpen={!!errors.lastName}
+                />
+              </div>
+              <div className="register-input-name-container">
                 <label className="register-input-name-title">EMAIL</label>
                 <input
                   className="input-name"

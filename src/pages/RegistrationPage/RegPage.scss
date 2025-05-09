@@ -28,11 +28,10 @@
 
 .register-form-container {
   display: flex;
-  gap: 48px;
+  gap: 24px;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  height: 100%;
   margin: 0 2%;
   align-items: flex-start;
 }
@@ -40,7 +39,6 @@
 .register-form-submit {
   display: flex;
   flex-direction: column;
-  gap: 30px;
 }
 
 .register-input-name-container,
