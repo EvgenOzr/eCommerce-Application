@@ -3,7 +3,7 @@ import { Tooltip } from "react-tooltip";
 import "./LoginPage.scss";
 import { Link } from "react-router";
 import { LoginFormData } from "../../types/shopTypes";
-
+import { authenticateUser } from "../../API/AuthUser";
 
 export default function LoginPage() {
   const {

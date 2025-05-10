@@ -1,6 +1,7 @@
 import React from "react";
 import Banner from "../../components/banner/Banner";
 import "./MainPage.scss";
+import Footer from "../../components/footer/footer";
 
 const MainPage = () => {
   return (
@@ -9,6 +10,7 @@ const MainPage = () => {
         textMain={"Discount 20% For New Member, "}
         textAdd={"ONLY FOR TODAY!!"}
       />
+      <Footer />
     </div>
   );
 };
