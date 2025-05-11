@@ -1,74 +1,70 @@
 @use "../../assets/variables.scss" as variables;
 
 .footer {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: variables.$mainColor;
-    height: 335px;
+  width: 100%;
+  background-color: variables.$mainColor;
+  height: 335px;
+  align-items: center;
+  color: #fff;
+  &_container {
+    display: flex;
+    gap: 96px;
+    margin: 48px 42px;
+  }
+  &_info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  &_name {
+    font-family: variables.$primaryFont;
+    font-size: 48px;
+    font-weight: 500;
+    line-height: 130%;
+    letter-spacing: 0%;
+    text-transform: uppercase;
+    margin: 0;
+  }
+  &_contact {
+    display: flex;
+  }
+  &_contact-data,
+  &_menu-submenu {
+    display: flex;
+    flex-direction: column;
+    font-family: variables.$secondaryFont;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 135%;
+    letter-spacing: 0%;
+    padding-right: 10px;
+    gap: 4px;
+  }
+  &_menu {
+    display: flex;
+    line-height: 135%;
+    letter-spacing: 0%;
+    gap: 42px;
+  }
+  &_menu-title {
+    font-family: variables.$secondaryFont;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  &_copyright {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
     align-items: center;
-    color: #fff;
-    &_container {
-        display: flex;
-        gap: 96px;
-        margin: 48px 42px;
-    }
-    &_info {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-    }
-    &_name {
-        font-family: variables.$primaryFont;
-        font-size: 48px;
-        font-weight: 500;
-        line-height: 130%;
-        letter-spacing: 0%;
-        text-transform: uppercase;
-        margin: 0;
-    }
-    &_contact{
-        display: flex;
-    }
-    &_contact-data,
-    &_menu-submenu {
-        display: flex;
-        flex-direction: column;
-        font-family: variables.$secondaryFont;
-        font-size: 12px;
-        font-weight: 400;
-        line-height: 135%;
-        letter-spacing: 0%;
-        padding-right: 10px;
-        gap: 4px;
-    }
-    &_menu {
-        display: flex;
-        line-height: 135%;
-        letter-spacing: 0%;
-        gap: 42px;
-    }
-    &_menu-title {
-        font-family: variables.$secondaryFont;
-        font-size: 14px;
-        font-weight: 700;
-        margin-bottom: 12px;
-    }
-    &_copyright {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-        align-items: center;
-        font-family: variables.$secondaryFont;
-        font-size: 12px;
-        font-weight: 300;
-        line-height: 135%;
-        letter-spacing: 0%;
-        
-    }
+    font-family: variables.$secondaryFont;
+    font-size: 12px;
+    font-weight: 300;
+    line-height: 135%;
+    letter-spacing: 0%;
+  }
 }
 
 p {
-    margin: 0;
+  margin: 0;
 }

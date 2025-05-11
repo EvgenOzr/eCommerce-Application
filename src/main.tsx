@@ -5,6 +5,7 @@ import "./index.scss";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import MainPage from "./pages/MainPage/MainPage";
 import RegPage from "./pages/RegistrationPage/RegPage";
+import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -14,6 +15,7 @@ createRoot(document.getElementById("root")!).render(
           <Route path="/" element={<MainPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/registration" element={<RegPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>
     </div>
