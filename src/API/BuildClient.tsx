@@ -4,25 +4,31 @@ import {
   type AuthMiddlewareOptions,
   type HttpMiddlewareOptions,
 } from "@commercetools/ts-client";
+import {
+  authUrl,
+  apiUrl,
+  clientId,
+  clientSecret,
+  projectKey,
+} from "../types/constants";
 
-const projectKey = import.meta.env.VITE_CTP_PROJECT_KEY;
 const scopes = import.meta.env.VITE_CTP_SCOPES
   ? import.meta.env.VITE_CTP_SCOPES.split(",")
   : [];
 
 const authMiddlewareOptions: AuthMiddlewareOptions = {
-  host: import.meta.env.VITE_CTP_AUTH_URL,
+  host: authUrl,
   projectKey: projectKey,
   credentials: {
-    clientId: import.meta.env.VITE_CTP_CLIENT_ID,
-    clientSecret: import.meta.env.VITE_CTP_CLIENT_SECRET,
+    clientId: clientId,
+    clientSecret: clientSecret,
   },
   scopes,
   httpClient: fetch,
 };
 
-const httpMiddlewareOptions: HttpMiddlewareOptions = {
-  host: import.meta.env.VITE_CTP_API_URL,
+export const httpMiddlewareOptions: HttpMiddlewareOptions = {
+  host: apiUrl,
   httpClient: fetch,
 };
 

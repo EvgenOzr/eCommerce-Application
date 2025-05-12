@@ -15,7 +15,7 @@ export interface RegistrationFormData {
     country: string;
     city: string;
     street: string;
-    postalcode: number;
+    postalcode: string;
   };
   date: string;
   email: string;

@@ -3,6 +3,7 @@ import { Tooltip } from "react-tooltip";
 import "./RegPage.scss";
 import { Link } from "react-router";
 import { RegistrationFormData } from "../../types/shopTypes";
+import { registerUser } from "../../API/RegisterUse";
 
 export default function RegPage() {
   const {
@@ -11,8 +12,8 @@ export default function RegPage() {
     formState: { errors },
   } = useForm<RegistrationFormData>({ mode: "all" });
 
-  const formSubmit: SubmitHandler<RegistrationFormData> = (data) => {
-    console.log(data);
+  const formSubmit: SubmitHandler<RegistrationFormData> = async (data) => {
+    await registerUser(data);
   };
 
   return (
