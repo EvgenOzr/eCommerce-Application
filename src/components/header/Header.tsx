@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import "./Header.scss";
 
 const Header = () => {
@@ -27,7 +28,7 @@ const Header = () => {
             placeholder="Search"
           />
         </div>
-        <a href="#" className="header_active__user"></a>
+        <Link to="/login" className="header_active__user"></Link>
         <a href="#" className="header_active__cart"></a>
       </div>
     </header>
