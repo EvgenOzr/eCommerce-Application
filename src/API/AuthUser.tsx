@@ -1,11 +1,13 @@
 import { createApiBuilderFromCtpClient } from "@commercetools/platform-sdk";
 import { ClientBuilder } from "@commercetools/ts-client";
 import { PasswordAuthMiddlewareOptions } from "@commercetools/ts-client";
-
-const authUrl = import.meta.env.VITE_CTP_AUTH_URL;
-const clientId = import.meta.env.VITE_CTP_CLIENT_ID;
-const clientSecret = import.meta.env.VITE_CTP_CLIENT_SECRET;
-const projectKey = import.meta.env.VITE_CTP_PROJECT_KEY;
+import {
+  authUrl,
+  clientId,
+  clientSecret,
+  projectKey,
+  scopes,
+} from "../types/constants";
 
 export const authenticateUser = async (
   email: string,
@@ -26,7 +28,7 @@ export const authenticateUser = async (
         password: password,
       },
     },
-    scopes: import.meta.env.VITE_CTP_SCOPES.split(","),
+    scopes: scopes.split(","),
   };
 
   const client = new ClientBuilder()
