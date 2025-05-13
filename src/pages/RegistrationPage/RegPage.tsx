@@ -31,7 +31,7 @@ export default function RegPage() {
               <div className="register-input-firstname-container">
                 <label className="register-input-name-title">NAME</label>
                 <input
-                  className="input-name"
+                  className="register-input-firstname input-field"
                   type="text"
                   placeholder="Ivan"
                   data-tooltip-id="name-tooltip"
@@ -58,7 +58,7 @@ export default function RegPage() {
               <div className="register-input-lastname-container">
                 <label className="register-input-name-title">LASTNAME</label>
                 <input
-                  className="input-name"
+                  className="register-input-lastname input-field"
                   type="text"
                   placeholder="Ivanov"
                   data-tooltip-id="lastname-tooltip"
@@ -176,7 +176,7 @@ export default function RegPage() {
               <div className="register-input-date-container">
                 <label className="register-input-name-title">BIRTHDAY</label>
                 <input
-                  className="input-name"
+                  className="register-input-date input-field"
                   type="date"
                   data-tooltip-id="date-tooltip"
                   data-tooltip-content={errors.date?.message}
@@ -208,7 +208,7 @@ export default function RegPage() {
               <div className="register-input-email-container">
                 <label className="register-input-name-title">EMAIL</label>
                 <input
-                  className="input-name"
+                  className="register-input-email input-field"
                   type="text"
                   placeholder="example@mail.com"
                   data-tooltip-id="email-tooltip"
@@ -231,7 +231,7 @@ export default function RegPage() {
               <div className="register-input-password-container">
                 <label className="input-password-title">PASSWORD</label>
                 <input
-                  className="input-password"
+                  className="register-input-password input-field"
                   type="password"
                   placeholder="******"
                   data-tooltip-id="password-tooltip"
