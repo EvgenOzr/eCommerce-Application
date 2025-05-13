@@ -4,6 +4,7 @@ import "./RegPage.scss";
 import { Link } from "react-router";
 import { RegistrationFormData } from "../../types/shopTypes";
 import { registerUser } from "../../API/RegisterUse";
+import { useState } from "react";
 
 export default function RegPage() {
   const {
@@ -11,6 +12,8 @@ export default function RegPage() {
     handleSubmit,
     formState: { errors },
   } = useForm<RegistrationFormData>({ mode: "all" });
+
+  const [defaultAdress, setDefaultAdress] = useState(true);
 
   const formSubmit: SubmitHandler<RegistrationFormData> = async (data) => {
     await registerUser(data);
@@ -83,7 +86,7 @@ export default function RegPage() {
                 />
               </div>
               <div className="register-input-adress-container">
-                <label className="input-country-title">ADRESS</label>
+                <label className="input-country-title">BILLING ADRESS</label>
                 <div className="adress-containers">
                   <div className="register-input-country">
                     <select
@@ -105,7 +108,6 @@ export default function RegPage() {
                       isOpen={!!errors.adresses?.country}
                     />
                   </div>
-
                   <div className="register-input-postalcode">
                     <input
                       type="text"
@@ -172,7 +174,110 @@ export default function RegPage() {
                     />
                   </div>
                 </div>
+                <div className="adress-checkbox-container">
+                  <input
+                    type="checkbox"
+                    checked={defaultAdress}
+                    id="default-adress"
+                    onChange={(e) => setDefaultAdress(e.target.checked)}
+                  />
+                  <label htmlFor="default-adress">
+                    Use same address for shipping
+                  </label>
+                </div>
               </div>
+              {!defaultAdress && (
+                <div className="register-input-adress-container">
+                  <label className="input-country-title">SHIPPING ADRESS</label>
+                  <div className="adress-containers">
+                    <div className="register-input-country">
+                      <select
+                        className="adress-select"
+                        data-tooltip-id="country-tooltip"
+                        data-tooltip-content={errors.adresses?.country?.message}
+                        {...register("adresses.country", {
+                          required: "Contry is required",
+                        })}
+                      >
+                        <option value="">Choose country</option>
+                        <option value="US">United States</option>
+                        <option value="GB">Great Britain</option>
+                      </select>
+                      <Tooltip
+                        id="country-tooltip"
+                        place="top"
+                        variant="error"
+                        isOpen={!!errors.adresses?.country}
+                      />
+                    </div>
+                    <div className="register-input-postalcode">
+                      <input
+                        type="text"
+                        className="adress-input"
+                        placeholder="Postal Code, ex. 12345"
+                        data-tooltip-id="postalcode-tooltip"
+                        data-tooltip-content={
+                          errors.adresses?.postalcode?.message
+                        }
+                        {...register("adresses.postalcode", {
+                          required: "City is required",
+                          pattern: {
+                            value:
+                              /^(?:\d{5}(?:-\d{4})?|[A-Za-z]\d[A-Za-z] \d[A-Za-z]\d)$/,
+                            message: "Incorrect postal code format",
+                          },
+                        })}
+                      />
+                      <Tooltip
+                        id="postalcode-tooltip"
+                        place="top"
+                        variant="error"
+                        isOpen={!!errors.adresses?.postalcode}
+                      />
+                    </div>
+                    <div className="register-input-city">
+                      <input
+                        type="text"
+                        className="adress-input"
+                        placeholder="City"
+                        data-tooltip-id="city-tooltip"
+                        data-tooltip-content={errors.adresses?.city?.message}
+                        {...register("adresses.city", {
+                          required: "City is required",
+                          pattern: {
+                            value: /^[A-Za-zА-Яа-я\s]+$/,
+                            message: "Must contain only letters",
+                          },
+                        })}
+                      />
+                      <Tooltip
+                        id="city-tooltip"
+                        place="top"
+                        variant="error"
+                        isOpen={!!errors.adresses?.city}
+                      />
+                    </div>
+                    <div className="register-input-street">
+                      <input
+                        type="text"
+                        className="adress-input"
+                        placeholder="Street"
+                        data-tooltip-id="street-tooltip"
+                        data-tooltip-content={errors.adresses?.street?.message}
+                        {...register("adresses.street", {
+                          required: "Street is required",
+                        })}
+                      />
+                      <Tooltip
+                        id="street-tooltip"
+                        place="top"
+                        variant="error"
+                        isOpen={!!errors.adresses?.street}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
               <div className="register-input-date-container">
                 <label className="register-input-name-title">BIRTHDAY</label>
                 <input
