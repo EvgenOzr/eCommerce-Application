@@ -92,8 +92,10 @@ export default function RegPage() {
                     <select
                       className="adress-select"
                       data-tooltip-id="country-tooltip"
-                      data-tooltip-content={errors.adresses?.country?.message}
-                      {...register("adresses.country", {
+                      data-tooltip-content={
+                        errors.billingAdresses?.country?.message
+                      }
+                      {...register("billingAdresses.country", {
                         required: "Contry is required",
                       })}
                     >
@@ -105,7 +107,7 @@ export default function RegPage() {
                       id="country-tooltip"
                       place="top"
                       variant="error"
-                      isOpen={!!errors.adresses?.country}
+                      isOpen={!!errors.billingAdresses?.country}
                     />
                   </div>
                   <div className="register-input-postalcode">
@@ -115,9 +117,9 @@ export default function RegPage() {
                       placeholder="Postal Code, ex. 12345"
                       data-tooltip-id="postalcode-tooltip"
                       data-tooltip-content={
-                        errors.adresses?.postalcode?.message
+                        errors.billingAdresses?.postalcode?.message
                       }
-                      {...register("adresses.postalcode", {
+                      {...register("billingAdresses.postalcode", {
                         required: "City is required",
                         pattern: {
                           value:
@@ -130,7 +132,7 @@ export default function RegPage() {
                       id="postalcode-tooltip"
                       place="top"
                       variant="error"
-                      isOpen={!!errors.adresses?.postalcode}
+                      isOpen={!!errors.billingAdresses?.postalcode}
                     />
                   </div>
                   <div className="register-input-city">
@@ -139,8 +141,10 @@ export default function RegPage() {
                       className="adress-input"
                       placeholder="City"
                       data-tooltip-id="city-tooltip"
-                      data-tooltip-content={errors.adresses?.city?.message}
-                      {...register("adresses.city", {
+                      data-tooltip-content={
+                        errors.billingAdresses?.city?.message
+                      }
+                      {...register("billingAdresses.city", {
                         required: "City is required",
                         pattern: {
                           value: /^[A-Za-zА-Яа-я\s]+$/,
@@ -152,7 +156,7 @@ export default function RegPage() {
                       id="city-tooltip"
                       place="top"
                       variant="error"
-                      isOpen={!!errors.adresses?.city}
+                      isOpen={!!errors.billingAdresses?.city}
                     />
                   </div>
                   <div className="register-input-street">
@@ -161,8 +165,10 @@ export default function RegPage() {
                       className="adress-input"
                       placeholder="Street"
                       data-tooltip-id="street-tooltip"
-                      data-tooltip-content={errors.adresses?.street?.message}
-                      {...register("adresses.street", {
+                      data-tooltip-content={
+                        errors.billingAdresses?.street?.message
+                      }
+                      {...register("billingAdresses.street", {
                         required: "Street is required",
                       })}
                     />
@@ -170,7 +176,7 @@ export default function RegPage() {
                       id="street-tooltip"
                       place="top"
                       variant="error"
-                      isOpen={!!errors.adresses?.street}
+                      isOpen={!!errors.billingAdresses?.street}
                     />
                   </div>
                 </div>
@@ -194,9 +200,11 @@ export default function RegPage() {
                       <select
                         className="adress-select"
                         data-tooltip-id="country-tooltip"
-                        data-tooltip-content={errors.adresses?.country?.message}
-                        {...register("adresses.country", {
-                          required: "Contry is required",
+                        data-tooltip-content={
+                          errors.shippingAdresses?.country?.message
+                        }
+                        {...register("shippingAdresses.country", {
+                          required: !defaultAdress && "Contry is required",
                         })}
                       >
                         <option value="">Choose country</option>
@@ -207,7 +215,7 @@ export default function RegPage() {
                         id="country-tooltip"
                         place="top"
                         variant="error"
-                        isOpen={!!errors.adresses?.country}
+                        isOpen={!!errors.shippingAdresses?.country}
                       />
                     </div>
                     <div className="register-input-postalcode">
@@ -217,10 +225,10 @@ export default function RegPage() {
                         placeholder="Postal Code, ex. 12345"
                         data-tooltip-id="postalcode-tooltip"
                         data-tooltip-content={
-                          errors.adresses?.postalcode?.message
+                          errors.shippingAdresses?.postalcode?.message
                         }
-                        {...register("adresses.postalcode", {
-                          required: "City is required",
+                        {...register("shippingAdresses.postalcode", {
+                          required: !defaultAdress && "City is required",
                           pattern: {
                             value:
                               /^(?:\d{5}(?:-\d{4})?|[A-Za-z]\d[A-Za-z] \d[A-Za-z]\d)$/,
@@ -232,7 +240,7 @@ export default function RegPage() {
                         id="postalcode-tooltip"
                         place="top"
                         variant="error"
-                        isOpen={!!errors.adresses?.postalcode}
+                        isOpen={!!errors.shippingAdresses?.postalcode}
                       />
                     </div>
                     <div className="register-input-city">
@@ -241,9 +249,11 @@ export default function RegPage() {
                         className="adress-input"
                         placeholder="City"
                         data-tooltip-id="city-tooltip"
-                        data-tooltip-content={errors.adresses?.city?.message}
-                        {...register("adresses.city", {
-                          required: "City is required",
+                        data-tooltip-content={
+                          errors.shippingAdresses?.city?.message
+                        }
+                        {...register("shippingAdresses.city", {
+                          required: !defaultAdress && "City is required",
                           pattern: {
                             value: /^[A-Za-zА-Яа-я\s]+$/,
                             message: "Must contain only letters",
@@ -254,7 +264,7 @@ export default function RegPage() {
                         id="city-tooltip"
                         place="top"
                         variant="error"
-                        isOpen={!!errors.adresses?.city}
+                        isOpen={!!errors.shippingAdresses?.city}
                       />
                     </div>
                     <div className="register-input-street">
@@ -263,16 +273,18 @@ export default function RegPage() {
                         className="adress-input"
                         placeholder="Street"
                         data-tooltip-id="street-tooltip"
-                        data-tooltip-content={errors.adresses?.street?.message}
-                        {...register("adresses.street", {
-                          required: "Street is required",
+                        data-tooltip-content={
+                          errors.shippingAdresses?.street?.message
+                        }
+                        {...register("shippingAdresses.street", {
+                          required: !defaultAdress && "Street is required",
                         })}
                       />
                       <Tooltip
                         id="street-tooltip"
                         place="top"
                         variant="error"
-                        isOpen={!!errors.adresses?.street}
+                        isOpen={!!errors.shippingAdresses?.street}
                       />
                     </div>
                   </div>
