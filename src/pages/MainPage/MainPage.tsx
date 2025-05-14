@@ -9,7 +9,6 @@ const MainPage = () => {
           textMain={"Discount 20% For New Member, "}
           textAdd={"ONLY FOR TODAY!!"}
         />
-        {/* <Header /> */}
         <div className="main-made">
           <div className="main-made_container">
             <div className="main-made_title">
