@@ -42,7 +42,6 @@
       width: 100%;
       height: 2px;
       background: #fff;
-      transition: background 0.2s;
     }
   }
   &_closeButton::before {
@@ -52,6 +51,6 @@
     transform: rotate(-45deg);
   }
   &_closeButton:hover {
-    transform: scale(0.9);
+    transform: scale(1.1);
   }
 }
