@@ -21,3 +21,8 @@ export interface RegistrationFormData {
   email: string;
   password: string;
 }
+
+export type contextType = {
+  login: string;
+  isLoginned: boolean;
+};
