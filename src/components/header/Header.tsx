@@ -36,14 +36,6 @@ const Header = () => {
         </a>
       </div>
       <div className="header_active">
-        {/* <div className="header_active-search">
-          <div className="header_active-search__glass"></div>
-          <input
-            type="text"
-            className="header_active-search__text"
-            placeholder="Search"
-          />
-        </div> */}
         <Link to="/login" className={`header_active__user ${userStyle}`}>
           <svg
             width="24"
@@ -68,6 +60,8 @@ const Header = () => {
             />
           </svg>
         </Link>
+        </div>
+        <Link to="/login" className="header_active__user"></Link>
         <a href="#" className="header_active__cart"></a>
         <a href="#" className="header_active__exit"></a>
       </div>
