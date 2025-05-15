@@ -1,5 +1,4 @@
-import { createApiBuilderFromCtpClient } from "@commercetools/platform-sdk";
-import { ClientBuilder } from "@commercetools/ts-client";
+import { Client, ClientBuilder } from "@commercetools/ts-client";
 import { PasswordAuthMiddlewareOptions } from "@commercetools/ts-client";
 import {
   authUrl,
@@ -8,15 +7,9 @@ import {
   projectKey,
   scopes,
 } from "../types/constants";
+import { httpMiddlewareOptions } from "./BuildClient";
 
-export const authenticateUser = async (
-  email: string,
-  password: string
-): Promise<{
-  accessToken?: string;
-  refreshToken?: string;
-  error?: unknown;
-}> => {
+export const authenticateUser = (email: string, password: string): Client => {
   const authMiddlewareOptions: PasswordAuthMiddlewareOptions = {
     host: authUrl,
     projectKey: projectKey,
@@ -31,22 +24,9 @@ export const authenticateUser = async (
     scopes: scopes.split(","),
   };
 
-  const client = new ClientBuilder()
+  return new ClientBuilder()
+    .withProjectKey(projectKey)
+    .withHttpMiddleware(httpMiddlewareOptions)
     .withPasswordFlow(authMiddlewareOptions)
     .build();
-
-  const projectApi = createApiBuilderFromCtpClient(client).withProjectKey({
-    projectKey,
-  });
-
-  try {
-    await projectApi.me().get().execute();
-    return {};
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      return { error: error.message };
-    } else {
-      return { error: String(error) };
-    }
-  }
 };
