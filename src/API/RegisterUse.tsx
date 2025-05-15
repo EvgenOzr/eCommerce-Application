@@ -35,7 +35,7 @@ function registrationRequestClient() {
   });
 }
 
-export async function authRequestResponse(data: RegistrationFormData) {
+export async function registrationRequestResponse(data: RegistrationFormData) {
   const authLogin = registrationRequestClient();
   return authLogin
     .me()
@@ -54,13 +54,16 @@ export async function authRequestResponse(data: RegistrationFormData) {
           {
             country: data.billingAdresses.country,
             city: data.billingAdresses.city,
-            streetName: data.billingAdresses?.street,
+            streetName: data.billingAdresses.street,
             postalCode: data.billingAdresses.postalcode,
           },
         ],
         dateOfBirth: data.date,
         email: data.email,
         password: data.password,
+        //Сделать привязку к чекбоксу
+        // defaultBillingAddress: 0
+        // defaultShippingAddress: 1,
       },
     })
     .execute();

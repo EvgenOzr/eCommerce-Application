@@ -1,10 +1,12 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Tooltip } from "react-tooltip";
 import "./RegPage.scss";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { RegistrationFormData } from "../../types/shopTypes";
 
 import { useState } from "react";
+import { registrationRequestResponse } from "../../API/RegisterUse";
+import { authRequestResponse } from "../../API/AuthUser";
 
 export default function RegPage() {
   const {
@@ -13,10 +15,18 @@ export default function RegPage() {
     formState: { errors },
   } = useForm<RegistrationFormData>({ mode: "all" });
 
+  const navigate = useNavigate();
+
   const [defaultAdress, setDefaultAdress] = useState(true);
 
   const formSubmit: SubmitHandler<RegistrationFormData> = async (data) => {
-    console.log(data);
+    try {
+      await registrationRequestResponse(data);
+      await authRequestResponse(data.email, data.password);
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
