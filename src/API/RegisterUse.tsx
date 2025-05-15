@@ -24,7 +24,8 @@ const registerUser = () => {
   return new ClientBuilder()
     .withProjectKey(projectKey)
     .withHttpMiddleware(httpMiddlewareOptions)
-    .withClientCredentialsFlow(authMiddlewareOptions).build;
+    .withClientCredentialsFlow(authMiddlewareOptions)
+    .build();
 };
 
 function registrationRequestClient() {
