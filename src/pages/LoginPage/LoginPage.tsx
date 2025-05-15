@@ -1,7 +1,7 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Tooltip } from "react-tooltip";
 import "./LoginPage.scss";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { LoginFormData } from "../../types/shopTypes";
 import { authRequestResponse } from "../../API/AuthUser";
 
@@ -12,9 +12,12 @@ export default function LoginPage() {
     formState: { errors },
   } = useForm<LoginFormData>({ mode: "all" });
 
+  const navigate = useNavigate();
+
   const formSubmit: SubmitHandler<LoginFormData> = async (data) => {
     try {
       await authRequestResponse(data.email, data.password);
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
