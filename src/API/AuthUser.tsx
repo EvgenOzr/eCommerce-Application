@@ -9,6 +9,7 @@ import {
 } from "../types/constants";
 import { httpMiddlewareOptions } from "./BuildClient";
 import { createApiBuilderFromCtpClient } from "@commercetools/platform-sdk";
+import { tokenCache } from "../utils/token";
 
 const authenticateUser = (email: string, password: string): Client => {
   const authMiddlewareOptions: PasswordAuthMiddlewareOptions = {
@@ -23,6 +24,7 @@ const authenticateUser = (email: string, password: string): Client => {
       },
     },
     scopes: scopes.split(","),
+    tokenCache: tokenCache,
   };
 
   return new ClientBuilder()
