@@ -3,7 +3,7 @@ import { Tooltip } from "react-tooltip";
 import "./RegPage.scss";
 import { Link } from "react-router";
 import { RegistrationFormData } from "../../types/shopTypes";
-import { registerUser } from "../../API/RegisterUse";
+
 import { useState } from "react";
 
 export default function RegPage() {
@@ -16,7 +16,7 @@ export default function RegPage() {
   const [defaultAdress, setDefaultAdress] = useState(true);
 
   const formSubmit: SubmitHandler<RegistrationFormData> = async (data) => {
-    await registerUser(data);
+    console.log(data);
   };
 
   return (
