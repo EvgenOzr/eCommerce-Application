@@ -3,7 +3,7 @@ import { Tooltip } from "react-tooltip";
 import "./LoginPage.scss";
 import { Link } from "react-router";
 import { LoginFormData } from "../../types/shopTypes";
-import { authenticateUser } from "../../API/AuthUser";
+import { authRequestResponse } from "../../API/AuthUser";
 
 export default function LoginPage() {
   const {
@@ -13,7 +13,11 @@ export default function LoginPage() {
   } = useForm<LoginFormData>({ mode: "all" });
 
   const formSubmit: SubmitHandler<LoginFormData> = async (data) => {
-    await authenticateUser(data.email, data.password);
+    try {
+      await authRequestResponse(data.email, data.password);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

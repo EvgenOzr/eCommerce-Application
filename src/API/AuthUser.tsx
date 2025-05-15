@@ -8,8 +8,9 @@ import {
   scopes,
 } from "../types/constants";
 import { httpMiddlewareOptions } from "./BuildClient";
+import { createApiBuilderFromCtpClient } from "@commercetools/platform-sdk";
 
-export const authenticateUser = (email: string, password: string): Client => {
+const authenticateUser = (email: string, password: string): Client => {
   const authMiddlewareOptions: PasswordAuthMiddlewareOptions = {
     host: authUrl,
     projectKey: projectKey,
@@ -30,3 +31,15 @@ export const authenticateUser = (email: string, password: string): Client => {
     .withPasswordFlow(authMiddlewareOptions)
     .build();
 };
+
+function authRequestClient(email: string, password: string) {
+  const client = authenticateUser(email, password);
+  return createApiBuilderFromCtpClient(client).withProjectKey({
+    projectKey: projectKey,
+  });
+}
+
+export async function authRequestResponse(email: string, password: string) {
+  const authLogin = authRequestClient(email, password);
+  return authLogin.me().login().post({ body: { email, password } }).execute();
+}
