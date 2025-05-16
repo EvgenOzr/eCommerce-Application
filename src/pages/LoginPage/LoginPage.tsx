@@ -4,7 +4,7 @@ import "./LoginPage.scss";
 import { Link, useNavigate } from "react-router";
 import { LoginFormData } from "../../types/shopTypes";
 import { authRequestResponse } from "../../API/AuthUser";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { tokenCache } from "../../utils/token";
 
 export default function LoginPage() {
@@ -15,13 +15,14 @@ export default function LoginPage() {
   } = useForm<LoginFormData>({ mode: "all" });
 
   const navigate = useNavigate();
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
   useEffect(() => {
-    const token = tokenCache.get().token;
-    console.log(token);
+    const token = tokenCache.get();
     if (token) {
       navigate("/");
     }
+    setIsCheckingAuth(false);
   }, [navigate]);
 
   const formSubmit: SubmitHandler<LoginFormData> = async (data) => {
@@ -32,6 +33,10 @@ export default function LoginPage() {
       console.log(error);
     }
   };
+
+  if (isCheckingAuth) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
