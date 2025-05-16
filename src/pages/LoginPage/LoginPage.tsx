@@ -4,6 +4,8 @@ import "./LoginPage.scss";
 import { Link, useNavigate } from "react-router";
 import { LoginFormData } from "../../types/shopTypes";
 import { authRequestResponse } from "../../API/AuthUser";
+import { useEffect } from "react";
+import { tokenCache } from "../../utils/token";
 
 export default function LoginPage() {
   const {
@@ -13,6 +15,14 @@ export default function LoginPage() {
   } = useForm<LoginFormData>({ mode: "all" });
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = tokenCache.get().token;
+    console.log(token);
+    if (token) {
+      navigate("/");
+    }
+  }, [navigate]);
 
   const formSubmit: SubmitHandler<LoginFormData> = async (data) => {
     try {
