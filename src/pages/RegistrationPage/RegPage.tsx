@@ -6,7 +6,6 @@ import { RegistrationFormData } from "../../types/shopTypes";
 
 import { useEffect, useState } from "react";
 import { registrationRequestResponse } from "../../API/RegisterUse";
-import { authRequestResponse } from "../../API/AuthUser";
 
 export default function RegPage() {
   const {
@@ -43,7 +42,6 @@ export default function RegPage() {
   const formSubmit: SubmitHandler<RegistrationFormData> = async (data) => {
     try {
       await registrationRequestResponse(data);
-      await authRequestResponse(data.email, data.password);
       navigate("/");
     } catch (error) {
       console.log(error);

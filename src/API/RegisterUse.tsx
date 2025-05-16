@@ -61,9 +61,8 @@ export async function registrationRequestResponse(data: RegistrationFormData) {
         dateOfBirth: data.date,
         email: data.email,
         password: data.password,
-        //Сделать привязку к чекбоксу
-        // defaultBillingAddress: 0
-        // defaultShippingAddress: 1,
+        defaultBillingAddress: 0,
+        defaultShippingAddress: 1,
       },
     })
     .execute();
