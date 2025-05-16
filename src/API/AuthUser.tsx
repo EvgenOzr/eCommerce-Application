@@ -1,5 +1,4 @@
-import { createApiBuilderFromCtpClient } from "@commercetools/platform-sdk";
-import { ClientBuilder } from "@commercetools/ts-client";
+import { Client, ClientBuilder } from "@commercetools/ts-client";
 import { PasswordAuthMiddlewareOptions } from "@commercetools/ts-client";
 import {
   authUrl,
@@ -8,15 +7,11 @@ import {
   projectKey,
   scopes,
 } from "../types/constants";
+import { httpMiddlewareOptions } from "./BuildClient";
+import { createApiBuilderFromCtpClient } from "@commercetools/platform-sdk";
+import { tokenCache } from "../utils/token";
 
-export const authenticateUser = async (
-  email: string,
-  password: string
-): Promise<{
-  accessToken?: string;
-  refreshToken?: string;
-  error?: unknown;
-}> => {
+const authenticateUser = (email: string, password: string): Client => {
   const authMiddlewareOptions: PasswordAuthMiddlewareOptions = {
     host: authUrl,
     projectKey: projectKey,
@@ -29,24 +24,24 @@ export const authenticateUser = async (
       },
     },
     scopes: scopes.split(","),
+    tokenCache: tokenCache,
   };
 
-  const client = new ClientBuilder()
+  return new ClientBuilder()
+    .withProjectKey(projectKey)
+    .withHttpMiddleware(httpMiddlewareOptions)
     .withPasswordFlow(authMiddlewareOptions)
     .build();
-
-  const projectApi = createApiBuilderFromCtpClient(client).withProjectKey({
-    projectKey,
-  });
-
-  try {
-    await projectApi.me().get().execute();
-    return {};
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      return { error: error.message };
-    } else {
-      return { error: String(error) };
-    }
-  }
 };
+
+function authRequestClient(email: string, password: string) {
+  const client = authenticateUser(email, password);
+  return createApiBuilderFromCtpClient(client).withProjectKey({
+    projectKey: projectKey,
+  });
+}
+
+export async function authRequestResponse(email: string, password: string) {
+  const authLogin = authRequestClient(email, password);
+  return authLogin.me().login().post({ body: { email, password } }).execute();
+}
