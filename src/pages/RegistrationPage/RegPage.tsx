@@ -14,7 +14,6 @@ export default function RegPage() {
     formState: { errors },
     control,
     setValue,
-    resetField,
   } = useForm<RegistrationFormData>({ mode: "all" });
 
   const navigate = useNavigate();
@@ -27,17 +26,14 @@ export default function RegPage() {
 
   useEffect(() => {
     if (defaultAdress && billingAdresses) {
-      setValue("shippingAdresses.country", billingAdresses.country);
-      setValue("shippingAdresses.postalcode", billingAdresses.postalcode);
-      setValue("shippingAdresses.city", billingAdresses.city);
-      setValue("shippingAdresses.street", billingAdresses.street);
-    } else if (!defaultAdress) {
-      resetField("shippingAdresses.country");
-      resetField("shippingAdresses.postalcode");
-      resetField("shippingAdresses.city");
-      resetField("shippingAdresses.street");
+      setValue("shippingAdresses", {
+        country: billingAdresses.country,
+        city: billingAdresses.city,
+        street: billingAdresses.street,
+        postalcode: billingAdresses.postalcode,
+      });
     }
-  }, [billingAdresses, setValue, defaultAdress, resetField]);
+  }, [billingAdresses, setValue, defaultAdress]);
 
   const formSubmit: SubmitHandler<RegistrationFormData> = async (data) => {
     try {

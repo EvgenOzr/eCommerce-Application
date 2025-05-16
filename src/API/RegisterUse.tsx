@@ -9,6 +9,7 @@ import { httpMiddlewareOptions } from "./BuildClient";
 import { AuthMiddlewareOptions, ClientBuilder } from "@commercetools/ts-client";
 import { createApiBuilderFromCtpClient } from "@commercetools/platform-sdk";
 import { RegistrationFormData } from "../types/shopTypes";
+import { tokenCache } from "../utils/token";
 
 const registerUser = () => {
   const authMiddlewareOptions: AuthMiddlewareOptions = {
@@ -19,6 +20,7 @@ const registerUser = () => {
       clientSecret: clientSecret,
     },
     scopes: scopes.split(","),
+    tokenCache: tokenCache,
   };
 
   return new ClientBuilder()
