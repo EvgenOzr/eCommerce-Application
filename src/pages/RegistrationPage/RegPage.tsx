@@ -1,28 +1,43 @@
-import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm, useWatch } from "react-hook-form";
 import { Tooltip } from "react-tooltip";
 import "./RegPage.scss";
 import { Link, useNavigate } from "react-router";
 import { RegistrationFormData } from "../../types/shopTypes";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { registrationRequestResponse } from "../../API/RegisterUse";
-import { authRequestResponse } from "../../API/AuthUser";
 
 export default function RegPage() {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    control,
+    setValue,
   } = useForm<RegistrationFormData>({ mode: "all" });
 
   const navigate = useNavigate();
 
-  const [defaultAdress, setDefaultAdress] = useState(true);
+  const [defaultAdress, setDefaultAdress] = useState(false);
+  const billingAdresses = useWatch({
+    control,
+    name: "billingAdresses",
+  });
+
+  useEffect(() => {
+    if (defaultAdress && billingAdresses) {
+      setValue("shippingAdresses", {
+        country: billingAdresses.country,
+        city: billingAdresses.city,
+        street: billingAdresses.street,
+        postalcode: billingAdresses.postalcode,
+      });
+    }
+  }, [billingAdresses, setValue, defaultAdress]);
 
   const formSubmit: SubmitHandler<RegistrationFormData> = async (data) => {
     try {
       await registrationRequestResponse(data);
-      await authRequestResponse(data.email, data.password);
       navigate("/");
     } catch (error) {
       console.log(error);
@@ -198,108 +213,106 @@ export default function RegPage() {
                     onChange={(e) => setDefaultAdress(e.target.checked)}
                   />
                   <label htmlFor="default-adress">
-                    Use same address for shipping
+                    Use same adress for shipping
                   </label>
                 </div>
               </div>
-              {!defaultAdress && (
-                <div className="register-input-adress-container">
-                  <label className="input-country-title">SHIPPING ADRESS</label>
-                  <div className="adress-containers">
-                    <div className="register-input-country">
-                      <select
-                        className="adress-select"
-                        data-tooltip-id="country-tooltip"
-                        data-tooltip-content={
-                          errors.shippingAdresses?.country?.message
-                        }
-                        {...register("shippingAdresses.country", {
-                          required: !defaultAdress && "Contry is required",
-                        })}
-                      >
-                        <option value="">Choose country</option>
-                        <option value="US">United States</option>
-                        <option value="GB">Great Britain</option>
-                      </select>
-                      <Tooltip
-                        id="country-tooltip"
-                        place="top"
-                        variant="error"
-                        isOpen={!!errors.shippingAdresses?.country}
-                      />
-                    </div>
-                    <div className="register-input-postalcode">
-                      <input
-                        type="text"
-                        className="adress-input"
-                        placeholder="Postal Code, ex. 12345"
-                        data-tooltip-id="postalcode-tooltip"
-                        data-tooltip-content={
-                          errors.shippingAdresses?.postalcode?.message
-                        }
-                        {...register("shippingAdresses.postalcode", {
-                          required: !defaultAdress && "City is required",
-                          pattern: {
-                            value:
-                              /^(?:\d{5}(?:-\d{4})?|[A-Za-z]\d[A-Za-z] \d[A-Za-z]\d)$/,
-                            message: "Incorrect postal code format",
-                          },
-                        })}
-                      />
-                      <Tooltip
-                        id="postalcode-tooltip"
-                        place="top"
-                        variant="error"
-                        isOpen={!!errors.shippingAdresses?.postalcode}
-                      />
-                    </div>
-                    <div className="register-input-city">
-                      <input
-                        type="text"
-                        className="adress-input"
-                        placeholder="City"
-                        data-tooltip-id="city-tooltip"
-                        data-tooltip-content={
-                          errors.shippingAdresses?.city?.message
-                        }
-                        {...register("shippingAdresses.city", {
-                          required: !defaultAdress && "City is required",
-                          pattern: {
-                            value: /^[A-Za-zА-Яа-я\s]+$/,
-                            message: "Must contain only letters",
-                          },
-                        })}
-                      />
-                      <Tooltip
-                        id="city-tooltip"
-                        place="top"
-                        variant="error"
-                        isOpen={!!errors.shippingAdresses?.city}
-                      />
-                    </div>
-                    <div className="register-input-street">
-                      <input
-                        type="text"
-                        className="adress-input"
-                        placeholder="Street"
-                        data-tooltip-id="street-tooltip"
-                        data-tooltip-content={
-                          errors.shippingAdresses?.street?.message
-                        }
-                        {...register("shippingAdresses.street", {
-                          required: !defaultAdress && "Street is required",
-                        })}
-                      />
-                      <Tooltip
-                        id="street-tooltip"
-                        place="top"
-                        variant="error"
-                        isOpen={!!errors.shippingAdresses?.street}
-                      />
-                    </div>
+              <div className="register-input-adress-container">
+                <label className="input-country-title">SHIPPING ADRESS</label>
+                <div className="adress-containers">
+                  <div className="register-input-country">
+                    <select
+                      className="adress-select"
+                      data-tooltip-id="country-tooltip"
+                      data-tooltip-content={
+                        errors.shippingAdresses?.country?.message
+                      }
+                      {...register("shippingAdresses.country", {
+                        required: !defaultAdress && "Contry is required",
+                      })}
+                    >
+                      <option value="">Choose country</option>
+                      <option value="US">United States</option>
+                      <option value="GB">Great Britain</option>
+                    </select>
+                    <Tooltip
+                      id="country-tooltip"
+                      place="top"
+                      variant="error"
+                      isOpen={!!errors.shippingAdresses?.country}
+                    />
+                  </div>
+                  <div className="register-input-postalcode">
+                    <input
+                      type="text"
+                      className="adress-input"
+                      placeholder="Postal Code, ex. 12345"
+                      data-tooltip-id="postalcode-tooltip"
+                      data-tooltip-content={
+                        errors.shippingAdresses?.postalcode?.message
+                      }
+                      {...register("shippingAdresses.postalcode", {
+                        required: !defaultAdress && "City is required",
+                        pattern: {
+                          value:
+                            /^(?:\d{5}(?:-\d{4})?|[A-Za-z]\d[A-Za-z] \d[A-Za-z]\d)$/,
+                          message: "Incorrect postal code format",
+                        },
+                      })}
+                    />
+                    <Tooltip
+                      id="postalcode-tooltip"
+                      place="top"
+                      variant="error"
+                      isOpen={!!errors.shippingAdresses?.postalcode}
+                    />
+                  </div>
+                  <div className="register-input-city">
+                    <input
+                      type="text"
+                      className="adress-input"
+                      placeholder="City"
+                      data-tooltip-id="city-tooltip"
+                      data-tooltip-content={
+                        errors.shippingAdresses?.city?.message
+                      }
+                      {...register("shippingAdresses.city", {
+                        required: !defaultAdress && "City is required",
+                        pattern: {
+                          value: /^[A-Za-zА-Яа-я\s]+$/,
+                          message: "Must contain only letters",
+                        },
+                      })}
+                    />
+                    <Tooltip
+                      id="city-tooltip"
+                      place="top"
+                      variant="error"
+                      isOpen={!!errors.shippingAdresses?.city}
+                    />
+                  </div>
+                  <div className="register-input-street">
+                    <input
+                      type="text"
+                      className="adress-input"
+                      placeholder="Street"
+                      data-tooltip-id="street-tooltip"
+                      data-tooltip-content={
+                        errors.shippingAdresses?.street?.message
+                      }
+                      {...register("shippingAdresses.street", {
+                        required: !defaultAdress && "Street is required",
+                      })}
+                    />
+                    <Tooltip
+                      id="street-tooltip"
+                      place="top"
+                      variant="error"
+                      isOpen={!!errors.shippingAdresses?.street}
+                    />
                   </div>
                 </div>
-              )}
+              </div>
               <div className="register-input-date-container">
                 <label className="register-input-name-title">BIRTHDAY</label>
                 <input

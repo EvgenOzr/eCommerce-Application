@@ -4,6 +4,8 @@ import "./LoginPage.scss";
 import { Link, useNavigate } from "react-router";
 import { LoginFormData } from "../../types/shopTypes";
 import { authRequestResponse } from "../../API/AuthUser";
+import { useEffect, useState } from "react";
+import { tokenCache } from "../../utils/token";
 
 export default function LoginPage() {
   const {
@@ -13,6 +15,15 @@ export default function LoginPage() {
   } = useForm<LoginFormData>({ mode: "all" });
 
   const navigate = useNavigate();
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+
+  useEffect(() => {
+    const token = tokenCache.get();
+    if (token) {
+      navigate("/");
+    }
+    setIsCheckingAuth(false);
+  }, [navigate]);
 
   const formSubmit: SubmitHandler<LoginFormData> = async (data) => {
     try {
@@ -22,6 +33,10 @@ export default function LoginPage() {
       console.log(error);
     }
   };
+
+  if (isCheckingAuth) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
@@ -69,8 +84,8 @@ export default function LoginPage() {
                   {...register("password", {
                     required: "Password is required",
                     minLength: {
-                      value: 6,
-                      message: "Password must be at least 6 characters",
+                      value: 8,
+                      message: "Password must be at least 8 characters",
                     },
                   })}
                 />
