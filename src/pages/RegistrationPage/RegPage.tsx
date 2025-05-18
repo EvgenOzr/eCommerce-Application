@@ -6,6 +6,7 @@ import { RegistrationFormData } from "../../types/shopTypes";
 
 import { useEffect, useState } from "react";
 import { registrationRequestResponse } from "../../API/RegisterUse";
+import { authError } from "../../API/ErrorApi";
 
 export default function RegPage() {
   const {
@@ -14,10 +15,15 @@ export default function RegPage() {
     formState: { errors },
     control,
     setValue,
+    setError,
   } = useForm<RegistrationFormData>({ mode: "all" });
 
   const navigate = useNavigate();
 
+  const [apiError, setApiError] = useState<{
+    field: "email" | "password" | "general";
+    message: string;
+  } | null>(null);
   const [defaultAdress, setDefaultAdress] = useState(false);
   const billingAdresses = useWatch({
     control,
@@ -40,7 +46,14 @@ export default function RegPage() {
       await registrationRequestResponse(data);
       navigate("/");
     } catch (error) {
-      console.log(error);
+      const authApiError = authError(error);
+      setApiError(authApiError);
+
+      if (authApiError?.field === "email") {
+        setError("email", { type: "manual", message: authApiError.message });
+      } else if (authApiError?.field === "general") {
+        setError("email", { type: "manual", message: authApiError.message });
+      }
     }
   };
 
@@ -352,7 +365,10 @@ export default function RegPage() {
                   type="text"
                   placeholder="example@mail.com"
                   data-tooltip-id="email-tooltip"
-                  data-tooltip-content={errors.email?.message}
+                  data-tooltip-content={
+                    errors.email?.message ||
+                    (apiError?.field === "email" ? apiError.message : "")
+                  }
                   {...register("email", {
                     required: "Email is required",
                     pattern: {
@@ -365,7 +381,7 @@ export default function RegPage() {
                   id="email-tooltip"
                   place="top"
                   variant="error"
-                  isOpen={!!errors.email}
+                  isOpen={!!errors.email || apiError?.field === "email"}
                 />
               </div>
               <div className="register-input-password-container">
