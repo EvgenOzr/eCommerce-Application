@@ -47,7 +47,7 @@ export default function RegPage() {
 
   const formSubmit: SubmitHandler<RegistrationFormData> = async (data) => {
     try {
-      await registrationRequestResponse(data);
+      await registrationRequestResponse(data, defaultBilling, defaultShipping);
       navigate("/");
     } catch (error) {
       const authApiError = authError(error);
