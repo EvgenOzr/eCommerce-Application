@@ -113,6 +113,9 @@
       display: none;
       background: url("../../assets/images/MainPage/exit.svg") center center
         no-repeat;
+        &_logined {
+          display: block;
+        }
     }
     &__reg {
       mask: url("../../assets/images/MainPage/reg.svg") center center no-repeat;

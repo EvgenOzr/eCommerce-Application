@@ -1,11 +1,11 @@
-import React from "react";
+import { createContext } from "react";
 import { contextType } from "../types/shopTypes";
 
-export const initialContext: contextType = {
+const initialContext: contextType = {
   login: "",
   isLoginned: false,
+  setLogin: () => {},
+  setIsLoginned: () => {},
 };
 
-const ShopContext = React.createContext(initialContext);
-
-export default ShopContext;
+export const ShopContext = createContext(initialContext);

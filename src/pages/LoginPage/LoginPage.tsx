@@ -4,9 +4,9 @@ import "./LoginPage.scss";
 import { Link, useNavigate } from "react-router";
 import { LoginFormData } from "../../types/shopTypes";
 import { authRequestResponse } from "../../API/AuthUser";
-import { useEffect, useState } from "react";
-import { tokenCache } from "../../utils/token";
+import { useContext, useEffect, useState } from "react";
 import { authError } from "../../API/ErrorApi";
+import { ShopContext } from "../../context/shopContext";
 
 export default function LoginPage() {
   const {
@@ -17,23 +17,25 @@ export default function LoginPage() {
   } = useForm<LoginFormData>({ mode: "all" });
 
   const navigate = useNavigate();
-  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+
   const [apiError, setApiError] = useState<{
     field: "email" | "password" | "general";
     message: string;
   } | null>(null);
 
+  const { isLoginned, setLogin, setIsLoginned } = useContext(ShopContext);
+
   useEffect(() => {
-    const token = tokenCache.get();
-    if (token) {
+    if (isLoginned) {
       navigate("/");
     }
-    setIsCheckingAuth(false);
-  }, [navigate]);
+  }, [isLoginned, navigate]);
 
   const formSubmit: SubmitHandler<LoginFormData> = async (data) => {
     try {
-      await authRequestResponse(data.email, data.password);
+      const response = await authRequestResponse(data.email, data.password);
+      setLogin(response.body.customer.email);
+      setIsLoginned(true);
       navigate("/");
     } catch (error) {
       const authApiError = authError(error);
@@ -48,10 +50,6 @@ export default function LoginPage() {
       }
     }
   };
-
-  if (isCheckingAuth) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <>
