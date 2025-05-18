@@ -68,6 +68,7 @@ const Header = () => {
             />
           </svg>
         </Link>
+        <Link to={"/registration"} className="header_active__reg"></Link>
         <a href="#" className="header_active__cart"></a>
         <a href="#" className="header_active__exit"></a>
       </div>

@@ -85,7 +85,8 @@
     }
     &__user,
     &__cart,
-    &__exit {
+    &__exit,
+    &__reg {
       height: 24px;
       width: 24px;
       border-radius: 100%;
@@ -112,6 +113,11 @@
       display: none;
       background: url("../../assets/images/MainPage/exit.svg") center center
         no-repeat;
+    }
+    &__reg {
+      mask: url("../../assets/images/MainPage/reg.svg") center center
+        no-repeat;
+        background-color: variables.$mainColor;
     }
   }
 }
