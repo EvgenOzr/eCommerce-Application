@@ -7,7 +7,13 @@ const Header = () => {
   const [userStyle, setUserStyle] = useState("");
   const [exitStyle, setExitStyle] = useState("");
 
-  const { isLoginned } = useContext(ShopContext);
+  const { isLoginned, setLogin, setIsLoginned } = useContext(ShopContext);
+
+  const handleLogOut = () => {
+    localStorage.removeItem("Token");
+    setLogin("");
+    setIsLoginned(false);
+  };
 
   useEffect(() => {
     if (isLoginned) {
@@ -74,7 +80,11 @@ const Header = () => {
         </Link>
         <Link to={"/registration"} className="header_active__reg"></Link>
         <a href="#" className="header_active__cart"></a>
-        <a href="#" className={`header_active__exit ${exitStyle}`}></a>
+        <a
+          href="#"
+          className={`header_active__exit ${exitStyle}`}
+          onClick={handleLogOut}
+        ></a>
       </div>
     </header>
   );
