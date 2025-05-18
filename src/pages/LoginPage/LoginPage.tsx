@@ -6,16 +6,22 @@ import { LoginFormData } from "../../types/shopTypes";
 import { authRequestResponse } from "../../API/AuthUser";
 import { useEffect, useState } from "react";
 import { tokenCache } from "../../utils/token";
+import { authError } from "../../API/ErrorApi";
 
 export default function LoginPage() {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm<LoginFormData>({ mode: "all" });
 
   const navigate = useNavigate();
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  const [apiError, setApiError] = useState<{
+    field: "email" | "password" | "general";
+    message: string;
+  } | null>(null);
 
   useEffect(() => {
     const token = tokenCache.get();
@@ -30,7 +36,16 @@ export default function LoginPage() {
       await authRequestResponse(data.email, data.password);
       navigate("/");
     } catch (error) {
-      console.log(error);
+      const authApiError = authError(error);
+      setApiError(authApiError);
+      if (authApiError?.field === "email") {
+        setError("email", { type: "manual", message: authApiError.message });
+      } else if (authApiError?.field === "password") {
+        setError("password", { type: "manual", message: authApiError.message });
+      } else if (authApiError?.field === "general") {
+        setError("email", { type: "manual", message: authApiError.message });
+        setError("password", { type: "manual", message: authApiError.message });
+      }
     }
   };
 
@@ -57,7 +72,10 @@ export default function LoginPage() {
                   type="text"
                   placeholder="example@mail.com"
                   data-tooltip-id="email-tooltip"
-                  data-tooltip-content={errors.email?.message}
+                  data-tooltip-content={
+                    errors.email?.message ||
+                    (apiError?.field === "email" ? apiError.message : "")
+                  }
                   {...register("email", {
                     required: "Email is required",
                     pattern: {
@@ -70,7 +88,7 @@ export default function LoginPage() {
                   id="email-tooltip"
                   place="top"
                   variant="error"
-                  isOpen={!!errors.email}
+                  isOpen={!!errors.email || apiError?.field === "email"}
                 />
               </div>
               <div className="input-password-container">
@@ -80,7 +98,10 @@ export default function LoginPage() {
                   type="password"
                   placeholder="******"
                   data-tooltip-id="password-tooltip"
-                  data-tooltip-content={errors.password?.message}
+                  data-tooltip-content={
+                    errors.password?.message ||
+                    (apiError?.field === "password" ? apiError.message : "")
+                  }
                   {...register("password", {
                     required: "Password is required",
                     minLength: {
@@ -93,7 +114,7 @@ export default function LoginPage() {
                   id="password-tooltip"
                   place="top"
                   variant="error"
-                  isOpen={!!errors.password}
+                  isOpen={!!errors.password || apiError?.field === "password"}
                 />
               </div>
               <div className="button-login-container">
