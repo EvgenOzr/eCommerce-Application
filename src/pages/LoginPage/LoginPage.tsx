@@ -122,13 +122,16 @@ export default function LoginPage() {
                   Login
                 </button>
               </div>
-              <h2 className="register-link">
-                Don’t have account?{" "}
-                <Link className="link-registration" to={"/registration"}>
-                  {" "}
-                  Register here{" "}
-                </Link>
-              </h2>
+              <div className="nav-link">
+                {" "}
+                <h2 className="register-link">
+                  Don’t have account?{" "}
+                  <Link className="link-registration" to={"/registration"}>
+                    {" "}
+                    Register here{" "}
+                  </Link>
+                </h2>
+              </div>
             </form>
           </div>
         </div>
