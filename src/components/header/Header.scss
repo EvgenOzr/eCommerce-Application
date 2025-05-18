@@ -115,9 +115,8 @@
         no-repeat;
     }
     &__reg {
-      mask: url("../../assets/images/MainPage/reg.svg") center center
-        no-repeat;
-        background-color: variables.$mainColor;
+      mask: url("../../assets/images/MainPage/reg.svg") center center no-repeat;
+      background-color: variables.$mainColor;
     }
   }
 }
