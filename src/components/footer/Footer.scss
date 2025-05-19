@@ -68,3 +68,12 @@
 p {
   margin: 0;
 }
+
+@media (max-width: 750px) {
+  .footer {
+    height: auto;
+    &_container {
+      flex-direction: column;
+    }
+  }
+}
