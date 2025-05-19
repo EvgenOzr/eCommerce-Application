@@ -192,3 +192,24 @@
     grid-column-end: 4;
   }
 }
+
+@media (max-width: 750px) {
+  .main {
+    &-made_subtitle {
+      font-size: 32px;
+    }
+    &-advantage {
+      display: flex;
+      flex-direction: column;
+    }
+    &-style {
+      display: flex;
+      flex-direction: column;
+      &_woman,
+      &_casual,
+      &_men {
+        height: 500px;
+      }
+    }
+  }
+}

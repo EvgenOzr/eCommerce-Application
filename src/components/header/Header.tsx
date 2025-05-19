@@ -6,6 +6,7 @@ import { ShopContext } from "../../context/shopContext";
 const Header = () => {
   const [userStyle, setUserStyle] = useState("");
   const [exitStyle, setExitStyle] = useState("");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const { isLoginned, setLogin, setIsLoginned } = useContext(ShopContext);
 
@@ -13,6 +14,10 @@ const Header = () => {
     localStorage.removeItem("Token");
     setLogin("");
     setIsLoginned(false);
+  };
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
   };
 
   useEffect(() => {
@@ -28,7 +33,15 @@ const Header = () => {
   return (
     <header className="header">
       <div className="header_title">modeva</div>
-      <div className="header_menu">
+      <div
+        className={`header_burger ${isMenuOpen ? "active" : ""}`}
+        onClick={toggleMenu}
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div className={`header_menu ${isMenuOpen ? "active" : ""}`}>
         <Link to="/" className="header_menu_item">
           Main page
         </Link>

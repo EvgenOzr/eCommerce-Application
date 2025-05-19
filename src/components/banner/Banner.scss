@@ -54,3 +54,10 @@
     transform: scale(1.1);
   }
 }
+@media (max-width: 750px) {
+  .banner {
+    &_textMain {
+      font-size: 12px;
+    }
+  }
+}
