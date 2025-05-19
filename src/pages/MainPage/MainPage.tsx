@@ -24,7 +24,7 @@ const MainPage = () => {
           textAdd={"ONLY FOR TODAY!!"}
         />
         {registrationSuccessBannerVisible && (
-          <Banner textMain={"You have successfully"} textAdd={"registered"} />
+          <Banner textMain={"You have successfully "} textAdd={"registered"} />
         )}
         <div className="main-made">
           <div className="main-made_container">
@@ -42,9 +42,15 @@ const MainPage = () => {
         </div>
       </div>
       <div className="main-style">
-        <div className="main-style_woman"></div>
-        <div className="main-style_casual"></div>
-        <div className="main-style_men"></div>
+        <div className="main-style_woman">
+          <div className="main-style_text">formal woman</div>
+        </div>
+        <div className="main-style_casual">
+          <div className="main-style_text">casual style</div>
+        </div>
+        <div className="main-style_men">
+          <div className="main-style_text">formal men</div>
+        </div>
       </div>
       <div className="main-advantage">
         <div className="main-advantage_container main-advantage_cart__1">

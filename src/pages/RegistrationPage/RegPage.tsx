@@ -4,9 +4,10 @@ import "./RegPage.scss";
 import { Link, useNavigate } from "react-router";
 import { RegistrationFormData } from "../../types/shopTypes";
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { registrationRequestResponse } from "../../API/RegisterUse";
 import { authError } from "../../API/ErrorApi";
+import { ShopContext } from "../../context/shopContext";
 
 export default function RegPage() {
   const {
@@ -28,6 +29,7 @@ export default function RegPage() {
   const [defaultAdress, setDefaultAdress] = useState(false);
   const [defaultBilling, setDefaultBilling] = useState(false);
   const [defaultShipping, setDefaultShipping] = useState(false);
+  const { setLogin, setIsLoginned } = useContext(ShopContext);
 
   const billingAdresses = useWatch({
     control,
@@ -47,7 +49,13 @@ export default function RegPage() {
 
   const formSubmit: SubmitHandler<RegistrationFormData> = async (data) => {
     try {
-      await registrationRequestResponse(data, defaultBilling, defaultShipping);
+      const response = await registrationRequestResponse(
+        data,
+        defaultBilling,
+        defaultShipping
+      );
+      setLogin(response.body.customer.email);
+      setIsLoginned(true);
       localStorage.setItem("registrationSuccess", "true");
       navigate("/");
     } catch (error) {
@@ -163,7 +171,7 @@ export default function RegPage() {
                         errors.billingAdresses?.postalcode?.message
                       }
                       {...register("billingAdresses.postalcode", {
-                        required: "City is required",
+                        required: "Postalcode is required",
                         pattern: {
                           value:
                             /^(?:\d{5}(?:-\d{4})?|[A-Za-z]\d[A-Za-z] \d[A-Za-z]\d)$/,
@@ -279,7 +287,7 @@ export default function RegPage() {
                         errors.shippingAdresses?.postalcode?.message
                       }
                       {...register("shippingAdresses.postalcode", {
-                        required: !defaultAdress && "City is required",
+                        required: !defaultAdress && "Postalcode is required",
                         pattern: {
                           value:
                             /^(?:\d{5}(?:-\d{4})?|[A-Za-z]\d[A-Za-z] \d[A-Za-z]\d)$/,
