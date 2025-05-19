@@ -1,21 +1,7 @@
 import Banner from "../../components/banner/Banner";
 import "./MainPage.scss";
-import { useEffect, useState } from "react";
 
 const MainPage = () => {
-  const [
-    registrationSuccessBannerVisible,
-    setRegistrationSuccessBannerVisible,
-  ] = useState(false);
-
-  useEffect(() => {
-    const registrationSuccess = localStorage.getItem("registrationSuccess");
-    if (registrationSuccess === "true") {
-      setRegistrationSuccessBannerVisible(true);
-      localStorage.removeItem("registrationSuccess");
-    }
-  }, []);
-
   return (
     <div className="main-container">
       <div className="main-up">
@@ -23,9 +9,6 @@ const MainPage = () => {
           textMain={"Discount 20% For New Member, "}
           textAdd={"ONLY FOR TODAY!!"}
         />
-        {registrationSuccessBannerVisible && (
-          <Banner textMain={"You have successfully"} textAdd={"registered"} />
-        )}
         <div className="main-made">
           <div className="main-made_container">
             <div className="main-made_title">
@@ -42,9 +25,15 @@ const MainPage = () => {
         </div>
       </div>
       <div className="main-style">
-        <div className="main-style_woman"></div>
-        <div className="main-style_casual"></div>
-        <div className="main-style_men"></div>
+        <div className="main-style_woman">
+          <div className="main-style_text">formal woman</div>
+        </div>
+        <div className="main-style_casual">
+          <div className="main-style_text">casual style</div>
+        </div>
+        <div className="main-style_men">
+          <div className="main-style_text">formal men</div>
+        </div>
       </div>
       <div className="main-advantage">
         <div className="main-advantage_container main-advantage_cart__1">
