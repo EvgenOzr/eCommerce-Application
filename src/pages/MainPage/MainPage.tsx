@@ -1,7 +1,21 @@
 import Banner from "../../components/banner/Banner";
 import "./MainPage.scss";
+import { useEffect, useState } from "react";
 
 const MainPage = () => {
+  const [
+    registrationSuccessBannerVisible,
+    setRegistrationSuccessBannerVisible,
+  ] = useState(false);
+
+  useEffect(() => {
+    const registrationSuccess = localStorage.getItem("registrationSuccess");
+    if (registrationSuccess === "true") {
+      setRegistrationSuccessBannerVisible(true);
+      localStorage.removeItem("registrationSuccess");
+    }
+  }, []);
+
   return (
     <div className="main-container">
       <div className="main-up">
@@ -9,6 +23,9 @@ const MainPage = () => {
           textMain={"Discount 20% For New Member, "}
           textAdd={"ONLY FOR TODAY!!"}
         />
+        {registrationSuccessBannerVisible && (
+          <Banner textMain={"You have successfully"} textAdd={"registered"} />
+        )}
         <div className="main-made">
           <div className="main-made_container">
             <div className="main-made_title">
