@@ -57,7 +57,8 @@
   width: 100%;
 }
 
-.adress-checkbox-container {
+.adress-checkbox-container,
+.adress-checkbox-default-container {
   display: flex;
   gap: 10px;
   padding-left: 5px;
@@ -97,7 +98,7 @@
 }
 
 .nav-link a {
-  text-decoration: none;
+  text-decoration: underline;
   color: inherit;
   transition: 0.3s ease-in-out;
   font-size: min(3vw, 25px);

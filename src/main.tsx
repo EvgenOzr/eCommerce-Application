@@ -8,11 +8,11 @@ import RegPage from "./pages/RegistrationPage/RegPage";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
-import ShopContext, { initialContext } from "./context/shopContext";
+import { ShopProvider } from "./context/contextProvider";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <ShopContext value={initialContext}>
+    <ShopProvider>
       <div className="container">
         <BrowserRouter>
           <Header />
@@ -25,6 +25,6 @@ createRoot(document.getElementById("root")!).render(
           <Footer />
         </BrowserRouter>
       </div>
-    </ShopContext>
+    </ShopProvider>
   </StrictMode>
 );

@@ -1,19 +1,29 @@
 import { Link } from "react-router";
 import "./Header.scss";
 import { useContext, useEffect, useState } from "react";
-import ShopContext from "../../context/shopContext";
+import { ShopContext } from "../../context/shopContext";
 
 const Header = () => {
   const [userStyle, setUserStyle] = useState("");
-  const userLogin = useContext(ShopContext);
+  const [exitStyle, setExitStyle] = useState("");
+
+  const { isLoginned, setLogin, setIsLoginned } = useContext(ShopContext);
+
+  const handleLogOut = () => {
+    localStorage.removeItem("Token");
+    setLogin("");
+    setIsLoginned(false);
+  };
 
   useEffect(() => {
-    if (userLogin.isLoginned) {
+    if (isLoginned) {
       setUserStyle("header_active__user_logined");
+      setExitStyle("header_active__exit_logined");
     } else {
       setUserStyle("");
+      setExitStyle("");
     }
-  }, [userLogin.isLoginned]);
+  }, [isLoginned]);
 
   return (
     <header className="header">
@@ -68,8 +78,13 @@ const Header = () => {
             />
           </svg>
         </Link>
+        <Link to={"/registration"} className="header_active__reg"></Link>
         <a href="#" className="header_active__cart"></a>
-        <a href="#" className="header_active__exit"></a>
+        <a
+          href="#"
+          className={`header_active__exit ${exitStyle}`}
+          onClick={handleLogOut}
+        ></a>
       </div>
     </header>
   );

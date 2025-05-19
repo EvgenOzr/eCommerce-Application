@@ -24,7 +24,11 @@ export default function RegPage() {
     field: "email" | "password" | "general";
     message: string;
   } | null>(null);
+
   const [defaultAdress, setDefaultAdress] = useState(false);
+  const [defaultBilling, setDefaultBilling] = useState(false);
+  const [defaultShipping, setDefaultShipping] = useState(false);
+
   const billingAdresses = useWatch({
     control,
     name: "billingAdresses",
@@ -43,7 +47,7 @@ export default function RegPage() {
 
   const formSubmit: SubmitHandler<RegistrationFormData> = async (data) => {
     try {
-      await registrationRequestResponse(data);
+      await registrationRequestResponse(data, defaultBilling, defaultShipping);
       navigate("/");
     } catch (error) {
       const authApiError = authError(error);
@@ -229,6 +233,15 @@ export default function RegPage() {
                     Use same adress for shipping
                   </label>
                 </div>
+                <div className="adress-checkbox-default-container">
+                  <input
+                    type="checkbox"
+                    checked={defaultBilling}
+                    id="default-billing"
+                    onChange={(e) => setDefaultBilling(e.target.checked)}
+                  />
+                  <label htmlFor="default-billing">Set adress as default</label>
+                </div>
               </div>
               <div className="register-input-adress-container">
                 <label className="input-country-title">SHIPPING ADRESS</label>
@@ -324,6 +337,17 @@ export default function RegPage() {
                       isOpen={!!errors.shippingAdresses?.street}
                     />
                   </div>
+                </div>
+                <div className="adress-checkbox-default-container">
+                  <input
+                    type="checkbox"
+                    checked={defaultShipping}
+                    id="default-shipping"
+                    onChange={(e) => setDefaultShipping(e.target.checked)}
+                  />
+                  <label htmlFor="default-shipping">
+                    Set adress as default
+                  </label>
                 </div>
               </div>
               <div className="register-input-date-container">

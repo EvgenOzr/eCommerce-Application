@@ -31,4 +31,6 @@ export interface RegistrationFormData {
 export type contextType = {
   login: string;
   isLoginned: boolean;
+  setLogin: (login: string) => void;
+  setIsLoginned: (isLoginned: boolean) => void;
 };

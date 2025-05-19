@@ -37,8 +37,16 @@ function registrationRequestClient() {
   });
 }
 
-export async function registrationRequestResponse(data: RegistrationFormData) {
+export async function registrationRequestResponse(
+  data: RegistrationFormData,
+  defaultBilling: boolean,
+  defaultShipping: boolean
+) {
   const authLogin = registrationRequestClient();
+
+  const defaultBillingIndex = defaultBilling ? 0 : undefined;
+  const defaultShippingIndex = defaultShipping ? 1 : undefined;
+
   return authLogin
     .me()
     .signup()
@@ -63,8 +71,8 @@ export async function registrationRequestResponse(data: RegistrationFormData) {
         dateOfBirth: data.date,
         email: data.email,
         password: data.password,
-        defaultBillingAddress: 0,
-        defaultShippingAddress: 1,
+        defaultBillingAddress: defaultBillingIndex,
+        defaultShippingAddress: defaultShippingIndex,
       },
     })
     .execute();
