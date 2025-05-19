@@ -24,7 +24,7 @@ const MainPage = () => {
           textAdd={"ONLY FOR TODAY!!"}
         />
         {registrationSuccessBannerVisible && (
-          <Banner textMain={"You have successfully"} textAdd={"registered"} />
+          <Banner textMain={"You have successfully "} textAdd={"registered"} />
         )}
         <div className="main-made">
           <div className="main-made_container">
