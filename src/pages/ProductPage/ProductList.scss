@@ -1,6 +1,9 @@
 @use "../../assets/variables.scss" as variables;
 
 .product-container {
+  display: flex;
+  gap: 15px;
+  flex-direction: column;
   max-width: 1345px;
   width: 100%;
 
@@ -15,4 +18,17 @@
 
 .product-wrapper {
   display: flex;
+  margin-bottom: 20px;
+
+  &_category {
+    width: 25%;
+  }
+
+  &_list {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+    gap: 35px;
+  }
 }

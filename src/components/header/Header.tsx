@@ -45,9 +45,9 @@ const Header = () => {
         <Link to="/" className="header_menu_item">
           Main page
         </Link>
-        <a className="header_menu_item" href="#">
+        <Link className="header_menu_item" to={"/products"}>
           Catalog<div className="header_menu_catalog"></div>
-        </a>
+        </Link>
         <a className="header_menu_item" href="#">
           Sale
         </a>

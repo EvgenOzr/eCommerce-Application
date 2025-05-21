@@ -1,0 +1,40 @@
+@use "../../assets/variables.scss" as variables;
+
+.product-item-container {
+  display: flex;
+  max-width: 315px;
+  flex-direction: column;
+}
+
+.product-item-container_imgage {
+  width: 315px;
+  height: 420px;
+}
+
+.product-container_description {
+  display: flex;
+  justify-content: start;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.product_type {
+  font-family: variables.$secondaryFont;
+  color: variables.$textColor;
+  font-size: 12px;
+  font-weight: 300;
+}
+
+.product-title {
+  font-family: variables.$primaryFont;
+  font-size: 28px;
+  font-weight: 400;
+}
+
+.product-price {
+  font-family: variables.$secondaryFont;
+  color: variables.$textColor;
+  font-size: 16px;
+  font-weight: 300;
+}
