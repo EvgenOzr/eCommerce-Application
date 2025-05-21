@@ -9,6 +9,8 @@
 .product-item-container_imgage {
   width: 315px;
   height: 420px;
+  object-fit: contain;
+  object-position: left;
 }
 
 .product-container_description {
