@@ -7,6 +7,7 @@ import { authRequestResponse } from "../../API/AuthUser";
 import { useContext, useEffect, useState } from "react";
 import { authError } from "../../API/ErrorApi";
 import { ShopContext } from "../../context/shopContext";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function LoginPage() {
   const {
@@ -24,6 +25,8 @@ export default function LoginPage() {
   } | null>(null);
 
   const { isLoginned, setLogin, setIsLoginned } = useContext(ShopContext);
+
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     if (isLoginned) {
@@ -91,23 +94,32 @@ export default function LoginPage() {
               </div>
               <div className="input-password-container">
                 <label className="input-password-title">PASSWORD</label>
-                <input
-                  className="input-password"
-                  type="password"
-                  placeholder="******"
-                  data-tooltip-id="password-tooltip"
-                  data-tooltip-content={
-                    errors.password?.message ||
-                    (apiError?.field === "password" ? apiError.message : "")
-                  }
-                  {...register("password", {
-                    required: "Password is required",
-                    minLength: {
-                      value: 8,
-                      message: "Password must be at least 8 characters",
-                    },
-                  })}
-                />
+                <div className="input-password-wrapper">
+                  <input
+                    className="input-password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="******"
+                    data-tooltip-id="password-tooltip"
+                    data-tooltip-content={
+                      errors.password?.message ||
+                      (apiError?.field === "password" ? apiError.message : "")
+                    }
+                    {...register("password", {
+                      required: "Password is required",
+                      minLength: {
+                        value: 8,
+                        message: "Password must be at least 8 characters",
+                      },
+                    })}
+                  />
+                  <button
+                    type="button"
+                    className="password-toggle"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </button>
+                </div>
                 <Tooltip
                   id="password-tooltip"
                   place="top"
