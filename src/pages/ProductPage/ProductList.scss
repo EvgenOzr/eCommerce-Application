@@ -1,0 +1,18 @@
+@use "../../assets/variables.scss" as variables;
+
+.product-container {
+  max-width: 1345px;
+  width: 100%;
+
+  &_title {
+    font-family: variables.$primaryFont;
+    font-size: 76px;
+    color: variables.$textColor;
+    font-weight: 400;
+    line-height: 130%;
+  }
+}
+
+.product-wrapper {
+  display: flex;
+}
