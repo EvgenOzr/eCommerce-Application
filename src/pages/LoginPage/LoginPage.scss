@@ -64,6 +64,7 @@
 .input-password {
   height: 45px;
   padding: 0% 4% 0%;
+  width: 100%;
 }
 
 .login-button {
@@ -96,4 +97,22 @@
 .link-registration {
   color: inherit;
   transition: 0.3s ease-in-out;
+}
+
+.input-password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

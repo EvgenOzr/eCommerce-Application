@@ -8,6 +8,7 @@ import { useContext, useEffect, useState } from "react";
 import { registrationRequestResponse } from "../../API/RegisterUse";
 import { authError } from "../../API/ErrorApi";
 import { ShopContext } from "../../context/shopContext";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function RegPage() {
   const {
@@ -29,6 +30,7 @@ export default function RegPage() {
   const [defaultAdress, setDefaultAdress] = useState(false);
   const [defaultBilling, setDefaultBilling] = useState(false);
   const [defaultShipping, setDefaultShipping] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const { setLogin, setIsLoginned } = useContext(ShopContext);
 
   const billingAdresses = useWatch({
@@ -419,24 +421,34 @@ export default function RegPage() {
               </div>
               <div className="register-input-password-container">
                 <label className="input-password-title">PASSWORD</label>
-                <input
-                  className="register-input-password input-field"
-                  type="password"
-                  placeholder="******"
-                  data-tooltip-id="password-tooltip"
-                  data-tooltip-content={errors.password?.message}
-                  {...register("password", {
-                    required: "Password is required",
-                    pattern: {
-                      value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/,
-                      message: "Must contain 1 uppercase, and 1 number",
-                    },
-                    minLength: {
-                      value: 8,
-                      message: "Password must be at least 8 characters",
-                    },
-                  })}
-                />
+                <div className="input-password-register-wrapper">
+                  {" "}
+                  <input
+                    className="register-input-password input-field"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="******"
+                    data-tooltip-id="password-tooltip"
+                    data-tooltip-content={errors.password?.message}
+                    {...register("password", {
+                      required: "Password is required",
+                      pattern: {
+                        value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/,
+                        message: "Must contain 1 uppercase, and 1 number",
+                      },
+                      minLength: {
+                        value: 8,
+                        message: "Password must be at least 8 characters",
+                      },
+                    })}
+                  />
+                  <button
+                    type="button"
+                    className="password-toggle"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </button>
+                </div>
                 <Tooltip
                   id="password-tooltip"
                   place="top"
