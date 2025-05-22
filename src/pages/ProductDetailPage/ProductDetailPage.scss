@@ -18,7 +18,7 @@
     flex-direction: column;
     width: 50%;
     gap: 30px;
-    margin:  0 10px;;
+    margin: 0 10px;
 
     &_title {
       font-family: variables.$primaryFont;
@@ -32,7 +32,7 @@
       font-size: min(2vw, 20px);
       line-height: 135%;
       font-family: variables.$secondaryFont;
-      color: variables.$descritionColor;
+      color: variables.$descriptionColor;
     }
   }
 

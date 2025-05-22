@@ -21,17 +21,21 @@ export const ProductItem = ({ product, onClick }: ProductItem) => {
     <div className="product-item-container" onClick={() => onClick(product.id)}>
       <div className="product-item-container_img">
         <img
-          className="product-item-container_imgage"
+          className="product-item-container_image"
           src={product.masterVariant.images?.[0]?.url}
           alt=""
           sizes="500px"
         />
       </div>
-      <div className="product-container_description">
-        <h3 className="product-title">{productName}</h3>
-        <p className="product_inf">{productDescription}</p>
+      <div className="product-item-container_description">
+        <h3 className="product-item-container_description_title">
+          {productName}
+        </h3>
+        <p className="product-item-container_description_inf">
+          {productDescription}
+        </p>
       </div>
-      <p className="product-price">{productPrice} $</p>
+      <p className="product-item-container_price">{productPrice} $</p>
     </div>
   );
 };

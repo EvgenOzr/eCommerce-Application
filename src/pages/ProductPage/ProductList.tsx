@@ -4,6 +4,7 @@ import "./ProductList.scss";
 import { ProductProjection } from "@commercetools/platform-sdk";
 import { ProductItem } from "../../components/productItem/ProductItem";
 import { useNavigate } from "react-router";
+import { ClockLoader } from "react-spinners";
 
 export function ProductList() {
   const [products, setProducts] = useState<ProductProjection[]>();
@@ -41,7 +42,9 @@ export function ProductList() {
               />
             ))
           ) : (
-            <div>Loading products...</div>
+            <div className="item-container_loader">
+              <ClockLoader size={150} color="#8b4513" />
+            </div>
           )}
         </div>
       </div>
