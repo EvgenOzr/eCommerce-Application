@@ -12,6 +12,10 @@ export const ProductItem = ({ product }: ProductItem) => {
       : product.description["en-GB"]
     : "No description available";
 
+  const productPrice =
+    (product.masterVariant?.prices?.[0]?.value?.centAmount ?? 0) / 100;
+  const productName = product.name["en-GB"];
+
   return (
     <div className="product-item-container">
       <div className="product-item-container_img">
@@ -23,10 +27,10 @@ export const ProductItem = ({ product }: ProductItem) => {
         />
       </div>
       <div className="product-container_description">
-        <h3 className="product-title">{product.name["en-GB"]}</h3>
+        <h3 className="product-title">{productName}</h3>
         <p className="product_inf">{productDescription}</p>
       </div>
-      <p className="product-price">Price</p>
+      <p className="product-price">{productPrice} $</p>
     </div>
   );
 };
