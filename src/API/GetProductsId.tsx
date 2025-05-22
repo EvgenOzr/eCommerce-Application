@@ -1,5 +1,5 @@
 import { apiRoot } from "./Client";
 
-export const getProducts = (productId: string) => {
-  return apiRoot.productProjections().withId({ ID: productId }).get().execute();
+export const getProducts = (id: string) => {
+  return apiRoot.productProjections().withId({ ID: id }).get().execute();
 };

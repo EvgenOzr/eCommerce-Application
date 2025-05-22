@@ -3,9 +3,10 @@ import "./ProductItem.scss";
 
 type ProductItem = {
   product: ProductProjection;
+  onClick: (productId: string) => void;
 };
 
-export const ProductItem = ({ product }: ProductItem) => {
+export const ProductItem = ({ product, onClick }: ProductItem) => {
   const productDescription = product.description?.["en-GB"]
     ? product.description["en-GB"].length > 30
       ? `${product.description["en-GB"].slice(0, 100)}...`
@@ -17,7 +18,7 @@ export const ProductItem = ({ product }: ProductItem) => {
   const productName = product.name["en-GB"];
 
   return (
-    <div className="product-item-container">
+    <div className="product-item-container" onClick={() => onClick(product.id)}>
       <div className="product-item-container_img">
         <img
           className="product-item-container_imgage"
