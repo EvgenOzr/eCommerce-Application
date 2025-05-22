@@ -1,0 +1,46 @@
+@use "../../assets/variables.scss" as variables;
+
+.item-container {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+
+  &_image {
+    width: 656px;
+
+    &_file {
+      width: 100%;
+    }
+  }
+
+  &_product {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    gap: 30px;
+    margin:  0 10px;;
+
+    &_title {
+      font-family: variables.$primaryFont;
+      text-transform: uppercase;
+      font-size: min(3vw, 76px);
+      color: variables.$textColor;
+      font-weight: 400;
+    }
+
+    &_description {
+      font-size: min(2vw, 20px);
+      line-height: 135%;
+      font-family: variables.$secondaryFont;
+      color: variables.$descritionColor;
+    }
+  }
+
+  &_loader {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+  }
+}
