@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { getProducts } from "../../API/GetProducts";
 import "./ProductList.scss";
-import { Product } from "@commercetools/platform-sdk";
+import { ProductProjection } from "@commercetools/platform-sdk";
 import { ProductItem } from "../../components/productItem/ProductItem";
 
 export function ProductList() {
-  const [products, setProducts] = useState<Product[]>();
+  const [products, setProducts] = useState<ProductProjection[]>();
 
   useEffect(() => {
     const fetchProducts = async () => {

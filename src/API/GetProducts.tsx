@@ -1,5 +1,5 @@
 import { apiRoot } from "./Client";
 
 export const getProducts = () => {
-  return apiRoot.products().get().execute();
+  return apiRoot.productProjections().get().execute();
 };
