@@ -10,6 +10,7 @@ import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
 import { ShopProvider } from "./context/contextProvider";
 import { ProductList } from "./pages/ProductPage/ProductList";
+import { ProductDetailPage } from "./pages/ProductDetailPage/ProductDetailPage";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -23,6 +24,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/registration" element={<RegPage />} />
             <Route path="*" element={<NotFoundPage />} />
             <Route path="/products" element={<ProductList />} />
+            <Route path="/products/:id" element={<ProductDetailPage />} />
           </Routes>
           <Footer />
         </BrowserRouter>

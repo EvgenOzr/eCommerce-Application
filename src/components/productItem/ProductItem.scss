@@ -12,41 +12,33 @@
   &:hover {
     box-shadow: 0px 0px 5px 0px #000000;
   }
-}
 
-.product-item-container_imgage {
-  width: 315px;
-  height: 420px;
-  object-fit: contain;
-  object-position: center;
-}
+  &_image {
+    width: 315px;
+    height: 420px;
+    border-radius: 25px;
+  }
 
-.product-container_description {
-  display: flex;
-  justify-content: start;
-  flex-direction: column;
-  gap: 15px;
-  margin-bottom: 15px;
-  padding: 10px 15px;
-}
+  &_description {
+    display: flex;
+    justify-content: start;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 15px;
+    padding: 10px 15px;
 
-.product_type {
-  font-family: variables.$secondaryFont;
-  color: variables.$textColor;
-  font-size: 12px;
-  font-weight: 300;
-}
+    &_inf {
+      font-size: 16px;
+      font-family: variables.$secondaryFont;
+      color: variables.$descriptionColor;
+    }
+  }
 
-.product-title {
-  font-family: variables.$primaryFont;
-  font-size: 28px;
-  font-weight: 400;
-}
-
-.product-price {
-  font-family: variables.$secondaryFont;
-  color: variables.$textColor;
-  font-size: 16px;
-  font-weight: 300;
-  padding: 10px 15px;
+  &_price {
+    font-family: variables.$secondaryFont;
+    color: variables.$textColor;
+    font-size: 16px;
+    font-weight: 300;
+    padding: 0 15px 15px;
+  }
 }
