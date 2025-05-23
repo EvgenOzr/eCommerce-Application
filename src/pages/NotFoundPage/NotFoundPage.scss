@@ -1,0 +1,27 @@
+@use "../../assets/variables.scss" as variables;
+.error-page {
+  margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 800px;
+  width: 100%;
+  background-color: variables.$mainColor;
+  padding: 10px;
+  &_title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    color: #fff;
+  }
+  &_back {
+    display: flex;
+    justify-content: center;
+    width: 200px;
+    padding: 5px;
+    text-decoration: none;
+    color: #fff;
+    border: 1px solid black;
+  }
+}

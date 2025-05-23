@@ -1,0 +1,11 @@
+@use "./assets/abstract/normalize";
+@use "./assets/abstract/fonts";
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  max-width: 1440px;
+  width: 100%;
+}

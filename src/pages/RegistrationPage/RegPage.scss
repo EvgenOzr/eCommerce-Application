@@ -1,0 +1,139 @@
+@use "../../assets/variables.scss" as *;
+
+.register-wrapper {
+  display: flex;
+  width: 100%;
+}
+
+.register-image {
+  background: url("../../assets/images/LoginPage/loginbg.png");
+  width: 50%;
+  height: 100vh;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.register-container {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+}
+
+.register-form-title {
+  font-family: $primaryFont;
+  font-size: min(9vw, 76px);
+  font-weight: 100;
+  color: $textColor;
+  text-transform: uppercase;
+}
+
+.register-form-container {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-direction: column;
+  margin: 0 2%;
+  align-items: flex-start;
+  max-width: 430px;
+  width: 100%;
+}
+
+.register-form-submit {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+}
+
+.register-input-date-container,
+.register-input-firstname-container,
+.register-input-lastname-container,
+.register-input-password-container,
+.register-input-email-container,
+.register-input-adress-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+}
+
+.adress-checkbox-container,
+.adress-checkbox-default-container {
+  display: flex;
+  gap: 10px;
+  padding-left: 5px;
+}
+
+.register-input-name-title,
+.register-input-password-title,
+.input-country-title {
+  font-family: $secondaryFont;
+  color: $textColor;
+  font-size: 16px;
+  line-height: 130%;
+  padding-bottom: 1%;
+}
+
+.registerlogin-button {
+  background-color: $mainColor;
+  color: #fff;
+  width: 100%;
+  height: 48px;
+  font-family: $secondaryFont;
+  font-size: 20px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+
+  &:hover {
+    background-color: #3e3e3ead;
+  }
+}
+
+.login-link {
+  font-family: $primaryFont;
+  font-weight: 100;
+  color: $textColor;
+  font-size: min(3vw, 25px);
+}
+
+.nav-link a {
+  text-decoration: underline;
+  color: inherit;
+  transition: 0.3s ease-in-out;
+  font-size: min(3vw, 25px);
+
+  &:hover {
+    color: $mainColor;
+  }
+}
+
+.input-field {
+  width: 100%;
+  height: 45px;
+  padding: 0% 4% 0%;
+}
+
+.adress-containers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 15px;
+}
+
+.adress-input,
+.adress-select {
+  width: 100%;
+  height: 35px;
+  max-width: 203px;
+}
+
+.adress-checkbox {
+  padding-left: 10px;
+  align-self: flex-start;
+}
+
+.input-password-register-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}

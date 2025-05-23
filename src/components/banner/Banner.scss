@@ -1,0 +1,63 @@
+@use "../../assets/variables.scss" as variables;
+.banner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 40px;
+  background-color: variables.$mainColor;
+  &_hide {
+    background: none;
+  }
+  &_textfield {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  &_textMain {
+    color: #fff;
+    font-family: variables.$secondaryFont;
+    font-size: 16px;
+    font-weight: 400;
+  }
+  &_textAdd {
+    font-size: 16px;
+    font-weight: 800;
+  }
+  &_closeButton {
+    transition: transform 0.3s;
+    position: relative;
+    width: 24px;
+    height: 24px;
+    border: none;
+    background: transparent;
+    margin-right: 10px;
+    cursor: pointer;
+    &::after,
+    &::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: #fff;
+    }
+  }
+  &_closeButton::before {
+    transform: rotate(45deg);
+  }
+  &_closeButton::after {
+    transform: rotate(-45deg);
+  }
+  &_closeButton:hover {
+    transform: scale(1.1);
+  }
+}
+@media (max-width: 750px) {
+  .banner {
+    &_textMain {
+      font-size: 12px;
+    }
+  }
+}
