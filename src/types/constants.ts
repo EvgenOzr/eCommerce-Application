@@ -4,3 +4,5 @@ export const clientId = import.meta.env.VITE_CTP_CLIENT_ID;
 export const clientSecret = import.meta.env.VITE_CTP_CLIENT_SECRET;
 export const projectKey = import.meta.env.VITE_CTP_PROJECT_KEY;
 export const scopes = import.meta.env.VITE_CTP_SCOPES;
+
+export const LIMIT_ITEMS_PER_PAGE = 9;
