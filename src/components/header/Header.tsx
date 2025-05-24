@@ -46,17 +46,8 @@ const Header = () => {
           Main page
         </Link>
         <Link className="header_menu_item" to={"/products"}>
-          Catalog<div className="header_menu_catalog"></div>
+          Catalog
         </Link>
-        <a className="header_menu_item" href="#">
-          Sale
-        </a>
-        <a className="header_menu_item" href="#">
-          New Arrival
-        </a>
-        <a className="header_menu_item" href="#">
-          About
-        </a>
       </div>
       <div className="header_active">
         {/* <div className="header_active-search">
@@ -67,7 +58,10 @@ const Header = () => {
             placeholder="Search"
           />
         </div> */}
-        <Link to="/login" className={`header_active__user ${userStyle}`}>
+        <Link
+          to={!isLoginned ? "/login" : "/profile"}
+          className={`header_active__user ${userStyle}`}
+        >
           <svg
             width="24"
             height="24"
