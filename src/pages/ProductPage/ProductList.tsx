@@ -13,10 +13,8 @@ import { getCategoryByName } from "../../API/GetCategoryByName";
 export function ProductList() {
   const [products, setProducts] = useState<ProductProjection[]>();
   const [totalProducts, setTotalProducts] = useState(0);
-  // const [page, setPage] = useState(1);
   const { categorySlug } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
-  // const initialPage = Number(searchParams.get("page")) || 1;
   const [page, setPage] = useState(() => Number(searchParams.get("page")) || 1);
   const navigate = useNavigate();
 
@@ -32,7 +30,6 @@ export function ProductList() {
       try {
         const offset = (page - 1) * LIMIT_ITEMS_PER_PAGE;
         let data;
-        console.log(categorySlug);
         if (categorySlug) {
           const category = await getCategoryByName(categorySlug);
           if (category && category.id) {
@@ -91,23 +88,6 @@ export function ProductList() {
               <ClockLoader size={150} color="#8b4513" />
             </div>
           )}
-          {/* {totalPages > 1 && (
-            <Pagination
-              count={totalPages}
-              page={page}
-              onChange={handlePageChange}
-              shape="rounded"
-              sx={{
-                "& .MuiPaginationItem-root.Mui-selected": {
-                  backgroundColor: "#a0522d",
-                  color: "#fff",
-                  "&:hover": {
-                    backgroundColor: "#8b4513",
-                  },
-                },
-              }}
-            />
-          )} */}
         </div>
       </div>
       <div>

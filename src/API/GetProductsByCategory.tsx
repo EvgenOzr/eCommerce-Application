@@ -5,7 +5,6 @@ export const getProductsByCategory = async (
   limit: number,
   offset: number
 ) => {
-  console.log(`categories(id="${categoryId}")`);
   return apiRoot
     .productProjections()
     .get({
