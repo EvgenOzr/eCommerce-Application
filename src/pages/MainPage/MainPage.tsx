@@ -1,12 +1,15 @@
 import Banner from "../../components/banner/Banner";
 import "./MainPage.scss";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 
 const MainPage = () => {
   const [
     registrationSuccessBannerVisible,
     setRegistrationSuccessBannerVisible,
   ] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const registrationSuccess = localStorage.getItem("registrationSuccess");
@@ -15,6 +18,10 @@ const MainPage = () => {
       localStorage.removeItem("registrationSuccess");
     }
   }, []);
+
+  const handleCategoryClick = (categorySlug: string) => {
+    navigate(`/products/category/${categorySlug}`);
+  };
 
   return (
     <div className="main-container">
@@ -42,13 +49,22 @@ const MainPage = () => {
         </div>
       </div>
       <div className="main-style">
-        <div className="main-style_woman">
+        <div
+          className="main-style_woman"
+          onClick={() => handleCategoryClick("formal-woman")}
+        >
           <div className="main-style_text">formal woman</div>
         </div>
-        <div className="main-style_casual">
+        <div
+          className="main-style_casual"
+          onClick={() => handleCategoryClick("casual-style")}
+        >
           <div className="main-style_text">casual style</div>
         </div>
-        <div className="main-style_men">
+        <div
+          className="main-style_men"
+          onClick={() => handleCategoryClick("formal-man")}
+        >
           <div className="main-style_text">formal men</div>
         </div>
       </div>
