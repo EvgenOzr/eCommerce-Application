@@ -1,5 +1,6 @@
 import { ProductProjection } from "@commercetools/platform-sdk";
 import "./ProductItem.scss";
+import saleIcon from "../../assets/images/Product/sale-icon.png";
 
 type ProductItem = {
   product: ProductProjection;
@@ -16,6 +17,8 @@ export const ProductItem = ({ product, onClick }: ProductItem) => {
   const productPrice =
     (product.masterVariant?.prices?.[0]?.value?.centAmount ?? 0) / 100;
   const productName = product.name["en-GB"];
+
+  const productDiscount = product.masterVariant?.prices?.[0].discounted;
 
   return (
     <div className="product-item-container" onClick={() => onClick(product.id)}>
@@ -35,7 +38,25 @@ export const ProductItem = ({ product, onClick }: ProductItem) => {
           {productDescription}
         </p>
       </div>
-      <p className="product-item-container_price">{productPrice} $</p>
+      {productDiscount ? (
+        <div className="product-item-container_price">
+          <p className="product-item-container_price_value discounted">
+            {productPrice} $
+          </p>
+          <img
+            src={saleIcon}
+            alt=""
+            className="product-item-container_price_icon"
+          />
+          <p className="product-item-container_price_discount">
+            {productDiscount.value.centAmount / 100} $
+          </p>
+        </div>
+      ) : (
+        <div className="product-item-container_price">
+          <p className="product-item-container_price_value">{productPrice} $</p>
+        </div>
+      )}
     </div>
   );
 };

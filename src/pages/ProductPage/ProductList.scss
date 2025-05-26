@@ -9,7 +9,7 @@
 
   &_title {
     font-family: variables.$primaryFont;
-    font-size: 76px;
+    font-size: min(7vw, 76px);
     color: variables.$textColor;
     font-weight: 400;
     line-height: 130%;
