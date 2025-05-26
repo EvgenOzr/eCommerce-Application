@@ -65,8 +65,8 @@ export function ProductDetailPage() {
               }
             />
             <div className="item-container_image_roll">
-              {imageUrlArray?.slice(1).map((image) => (
-                <div className="item-container_image_roll_item">
+              {imageUrlArray?.slice(1).map((image, index) => (
+                <div className="item-container_image_roll_item" key={index}>
                   <img
                     src={image.url}
                     alt=""
