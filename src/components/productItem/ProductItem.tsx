@@ -45,7 +45,7 @@ export const ProductItem = ({ product, onClick }: ProductItem) => {
           </p>
           <img
             src={saleIcon}
-            alt=""
+            alt="sale-icon"
             className="product-item-container_price_icon"
           />
           <p className="product-item-container_price_discount">

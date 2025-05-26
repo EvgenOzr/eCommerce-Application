@@ -34,6 +34,36 @@
       font-family: variables.$secondaryFont;
       color: variables.$descriptionColor;
     }
+
+    &_price {
+      display: flex;
+      gap: 30px;
+      position: relative;
+      padding: 0 15px 15px;
+
+      &_value,
+      &_discount {
+        font-family: variables.$secondaryFont;
+        color: variables.$textColor;
+        font-size: min(2vw, 24px);
+        font-weight: 300;
+      }
+
+      &_discount {
+        color: red;
+      }
+
+      &_value.discounted {
+        text-decoration: line-through;
+      }
+
+      &_icon {
+        position: absolute;
+        width: 47px;
+        bottom: 20px;
+        left: 45px;
+      }
+    }
   }
 
   &_loader {
