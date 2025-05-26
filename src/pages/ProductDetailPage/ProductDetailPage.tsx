@@ -26,6 +26,7 @@ export function ProductDetailPage() {
   }, [id]);
 
   const productDiscount = detailProduct?.masterVariant?.prices?.[0].discounted;
+  const imageUrlArray = detailProduct?.masterVariant.images;
 
   return (
     <section className="item-container">
@@ -37,6 +38,17 @@ export function ProductDetailPage() {
               alt=""
               className="item-container_image_file"
             />
+            <div className="item-container_image_roll">
+              {imageUrlArray?.slice(1).map((image) => (
+                <div className="item-container_image_roll_item">
+                  <img
+                    src={image.url}
+                    alt=""
+                    className="item-container_image_roll_item_file"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
           <div className="item-container_product">
             <h2 className="item-container_product_title">
