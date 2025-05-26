@@ -5,9 +5,21 @@ import { ProductProjection } from "@commercetools/platform-sdk";
 import "./ProductDetailPage.scss";
 import { ClockLoader } from "react-spinners";
 import saleIcon from "../../assets/images/Product/sale-icon.png";
+import ModalImage from "../../components/modalImage/modalImage";
 
 export function ProductDetailPage() {
   const [detailProduct, setDetailProduct] = useState<ProductProjection>();
+
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+  const openModal = (imageUrl: string | undefined) => {
+    if (imageUrl) setSelectedImage(imageUrl);
+  };
+
+  const closeModal = () => {
+    setSelectedImage(null);
+  };
+
   const { id } = useParams<{ id: string }>();
 
   useEffect(() => {
@@ -25,6 +37,17 @@ export function ProductDetailPage() {
     fetchDetailProduct();
   }, [id]);
 
+  useEffect(() => {
+    if (selectedImage) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  });
+
   const productDiscount = detailProduct?.masterVariant?.prices?.[0].discounted;
   const imageUrlArray = detailProduct?.masterVariant.images;
 
@@ -37,6 +60,9 @@ export function ProductDetailPage() {
               src={detailProduct?.masterVariant.images?.[0].url}
               alt=""
               className="item-container_image_file"
+              onClick={() =>
+                openModal(detailProduct?.masterVariant?.images?.[0]?.url)
+              }
             />
             <div className="item-container_image_roll">
               {imageUrlArray?.slice(1).map((image) => (
@@ -45,6 +71,7 @@ export function ProductDetailPage() {
                     src={image.url}
                     alt=""
                     className="item-container_image_roll_item_file"
+                    onClick={() => openModal(image.url)}
                   />
                 </div>
               ))}
@@ -86,6 +113,9 @@ export function ProductDetailPage() {
               {detailProduct?.description?.["en-GB"]}
             </p>
           </div>
+          {selectedImage && (
+            <ModalImage closeModal={closeModal} selectedImage={selectedImage} />
+          )}
         </>
       ) : (
         <div className="item-container_loader">

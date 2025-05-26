@@ -36,3 +36,8 @@ export type contextType = {
   setIsLoginned: (isLoginned: boolean) => void;
   setCustomerId: (customerId: string) => void;
 };
+
+export type ModalType = {
+  closeModal: () => void;
+  selectedImage: string;
+};
