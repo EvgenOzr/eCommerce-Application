@@ -40,4 +40,6 @@ export type contextType = {
 export type ModalType = {
   closeModal: () => void;
   selectedImage: string;
+  modalNext: () => void;
+  modalPrev: () => void;
 };

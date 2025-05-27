@@ -11,6 +11,8 @@ export function ProductDetailPage() {
   const [detailProduct, setDetailProduct] = useState<ProductProjection>();
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [currentModalIndex, setCurrentModalIndex] = useState(0);
 
   const goToNext = () => {
     if (!detailProduct?.masterVariant.images) return;
@@ -27,7 +29,22 @@ export function ProductDetailPage() {
     setCurrentImageIndex(prevIndex);
   };
 
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const modalNext = () => {
+    if (!detailProduct?.masterVariant.images) return;
+    const nextIndex =
+      (currentModalIndex + 1) % detailProduct.masterVariant.images.length;
+    setCurrentModalIndex(nextIndex);
+    setSelectedImage(detailProduct.masterVariant.images[nextIndex].url);
+  };
+
+  const modalPrev = () => {
+    if (!detailProduct?.masterVariant.images) return;
+    const prevIndex =
+      (currentModalIndex - 1 + detailProduct.masterVariant.images.length) %
+      detailProduct.masterVariant.images.length;
+    setCurrentModalIndex(prevIndex);
+    setSelectedImage(detailProduct.masterVariant.images[prevIndex].url);
+  };
 
   const openModal = (imageUrl: string | undefined) => {
     if (imageUrl) setSelectedImage(imageUrl);
@@ -149,7 +166,12 @@ export function ProductDetailPage() {
             </p>
           </div>
           {selectedImage && (
-            <ModalImage closeModal={closeModal} selectedImage={selectedImage} />
+            <ModalImage
+              closeModal={closeModal}
+              selectedImage={selectedImage}
+              modalNext={modalNext}
+              modalPrev={modalPrev}
+            />
           )}
         </>
       ) : (
