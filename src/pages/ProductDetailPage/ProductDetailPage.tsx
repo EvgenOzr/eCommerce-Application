@@ -104,7 +104,10 @@ export function ProductDetailPage() {
                 alt=""
                 className="item-container_images_file"
                 onClick={() =>
-                  openModal(detailProduct?.masterVariant?.images?.[0]?.url)
+                  openModal(
+                    detailProduct?.masterVariant?.images?.[currentImageIndex]
+                      ?.url
+                  )
                 }
               />
               <button
