@@ -8,11 +8,14 @@ import saleIcon from "../../assets/images/Product/sale-icon.png";
 import ModalImage from "../../components/modal/ModalImage";
 
 export function ProductDetailPage() {
+  const { id } = useParams<{ id: string }>();
   const [detailProduct, setDetailProduct] = useState<ProductProjection>();
-
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [currentModalIndex, setCurrentModalIndex] = useState(0);
+
+  const productDiscount = detailProduct?.masterVariant?.prices?.[0].discounted;
+  const imageUrlArray = detailProduct?.masterVariant.images;
 
   const goToNext = () => {
     if (!detailProduct?.masterVariant.images) return;
@@ -54,8 +57,6 @@ export function ProductDetailPage() {
     setSelectedImage(null);
   };
 
-  const { id } = useParams<{ id: string }>();
-
   useEffect(() => {
     if (!id) return;
 
@@ -72,18 +73,11 @@ export function ProductDetailPage() {
   }, [id]);
 
   useEffect(() => {
-    if (selectedImage) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    document.body.style.overflow = selectedImage ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
   });
-
-  const productDiscount = detailProduct?.masterVariant?.prices?.[0].discounted;
-  const imageUrlArray = detailProduct?.masterVariant.images;
 
   return (
     <section className="item-container">
