@@ -70,7 +70,9 @@ const Footer = () => {
           <div>
             <p className="footer_menu-title">Account</p>
             <div className="footer_menu-submenu">
-              <span>My Account</span>
+              <a href="/profile">
+                <span>My Account</span>
+              </a>
               <span>My Orders</span>
               <span>Vouchers and Discounts</span>
             </div>

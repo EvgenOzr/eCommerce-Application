@@ -1,0 +1,26 @@
+@use "../../assets/variables.scss" as variables;
+
+ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+li {
+  cursor: pointer;
+  padding: 4px 0;
+  color: #3e3e3e;
+  transition: color 0.2s;
+}
+
+li:hover {
+  color: variables.$mainColor;
+}
+
+.active-category {
+  font-weight: bold;
+  color: variables.$mainColor;
+
+  &:hover {
+    color: variables.$mainColor;
+  }
+}

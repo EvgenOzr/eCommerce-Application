@@ -3,23 +3,34 @@ import { getProducts } from "../../API/GetProducts";
 import "./ProductList.scss";
 import { ProductProjection } from "@commercetools/platform-sdk";
 import { ProductItem } from "../../components/productItem/ProductItem";
-import { useNavigate, useParams, useSearchParams } from "react-router";
+import {
+  useNavigate,
+  useParams,
+  useSearchParams,
+  useLocation,
+} from "react-router";
 import { ClockLoader } from "react-spinners";
 import Pagination from "@mui/material/Pagination";
 import { LIMIT_ITEMS_PER_PAGE } from "../../types/constants";
 import { getProductsByCategory } from "../../API/GetProductsByCategory";
 import { getCategoryByName } from "../../API/GetCategoryByName";
+import { Sidebar } from "../../components/Sidebar/Sidebar";
+import { BreadcrumbsNav } from "../../components/BreadcrumbsNav/BreadcrumbsNav";
+import { FIRST_PAGE } from "../../types/constants";
 
 export function ProductList() {
+  const location = useLocation();
   const [products, setProducts] = useState<ProductProjection[]>();
   const [totalProducts, setTotalProducts] = useState(0);
   const { categorySlug } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [page, setPage] = useState(() => Number(searchParams.get("page")) || 1);
+  const [page, setPage] = useState(
+    () => Number(searchParams.get("page")) || FIRST_PAGE
+  );
   const navigate = useNavigate();
 
   useEffect(() => {
-    const currentPage = Number(searchParams.get("page")) || 1;
+    const currentPage = Number(searchParams.get("page")) || FIRST_PAGE;
     if (currentPage !== page) {
       setPage(currentPage);
     }
@@ -28,7 +39,7 @@ export function ProductList() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const offset = (page - 1) * LIMIT_ITEMS_PER_PAGE;
+        const offset = (page - FIRST_PAGE) * LIMIT_ITEMS_PER_PAGE;
         let data;
         if (categorySlug) {
           const category = await getCategoryByName(categorySlug);
@@ -54,7 +65,7 @@ export function ProductList() {
       }
     };
     fetchProducts();
-  }, [page, categorySlug]);
+  }, [page, categorySlug, location.search]);
 
   const handleDetailedPageClick = (id: string) => {
     navigate(`/products/${id}`);
@@ -69,11 +80,14 @@ export function ProductList() {
 
   return (
     <section className="product-container">
+      <BreadcrumbsNav />
       <h2 className="product-container_title">
         {categorySlug ? categorySlug.replace("-", " ") : "ALL PRODUCTS"}
       </h2>
       <div className="product-wrapper">
-        <aside className="product-wrapper_category">Aside Panel</aside>
+        <aside className="product-wrapper_category">
+          <Sidebar />
+        </aside>
         <div className="product-wrapper_list">
           {products ? (
             products.map((product) => (

@@ -6,3 +6,5 @@ export const projectKey = import.meta.env.VITE_CTP_PROJECT_KEY;
 export const scopes = import.meta.env.VITE_CTP_SCOPES;
 
 export const LIMIT_ITEMS_PER_PAGE = 9;
+export const FIRST_PAGE = 1;
+export const LIMIT_CATEGORIES = 100;
