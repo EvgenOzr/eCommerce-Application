@@ -55,22 +55,30 @@ export function ProductDetailPage() {
     <section className="item-container">
       {detailProduct ? (
         <>
-          <div className="item-container_image">
-            <img
-              src={detailProduct?.masterVariant.images?.[0].url}
-              alt=""
-              className="item-container_image_file"
-              onClick={() =>
-                openModal(detailProduct?.masterVariant?.images?.[0]?.url)
-              }
-            />
-            <div className="item-container_image_roll">
+          <div className="item-container_images">
+            <div className="item-container_images_slider">
+              <button className="item-container_images_slider_buttons left_button">
+                &#10094;
+              </button>
+              <img
+                src={detailProduct?.masterVariant.images?.[0].url}
+                alt=""
+                className="item-container_images_file"
+                onClick={() =>
+                  openModal(detailProduct?.masterVariant?.images?.[0]?.url)
+                }
+              />
+              <button className="item-container_images_slider_buttons right_button">
+                &#10095;
+              </button>
+            </div>
+            <div className="item-container_images_roll">
               {imageUrlArray?.slice(1).map((image, index) => (
-                <div className="item-container_image_roll_item" key={index}>
+                <div className="item-container_images_roll_item" key={index}>
                   <img
                     src={image.url}
                     alt=""
-                    className="item-container_image_roll_item_file"
+                    className="item-container_images_roll_item_file"
                     onClick={() => openModal(image.url)}
                   />
                 </div>

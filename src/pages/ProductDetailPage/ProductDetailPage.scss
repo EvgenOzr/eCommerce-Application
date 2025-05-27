@@ -5,12 +5,45 @@
   width: 100%;
   justify-content: space-between;
 
-  &_image {
-    width: 600px;
+  &_images {
     display: flex;
+    width: 600px;
     flex-direction: column;
     align-items: center;
     gap: 10px;
+
+    &_slider {
+      position: relative;
+
+      &_buttons {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        top: 45%;
+        width: 40px;
+        height: 40px;
+        padding: 35px 30px;
+        font-size: 30px;
+        border: none;
+        background-color:  rgba(0, 0, 0, 0.5);
+        color: rgba(255, 255, 255, 0.567);
+        border-radius: 20%;
+        transition: 0.3s ease-out;
+
+        &:hover {
+          color: rgba(255, 255, 255, 0.901);
+        }
+      }
+
+      &_buttons.left_button {
+        left: 10px;
+      }
+
+      &_buttons.right_button {
+        right: 10px;
+      }
+    }
 
     &_file {
       width: 100%;
