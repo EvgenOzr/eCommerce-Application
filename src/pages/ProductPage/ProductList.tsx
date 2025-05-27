@@ -3,7 +3,12 @@ import { getProducts } from "../../API/GetProducts";
 import "./ProductList.scss";
 import { ProductProjection } from "@commercetools/platform-sdk";
 import { ProductItem } from "../../components/productItem/ProductItem";
-import { useNavigate, useParams, useSearchParams } from "react-router";
+import {
+  useNavigate,
+  useParams,
+  useSearchParams,
+  useLocation,
+} from "react-router";
 import { ClockLoader } from "react-spinners";
 import Pagination from "@mui/material/Pagination";
 import { LIMIT_ITEMS_PER_PAGE } from "../../types/constants";
@@ -14,6 +19,7 @@ import { BreadcrumbsNav } from "../../components/BreadcrumbsNav/BreadcrumbsNav";
 import { FIRST_PAGE } from "../../types/constants";
 
 export function ProductList() {
+  const location = useLocation();
   const [products, setProducts] = useState<ProductProjection[]>();
   const [totalProducts, setTotalProducts] = useState(0);
   const { categorySlug } = useParams();
@@ -59,7 +65,7 @@ export function ProductList() {
       }
     };
     fetchProducts();
-  }, [page, categorySlug]);
+  }, [page, categorySlug, location.search]);
 
   const handleDetailedPageClick = (id: string) => {
     navigate(`/products/${id}`);

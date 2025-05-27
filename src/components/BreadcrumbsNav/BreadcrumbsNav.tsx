@@ -77,12 +77,17 @@ export function BreadcrumbsNav() {
             key={cat.id}
             underline={isLast ? "none" : "hover"}
             color={isLast ? "text.primary" : "inherit"}
-            onClick={
-              isLast
-                ? undefined
-                : () => navigate(`/products/${cat.slug?.["en-GB"]}`)
-            }
-            sx={{ cursor: isLast ? "default" : "pointer" }}
+            onClick={() => {
+              if (isLast) {
+                navigate(
+                  `/products/category/${cat.slug?.["en-GB"]}?reload=${Date.now()}`,
+                  { replace: true }
+                );
+              } else {
+                navigate(`/products/category/${cat.slug?.["en-GB"]}`);
+              }
+            }}
+            sx={{ cursor: "pointer" }}
           >
             {cat.name?.["en-GB"]}
           </Link>

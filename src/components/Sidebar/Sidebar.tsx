@@ -30,7 +30,13 @@ export function Sidebar() {
   }, []);
 
   const handleClick = (slug: string) => {
-    navigate(`/products/category/${slug}`);
+    if (slug === categorySlug) {
+      navigate(`/products/category/${slug}?reload=${Date.now()}`, {
+        replace: true,
+      });
+    } else {
+      navigate(`/products/category/${slug}`);
+    }
   };
 
   return (
