@@ -5,7 +5,7 @@ import { ProductProjection } from "@commercetools/platform-sdk";
 import "./ProductDetailPage.scss";
 import { ClockLoader } from "react-spinners";
 import saleIcon from "../../assets/images/Product/sale-icon.png";
-import ModalImage from "../../components/modalImage/modalImage";
+import ModalImage from "../../components/ModalImage/ModalImage";
 
 export function ProductDetailPage() {
   const [detailProduct, setDetailProduct] = useState<ProductProjection>();
