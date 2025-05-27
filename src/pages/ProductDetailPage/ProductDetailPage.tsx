@@ -10,6 +10,23 @@ import ModalImage from "../../components/modal/ModalImage";
 export function ProductDetailPage() {
   const [detailProduct, setDetailProduct] = useState<ProductProjection>();
 
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const goToNext = () => {
+    if (!detailProduct?.masterVariant.images) return;
+    const nextIndex =
+      (currentImageIndex + 1) % detailProduct.masterVariant.images.length;
+    setCurrentImageIndex(nextIndex);
+  };
+
+  const goToPrev = () => {
+    if (!detailProduct?.masterVariant.images) return;
+    const prevIndex =
+      (currentImageIndex - 1 + detailProduct.masterVariant.images.length) %
+      detailProduct.masterVariant.images.length;
+    setCurrentImageIndex(prevIndex);
+  };
+
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const openModal = (imageUrl: string | undefined) => {
@@ -57,18 +74,28 @@ export function ProductDetailPage() {
         <>
           <div className="item-container_images">
             <div className="item-container_images_slider">
-              <button className="item-container_images_slider_buttons left_button">
+              <button
+                onClick={() => goToPrev()}
+                className="item-container_images_slider_buttons left_button"
+              >
                 &#10094;
               </button>
               <img
-                src={detailProduct?.masterVariant.images?.[0].url}
+                src={
+                  detailProduct?.masterVariant.images?.[currentImageIndex].url
+                }
                 alt=""
                 className="item-container_images_file"
                 onClick={() =>
                   openModal(detailProduct?.masterVariant?.images?.[0]?.url)
                 }
               />
-              <button className="item-container_images_slider_buttons right_button">
+              <button
+                onClick={() => {
+                  goToNext();
+                }}
+                className="item-container_images_slider_buttons right_button"
+              >
                 &#10095;
               </button>
             </div>

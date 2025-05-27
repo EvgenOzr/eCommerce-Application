@@ -26,13 +26,14 @@
         padding: 35px 30px;
         font-size: 30px;
         border: none;
-        background-color:  rgba(0, 0, 0, 0.5);
+        background-color: rgba(0, 0, 0, 0.5);
         color: rgba(255, 255, 255, 0.567);
         border-radius: 20%;
         transition: 0.3s ease-out;
 
         &:hover {
           color: rgba(255, 255, 255, 0.901);
+                  background-color: rgba(0, 0, 0, 0.7);
         }
       }
 
