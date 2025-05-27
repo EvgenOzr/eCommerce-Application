@@ -91,9 +91,10 @@
 
     &_price {
       display: flex;
-      gap: 30px;
       position: relative;
       padding: 0 15px 15px;
+      width: 100%;
+      justify-content: space-around;
 
       &_value,
       &_discount {
@@ -113,9 +114,11 @@
 
       &_icon {
         position: absolute;
-        width: 47px;
+        height: 100%;
+        width: 100%;
+        max-width: 47px;
         bottom: 20px;
-        left: 45px;
+        object-fit: contain;
       }
     }
   }
