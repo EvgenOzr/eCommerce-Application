@@ -17,6 +17,7 @@
     width: 315px;
     height: 420px;
     border-radius: 25px;
+    object-fit: contain;
   }
 
   &_description {
@@ -35,10 +36,32 @@
   }
 
   &_price {
-    font-family: variables.$secondaryFont;
-    color: variables.$textColor;
-    font-size: 16px;
-    font-weight: 300;
+    display: flex;
+    gap: 30px;
+    position: relative;
     padding: 0 15px 15px;
+
+    &_value,
+    &_discount {
+      font-family: variables.$secondaryFont;
+      color: variables.$textColor;
+      font-size: 16px;
+      font-weight: 300;
+    }
+
+    &_discount {
+      color: red;
+    }
+
+    &_value.discounted {
+      text-decoration: line-through;
+    }
+
+    &_icon {
+      position: absolute;
+      width: 30px;
+      bottom: 10px;
+      left: 45px;
+    }
   }
 }
