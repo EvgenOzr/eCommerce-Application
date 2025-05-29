@@ -45,10 +45,12 @@ const ChangePassword = ({ version, onClose }: ChangePasswordProps) => {
           setTimeout(() => {
             onClose();
           }, 1000);
+        } else if (updatePassword.statusCode === 400) {
+          console.log("code", updatePassword.statusCode);
         }
       })
       .catch((updatePasswordError) => {
-        console.log(updatePasswordError);
+        console.log("Error", updatePasswordError);
         setPasswordMessage(updatePasswordError);
         setPasswordMessageColor("change-password-message_error");
       });

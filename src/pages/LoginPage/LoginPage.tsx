@@ -41,6 +41,7 @@ export default function LoginPage() {
       setLogin(response.body.customer.email);
       setIsLoginned(true);
       setCustomerId(response.body.customer.id);
+      localStorage.setItem("customerId", response.body.customer.id);
       navigate("/");
     } catch (error) {
       const authApiError = authError(error);

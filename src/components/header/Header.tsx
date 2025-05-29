@@ -12,6 +12,7 @@ const Header = () => {
 
   const handleLogOut = () => {
     localStorage.removeItem("Token");
+    localStorage.removeItem("customerId");
     setLogin("");
     setIsLoginned(false);
   };
