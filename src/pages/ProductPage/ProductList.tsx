@@ -1,33 +1,58 @@
 import { useEffect, useState } from "react";
 import { getProducts } from "../../API/GetProducts";
 import "./ProductList.scss";
-import { ProductProjection } from "@commercetools/platform-sdk";
+import { ProductProjection, Category } from "@commercetools/platform-sdk";
 import { ProductItem } from "../../components/productItem/ProductItem";
-import {
-  useNavigate,
-  useParams,
-  useSearchParams,
-  useLocation,
-} from "react-router";
+import { useNavigate, useSearchParams, useLocation } from "react-router";
 import { ClockLoader } from "react-spinners";
 import Pagination from "@mui/material/Pagination";
 import { LIMIT_ITEMS_PER_PAGE } from "../../types/constants";
 import { getProductsByCategory } from "../../API/GetProductsByCategory";
-import { getCategoryByName } from "../../API/GetCategoryByName";
 import { Sidebar } from "../../components/Sidebar/Sidebar";
 import { BreadcrumbsNav } from "../../components/BreadcrumbsNav/BreadcrumbsNav";
 import { FIRST_PAGE } from "../../types/constants";
+import { getAllCategories } from "../../API/GetAllCategories";
+import { CategoryWithChildren } from "../../types/shopTypes";
+import {
+  buildCategoryTree,
+  findCategoryInTreeByPath,
+} from "../../utils/categoryUtils";
 
 export function ProductList() {
   const location = useLocation();
   const [products, setProducts] = useState<ProductProjection[]>();
   const [totalProducts, setTotalProducts] = useState(0);
-  const { categorySlug } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   const [page, setPage] = useState(
     () => Number(searchParams.get("page")) || FIRST_PAGE
   );
   const navigate = useNavigate();
+
+  const [allAvailableCategories, setAllAvailableCategories] = useState<
+    Category[]
+  >([]);
+
+  const categoryPathName = location.pathname
+    .replace("/products/category/", "")
+    .replace(/\/$/, "");
+
+  const lastPathPart = (() => {
+    if (!categoryPathName) return "";
+    const parts = categoryPathName.split("/");
+    return parts.length ? parts[parts.length - 1].replace(/-/g, " ") : "";
+  })();
+
+  useEffect(() => {
+    const fetchAllCategoriesData = async () => {
+      try {
+        const data = await getAllCategories();
+        setAllAvailableCategories(data);
+      } catch (error) {
+        throw new Error(String(error));
+      }
+    };
+    fetchAllCategoriesData();
+  }, []);
 
   useEffect(() => {
     const currentPage = Number(searchParams.get("page")) || FIRST_PAGE;
@@ -37,35 +62,66 @@ export function ProductList() {
   }, [searchParams, page]);
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchProductsData = async () => {
+      setProducts(undefined);
+      const offset = (page - FIRST_PAGE) * LIMIT_ITEMS_PER_PAGE;
+      let productsData: ProductProjection[] = [];
+      let totalProductsCount = 0;
+
       try {
-        const offset = (page - FIRST_PAGE) * LIMIT_ITEMS_PER_PAGE;
-        let data;
-        if (categorySlug) {
-          const category = await getCategoryByName(categorySlug);
-          if (category && category.id) {
-            data = await getProductsByCategory(
-              category.id,
+        const isAllProductsPage =
+          location.pathname === "/products" || location.pathname === "/";
+
+        if (isAllProductsPage) {
+          const data = await getProducts(LIMIT_ITEMS_PER_PAGE, offset);
+          productsData = data.body.results;
+          totalProductsCount = data.body.total != null ? data.body.total : 0;
+        } else if (categoryPathName && allAvailableCategories.length > 0) {
+          const pathParts = categoryPathName.split("/");
+
+          const clothesCategory = allAvailableCategories.find(
+            (cat) => cat.slug?.["en-GB"] === "clothes"
+          );
+
+          let fullCategoryTree: CategoryWithChildren[] = [];
+          if (clothesCategory) {
+            fullCategoryTree = buildCategoryTree(
+              allAvailableCategories,
+              clothesCategory.id
+            );
+          }
+
+          const targetCategoryInTree = findCategoryInTreeByPath(
+            fullCategoryTree,
+            pathParts
+          );
+
+          let categoryIdForSubtreeFilter: string | undefined;
+          if (targetCategoryInTree) {
+            categoryIdForSubtreeFilter = targetCategoryInTree.id;
+          }
+
+          if (categoryIdForSubtreeFilter) {
+            const data = await getProductsByCategory(
+              categoryIdForSubtreeFilter,
               LIMIT_ITEMS_PER_PAGE,
               offset
             );
-          } else {
-            setProducts([]);
-            setTotalProducts(0);
-            return;
+            productsData = data.body.results;
+            totalProductsCount = data.body.total != null ? data.body.total : 0;
           }
-        } else {
-          data = await getProducts(LIMIT_ITEMS_PER_PAGE, offset);
         }
-
-        setProducts(data.body.results);
-        setTotalProducts(data.body.total !== undefined ? data.body.total : 0);
+        setProducts(productsData);
+        setTotalProducts(totalProductsCount);
       } catch (error) {
-        console.log(error);
+        setProducts([]);
+        setTotalProducts(0);
+        throw new Error(String(error));
       }
     };
-    fetchProducts();
-  }, [page, categorySlug, location.search]);
+
+    fetchProductsData();
+  }, [location.pathname, page, allAvailableCategories, categoryPathName]);
 
   const handleDetailedPageClick = (id: string) => {
     navigate(`/products/${id}`);
@@ -82,7 +138,7 @@ export function ProductList() {
     <section className="product-container">
       <BreadcrumbsNav />
       <h2 className="product-container_title">
-        {categorySlug ? categorySlug.replace("-", " ") : "ALL PRODUCTS"}
+        {lastPathPart ? lastPathPart.toUpperCase() : "ALL PRODUCTS"}
       </h2>
       <div className="product-wrapper">
         <aside className="product-wrapper_category">
@@ -101,6 +157,9 @@ export function ProductList() {
             <div className="item-container_loader">
               <ClockLoader size={150} color="#8b4513" />
             </div>
+          )}
+          {products && products.length === 0 && (
+            <p>No products found for this category.</p>
           )}
         </div>
       </div>

@@ -1,3 +1,5 @@
+import { Category } from "@commercetools/platform-sdk";
+
 export interface BannerProps {
   textMain: string;
   textAdd: string;
@@ -43,3 +45,7 @@ export type ModalType = {
   modalNext: () => void;
   modalPrev: () => void;
 };
+
+export interface CategoryWithChildren extends Category {
+  children: CategoryWithChildren[];
+}

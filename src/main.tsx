@@ -27,10 +27,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/products" element={<ProductList />} />
             <Route path="/products/:id" element={<ProductDetailPage />} />
             <Route path="/profile" element={<ProfilePage />} />
-            <Route
-              path="/products/category/:categorySlug"
-              element={<ProductList />}
-            />
+            <Route path="/products/category/*" element={<ProductList />} />
           </Routes>
           <Footer />
         </BrowserRouter>

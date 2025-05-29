@@ -24,3 +24,19 @@ li:hover {
     color: variables.$mainColor;
   }
 }
+
+.category-level-0 {
+  padding-left: 0;
+}
+
+.category-level-1 {
+  padding-left: 20px;
+}
+
+.category-level-2 {
+  padding-left: 40px;
+}
+
+.category-level-3 {
+  padding-left: 60px;
+}
