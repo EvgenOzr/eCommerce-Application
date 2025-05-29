@@ -10,20 +10,25 @@ export function BreadcrumbsNav() {
   const [breadcrumbItems, setBreadcrumbItems] = useState<Category[]>([]);
   const navigate = useNavigate();
 
-  const categoryPathName = location.pathname
-    .replace("/products/category/", "")
-    .replace(/\/$/, "");
+  const rawCategoryPath = location.pathname.includes("/products/category/")
+    ? location.pathname.replace("/products/category/", "").replace(/\/$/, "")
+    : location.state?.categoryPath || "";
 
   useEffect(() => {
     const buildBreadcrumb = async () => {
-      if (!categoryPathName) return setBreadcrumbItems([]);
+      if (!rawCategoryPath) {
+        setBreadcrumbItems([]);
+        return;
+      }
 
       const allCategories = await getAllCategories();
-      const slugs = categoryPathName.split("/");
+      const slugs = rawCategoryPath.split("/");
 
       const pathCategories: Category[] = [];
+      let currentSlug = "";
 
       for (const slug of slugs) {
+        currentSlug = currentSlug ? `${currentSlug}/${slug}` : slug;
         const category = allCategories.find(
           (cat) => cat.slug?.["en-GB"] === slug
         );
@@ -36,7 +41,7 @@ export function BreadcrumbsNav() {
     };
 
     buildBreadcrumb();
-  }, [categoryPathName]);
+  }, [rawCategoryPath]);
 
   return (
     <Breadcrumbs sx={{ marginBottom: "16px" }}>

@@ -124,7 +124,11 @@ export function ProductList() {
   }, [location.pathname, page, allAvailableCategories, categoryPathName]);
 
   const handleDetailedPageClick = (id: string) => {
-    navigate(`/products/${id}`);
+    navigate(`/products/${id}`, {
+      state: {
+        categoryPath: categoryPathName,
+      },
+    });
   };
 
   const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => {
