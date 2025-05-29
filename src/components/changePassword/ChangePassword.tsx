@@ -50,8 +50,15 @@ const ChangePassword = ({ version, onClose }: ChangePasswordProps) => {
         }
       })
       .catch((updatePasswordError) => {
-        console.log("Error", updatePasswordError);
-        setPasswordMessage(updatePasswordError);
+        let errorMessage = "Failed to change password";
+        if (typeof updatePasswordError === "string") {
+          errorMessage = updatePasswordError;
+        } else if (updatePasswordError instanceof Error) {
+          errorMessage = updatePasswordError.message;
+        } else if (updatePasswordError?.message) {
+          errorMessage = updatePasswordError.message;
+        }
+        setPasswordMessage(errorMessage);
         setPasswordMessageColor("change-password-message_error");
       });
   };
