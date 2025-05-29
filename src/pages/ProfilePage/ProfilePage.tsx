@@ -20,8 +20,7 @@ const ProfilePage = () => {
   } = useForm<RegistrationFormData>({ mode: "all" });
 
   const [profile, setProfile] = useState<Customer | undefined>();
-  const { customerId } = useContext(ShopContext);
-  const { isLoginned } = useContext(ShopContext);
+  const { customerId, isLoginned } = useContext(ShopContext);
   const [version, setNewVersion] = useState(0);
   const [editMode, setEditMode] = useState(false);
   const [changePassMode, setChangePassMode] = useState(false);
@@ -110,7 +109,7 @@ const ProfilePage = () => {
           setNewVersion(updatedCustomer.body.version);
           setEditMode(false);
         })
-        .catch((err) => console.error("Ошибка:", err));
+        .catch((err) => console.log("Error:", err));
     }
   };
 
@@ -164,7 +163,6 @@ const ProfilePage = () => {
                 type="text"
                 disabled={!editMode}
                 placeholder="Ivanov"
-                defaultValue={profile?.lastName}
                 data-tooltip-id="lastname-tooltip"
                 data-tooltip-content={errors.lastName?.message}
                 {...register("lastName", {
@@ -205,7 +203,7 @@ const ProfilePage = () => {
                     <option
                       value="US"
                       selected={
-                        profile?.addresses[0].country === "US" ? true : false
+                        profile?.addresses[0]?.country === "US" ? true : false
                       }
                     >
                       United States
@@ -213,7 +211,7 @@ const ProfilePage = () => {
                     <option
                       value="GB"
                       selected={
-                        profile?.addresses[0].country === "GB" ? true : false
+                        profile?.addresses[0]?.country === "GB" ? true : false
                       }
                     >
                       Great Britain
@@ -232,7 +230,6 @@ const ProfilePage = () => {
                     className="adress-input"
                     disabled={!editMode}
                     placeholder="Postal Code, ex. 12345"
-                    defaultValue={profile?.addresses[0].postalCode}
                     data-tooltip-id="postalcode-tooltip"
                     data-tooltip-content={
                       errors.billingAdresses?.postalcode?.message
@@ -259,7 +256,6 @@ const ProfilePage = () => {
                     disabled={!editMode}
                     className="adress-input"
                     placeholder="City"
-                    defaultValue={profile?.addresses[0].city}
                     data-tooltip-id="city-tooltip"
                     data-tooltip-content={errors.billingAdresses?.city?.message}
                     {...register("billingAdresses.city", {
@@ -283,7 +279,6 @@ const ProfilePage = () => {
                     className="adress-input"
                     disabled={!editMode}
                     placeholder="Street"
-                    defaultValue={profile?.addresses[0].streetName}
                     data-tooltip-id="street-tooltip"
                     data-tooltip-content={
                       errors.billingAdresses?.street?.message
@@ -320,7 +315,7 @@ const ProfilePage = () => {
                     <option
                       value="US"
                       selected={
-                        profile?.addresses[0].country === "US" ? true : false
+                        profile?.addresses[0]?.country === "US" ? true : false
                       }
                     >
                       United States
@@ -328,7 +323,7 @@ const ProfilePage = () => {
                     <option
                       value="GB"
                       selected={
-                        profile?.addresses[0].country === "GB" ? true : false
+                        profile?.addresses[0]?.country === "GB" ? true : false
                       }
                     >
                       Great Britain
@@ -347,7 +342,6 @@ const ProfilePage = () => {
                     className="adress-input"
                     disabled={!editMode}
                     placeholder="Postal Code, ex. 12345"
-                    defaultValue={profile?.addresses[1].postalCode}
                     data-tooltip-id="postalcode-tooltip"
                     data-tooltip-content={
                       errors.shippingAdresses?.postalcode?.message
@@ -374,7 +368,6 @@ const ProfilePage = () => {
                     className="adress-input"
                     disabled={!editMode}
                     placeholder="City"
-                    defaultValue={profile?.addresses[1].city}
                     data-tooltip-id="city-tooltip"
                     data-tooltip-content={
                       errors.shippingAdresses?.city?.message
@@ -398,7 +391,6 @@ const ProfilePage = () => {
                   <input
                     type="text"
                     disabled={!editMode}
-                    defaultValue={profile?.addresses[1].streetName}
                     className="adress-input"
                     placeholder="Street"
                     data-tooltip-id="street-tooltip"
@@ -424,7 +416,6 @@ const ProfilePage = () => {
                 className="register-input-date input-field"
                 type="date"
                 disabled={!editMode}
-                defaultValue={profile?.dateOfBirth}
                 data-tooltip-id="date-tooltip"
                 data-tooltip-content={errors.date?.message}
                 {...register("date", {
@@ -458,7 +449,6 @@ const ProfilePage = () => {
                 className="register-input-email input-field"
                 type="text"
                 disabled={!editMode}
-                defaultValue={profile?.email}
                 placeholder="example@mail.com"
                 data-tooltip-id="email-tooltip"
                 data-tooltip-content={errors.email?.message}

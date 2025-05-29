@@ -16,6 +16,8 @@ interface ChangePasswordProps {
 const ChangePassword = ({ version, onClose }: ChangePasswordProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showOldPassword, setShowOldPassword] = useState(false);
+  const [passwordMessage, setPasswordMessage] = useState("");
+  const [passwordMessageColor, setPasswordMessageColor] = useState("");
   const { customerId } = useContext(ShopContext);
 
   const {
@@ -34,9 +36,22 @@ const ChangePassword = ({ version, onClose }: ChangePasswordProps) => {
       currentPassword: oldPassword,
       newPassword: password,
     };
-    changeUserPassword(passwordData).then((updatePassword) => {
-      if (updatePassword.statusCode === 200) onClose();
-    });
+    changeUserPassword(passwordData)
+      .then((updatePassword) => {
+        console.log(updatePassword);
+        if (updatePassword.statusCode === 200) {
+          setPasswordMessage("Password changed");
+          setPasswordMessageColor("");
+          setTimeout(() => {
+            onClose();
+          }, 1000);
+        }
+      })
+      .catch((updatePasswordError) => {
+        console.log(updatePasswordError);
+        setPasswordMessage(updatePasswordError);
+        setPasswordMessageColor("change-password-message_error");
+      });
   };
 
   return (
@@ -45,15 +60,20 @@ const ChangePassword = ({ version, onClose }: ChangePasswordProps) => {
       action="submit"
       onSubmit={handleSubmit(changePasswordHandler)}
     >
-      <div className="register-input-password-container">
+      <div className="register-input-password-container change-password-container">
         <label className="input-password-title change-password-title">
           Change user password
         </label>
+        <div className={`change-password-message ${passwordMessageColor}`}>
+          {passwordMessage}
+        </div>
         <div className="input-password-register-wrapper">
           <input
             className="register-input-password input-field"
-            placeholder="Old Password"
             type={showOldPassword ? "text" : "password"}
+            placeholder="Previous Password"
+            data-tooltip-id="oldPassword-tooltip"
+            data-tooltip-content={errors.oldPassword?.message}
             {...register("oldPassword", {
               required: "Password is required",
             })}
@@ -66,6 +86,12 @@ const ChangePassword = ({ version, onClose }: ChangePasswordProps) => {
             {showOldPassword ? <FaEyeSlash /> : <FaEye />}
           </button>
         </div>
+        <Tooltip
+          id="oldPassword-tooltip"
+          place="top"
+          variant="error"
+          isOpen={!!errors.password}
+        />
         <div className="input-password-register-wrapper input-password-register-wrapper_change">
           <input
             className="register-input-password input-field"
@@ -101,6 +127,13 @@ const ChangePassword = ({ version, onClose }: ChangePasswordProps) => {
         />
         <button className="login-button change-button" type="submit">
           Change password
+        </button>
+        <button
+          className="login-button change-button"
+          type="submit"
+          onClick={() => onClose()}
+        >
+          Back to profile page
         </button>
       </div>
     </form>
