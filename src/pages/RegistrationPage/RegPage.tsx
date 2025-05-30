@@ -31,7 +31,7 @@ export default function RegPage() {
   const [defaultBilling, setDefaultBilling] = useState(false);
   const [defaultShipping, setDefaultShipping] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const { setLogin, setIsLoginned } = useContext(ShopContext);
+  const { setLogin, setIsLoginned, setCustomerId } = useContext(ShopContext);
 
   const billingAdresses = useWatch({
     control,
@@ -57,8 +57,10 @@ export default function RegPage() {
         defaultShipping
       );
       setLogin(response.body.customer.email);
+      setCustomerId(response.body.customer.id);
       setIsLoginned(true);
       localStorage.setItem("registrationSuccess", "true");
+      localStorage.setItem("customerId", response.body.customer.id);
       navigate("/");
     } catch (error) {
       const authApiError = authError(error);
