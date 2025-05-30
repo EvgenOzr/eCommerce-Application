@@ -17,6 +17,8 @@ import {
   buildCategoryTree,
   findCategoryInTreeByPath,
 } from "../../utils/categoryUtils";
+import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+import { SORT_OPTIONS } from "../../types/constants";
 
 export function ProductList() {
   const location = useLocation();
@@ -31,6 +33,10 @@ export function ProductList() {
   const [allAvailableCategories, setAllAvailableCategories] = useState<
     Category[]
   >([]);
+
+  const [sortOption, setSortOption] = useState<string>(() => {
+    return searchParams.get("sort") || "";
+  });
 
   const categoryPathName = location.pathname
     .replace("/products/category/", "")
@@ -48,7 +54,7 @@ export function ProductList() {
         const data = await getAllCategories();
         setAllAvailableCategories(data);
       } catch (error) {
-        throw new Error(String(error));
+        console.error("Error getting all categories:", error);
       }
     };
     fetchAllCategoriesData();
@@ -67,13 +73,17 @@ export function ProductList() {
       const offset = (page - FIRST_PAGE) * LIMIT_ITEMS_PER_PAGE;
       let productsData: ProductProjection[] = [];
       let totalProductsCount = 0;
-
+      const apiSortParam = sortOption === "" ? undefined : sortOption;
       try {
         const isAllProductsPage =
           location.pathname === "/products" || location.pathname === "/";
 
         if (isAllProductsPage) {
-          const data = await getProducts(LIMIT_ITEMS_PER_PAGE, offset);
+          const data = await getProducts(
+            LIMIT_ITEMS_PER_PAGE,
+            offset,
+            apiSortParam
+          );
           productsData = data.body.results;
           totalProductsCount = data.body.total != null ? data.body.total : 0;
         } else if (categoryPathName && allAvailableCategories.length > 0) {
@@ -105,12 +115,14 @@ export function ProductList() {
             const data = await getProductsByCategory(
               categoryIdForSubtreeFilter,
               LIMIT_ITEMS_PER_PAGE,
-              offset
+              offset,
+              apiSortParam
             );
             productsData = data.body.results;
             totalProductsCount = data.body.total != null ? data.body.total : 0;
           }
         }
+
         setProducts(productsData);
         setTotalProducts(totalProductsCount);
       } catch (error) {
@@ -121,7 +133,13 @@ export function ProductList() {
     };
 
     fetchProductsData();
-  }, [location.pathname, page, allAvailableCategories, categoryPathName]);
+  }, [
+    location.pathname,
+    page,
+    allAvailableCategories,
+    categoryPathName,
+    sortOption,
+  ]);
 
   const handleDetailedPageClick = (id: string) => {
     navigate(`/products/${id}`, {
@@ -133,7 +151,11 @@ export function ProductList() {
 
   const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
-    setSearchParams({ page: value.toString() });
+    setSearchParams((prev) => {
+      const params = new URLSearchParams(prev);
+      params.set("page", value.toString());
+      return params;
+    });
   };
 
   const totalPages = Math.ceil(totalProducts / LIMIT_ITEMS_PER_PAGE);
@@ -144,6 +166,125 @@ export function ProductList() {
       <h2 className="product-container_title">
         {lastPathPart ? lastPathPart.toUpperCase() : "ALL PRODUCTS"}
       </h2>
+      <div className="product-sort">
+        <FormControl sx={{ m: 2, minWidth: 150 }} size="small">
+          <InputLabel
+            id="sort-label"
+            sx={{
+              color: "#a0522d",
+              "&.Mui-focused": {
+                color: "#a0522d",
+              },
+            }}
+          >
+            Sort By
+          </InputLabel>
+          <Select
+            labelId="sort-label"
+            id="sort-select"
+            value={sortOption}
+            label="Sort By"
+            onChange={(e) => {
+              const value = e.target.value;
+              setSortOption(value);
+              setPage(FIRST_PAGE);
+              setSearchParams((prev) => {
+                const params = new URLSearchParams(prev);
+                if (value) {
+                  params.set("sort", value);
+                } else {
+                  params.delete("sort");
+                }
+                params.set("page", FIRST_PAGE.toString());
+                return params;
+              });
+            }}
+            sx={{
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "#a0522d",
+              },
+              "&:hover .MuiOutlinedInput-notchedOutline": {
+                borderColor: "#a0522d",
+              },
+              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                borderColor: "#a0522d",
+                boxShadow: "0 0 5px 2px rgba(160, 82, 45, 0.5)",
+              },
+            }}
+          >
+            <MenuItem
+              value=""
+              sx={{
+                "&.Mui-selected": {
+                  backgroundColor: "#a0522d",
+                  color: "#fff",
+                  "&:hover": {
+                    backgroundColor: "#8b4513",
+                  },
+                },
+              }}
+            >
+              Default
+            </MenuItem>
+            <MenuItem
+              value={SORT_OPTIONS.PRICE_ASC}
+              sx={{
+                "&.Mui-selected": {
+                  backgroundColor: "#a0522d",
+                  color: "#fff",
+                  "&:hover": {
+                    backgroundColor: "#8b4513",
+                  },
+                },
+              }}
+            >
+              Price: Low to High
+            </MenuItem>
+            <MenuItem
+              value={SORT_OPTIONS.PRICE_DESC}
+              sx={{
+                "&.Mui-selected": {
+                  backgroundColor: "#a0522d",
+                  color: "#fff",
+                  "&:hover": {
+                    backgroundColor: "#8b4513",
+                  },
+                },
+              }}
+            >
+              Price: High to Low
+            </MenuItem>
+            <MenuItem
+              value={SORT_OPTIONS.NAME_ASC}
+              sx={{
+                "&.Mui-selected": {
+                  backgroundColor: "#a0522d",
+                  color: "#fff",
+                  "&:hover": {
+                    backgroundColor: "#8b4513",
+                  },
+                },
+              }}
+            >
+              Name: A-Z
+            </MenuItem>
+            <MenuItem
+              value={SORT_OPTIONS.NAME_DESC}
+              sx={{
+                "&.Mui-selected": {
+                  backgroundColor: "#a0522d",
+                  color: "#fff",
+                  "&:hover": {
+                    backgroundColor: "#8b4513",
+                  },
+                },
+              }}
+            >
+              Name: Z-A
+            </MenuItem>
+          </Select>
+        </FormControl>
+      </div>
       <div className="product-wrapper">
         <aside className="product-wrapper_category">
           <Sidebar />

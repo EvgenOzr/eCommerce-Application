@@ -4,7 +4,8 @@ import { ProductProjectionPagedSearchResponse } from "@commercetools/platform-sd
 export const getProductsByCategory = async (
   categoryId: string,
   limit: number,
-  offset: number
+  offset: number,
+  sort?: string
 ): Promise<{ body: ProductProjectionPagedSearchResponse }> => {
   if (!categoryId) {
     return {
@@ -20,15 +21,26 @@ export const getProductsByCategory = async (
 
   const filterString = `categories.id:subtree("${categoryId}")`;
 
+  const queryArgs: {
+    filter: string;
+    limit: number;
+    offset: number;
+    sort?: string[];
+  } = {
+    filter: filterString,
+    limit,
+    offset,
+  };
+
+  if (sort) {
+    queryArgs.sort = [sort];
+  }
+
   return apiRoot
     .productProjections()
     .search()
     .get({
-      queryArgs: {
-        filter: filterString,
-        limit: limit,
-        offset: offset,
-      },
+      queryArgs,
     })
     .execute();
 };

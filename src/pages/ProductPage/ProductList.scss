@@ -32,3 +32,9 @@
     gap: 35px;
   }
 }
+
+.product-sort {
+  display: flex;
+  justify-content: flex-end;
+  color: variables.$textColor;
+}
