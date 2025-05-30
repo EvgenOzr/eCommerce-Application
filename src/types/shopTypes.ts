@@ -30,6 +30,11 @@ export interface RegistrationFormData {
   password: string;
 }
 
+export type ChangePasswordType = {
+  oldPassword: string;
+  password: string;
+};
+
 export type contextType = {
   login: string;
   isLoginned: boolean;

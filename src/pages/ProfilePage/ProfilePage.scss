@@ -1,18 +1,22 @@
 @use "../../assets/variables.scss" as variables;
 
 .profile {
-  margin-top: 25px;
-  margin-bottom: 25px;
   padding: 15px;
-  max-width: 500px;
-  width: 100%;
   display: flex;
   gap: 10px;
   flex-direction: column;
   border: 2px solid variables.$mainColor;
   background-color: #fff;
   border-radius: 5px;
+  &_container {
+    margin-top: 25px;
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
   &-title {
+    margin-bottom: 25px;
     font-family: variables.$primaryFont;
     font-size: 76px;
     color: #3e3e3e;
@@ -36,5 +40,40 @@
       font-size: 22px;
       line-height: 130%;
     }
+    &__address {
+      margin-left: 20px;
+      align-items: flex-end;
+      gap: 10px;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+  &-edit {
+    margin-top: 10px;
+    font-family: variables.$secondaryFont;
+    font-size: 20px;
+    height: 50px;
+    width: 100px;
+    background-color: variables.$mainColor;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    &:hover {
+      background-color: #3e3e3ead;
+    }
+    &_container {
+      min-height: 38px;
+      margin: 10px;
+      display: flex;
+      justify-content: end;
+    }
+    &_show {
+      display: block;
+    }
+  }
+  &-button_edit {
+    margin-bottom: 10px;
   }
 }
