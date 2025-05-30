@@ -6,6 +6,7 @@ import "./ProductDetailPage.scss";
 import { ClockLoader } from "react-spinners";
 import saleIcon from "../../assets/images/Product/sale-icon.png";
 import ModalImage from "../../components/modal/ModalImage";
+import { BreadcrumbsNav } from "../../components/BreadcrumbsNav/BreadcrumbsNav";
 
 export function ProductDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -80,102 +81,105 @@ export function ProductDetailPage() {
   });
 
   return (
-    <section className="item-container">
-      {detailProduct ? (
-        <>
-          <div className="item-container_images">
-            <div className="item-container_images_slider">
-              <button
-                onClick={() => goToPrev()}
-                className="item-container_images_slider_buttons left_button"
-              >
-                &#10094;
-              </button>
-              <img
-                src={
-                  detailProduct?.masterVariant.images?.[currentImageIndex].url
-                }
-                alt=""
-                className="item-container_images_file"
-                onClick={() =>
-                  openModal(
-                    detailProduct?.masterVariant?.images?.[currentImageIndex]
-                      ?.url
-                  )
-                }
-              />
-              <button
-                onClick={() => {
-                  goToNext();
-                }}
-                className="item-container_images_slider_buttons right_button"
-              >
-                &#10095;
-              </button>
-            </div>
-            <div className="item-container_images_roll">
-              {imageUrlArray?.slice(1).map((image, index) => (
-                <div className="item-container_images_roll_item" key={index}>
-                  <img
-                    src={image.url}
-                    alt=""
-                    className="item-container_images_roll_item_file"
-                    onClick={() => openModal(image.url)}
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="item-container_product">
-            <h2 className="item-container_product_title">
-              {detailProduct?.name["en-GB"]}
-            </h2>
-            {productDiscount ? (
-              <div className="item-container_product_price">
-                <p className="item-container_product_price_value discounted">
-                  {(detailProduct?.masterVariant.prices?.[0].value.centAmount ??
-                    0) / 100}{" "}
-                  $
-                </p>
+    <section className="page-container">
+      <BreadcrumbsNav />
+      <div className="item-container">
+        {detailProduct ? (
+          <>
+            <div className="item-container_images">
+              <div className="item-container_images_slider">
+                <button
+                  onClick={() => goToPrev()}
+                  className="item-container_images_slider_buttons left_button"
+                >
+                  &#10094;
+                </button>
                 <img
-                  src={saleIcon}
-                  alt="sale-icon"
-                  className="item-container_product_price_icon"
+                  src={
+                    detailProduct?.masterVariant.images?.[currentImageIndex].url
+                  }
+                  alt=""
+                  className="item-container_images_file"
+                  onClick={() =>
+                    openModal(
+                      detailProduct?.masterVariant?.images?.[currentImageIndex]
+                        ?.url
+                    )
+                  }
                 />
-                <p className="item-container_product_price_discount">
-                  {(detailProduct?.masterVariant.prices?.[0].discounted?.value
-                    .centAmount ?? 0) / 100}{" "}
-                  $
-                </p>
+                <button
+                  onClick={() => {
+                    goToNext();
+                  }}
+                  className="item-container_images_slider_buttons right_button"
+                >
+                  &#10095;
+                </button>
               </div>
-            ) : (
-              <div className="item-container_product_price">
-                <p className="item-container_product_price_value">
-                  {(detailProduct?.masterVariant.prices?.[0].value.centAmount ??
-                    0) / 100}{" "}
-                  $
-                </p>
+              <div className="item-container_images_roll">
+                {imageUrlArray?.slice(1).map((image, index) => (
+                  <div className="item-container_images_roll_item" key={index}>
+                    <img
+                      src={image.url}
+                      alt=""
+                      className="item-container_images_roll_item_file"
+                      onClick={() => openModal(image.url)}
+                    />
+                  </div>
+                ))}
               </div>
-            )}
+            </div>
+            <div className="item-container_product">
+              <h2 className="item-container_product_title">
+                {detailProduct?.name["en-GB"]}
+              </h2>
+              {productDiscount ? (
+                <div className="item-container_product_price">
+                  <p className="item-container_product_price_value discounted">
+                    {(detailProduct?.masterVariant.prices?.[0].value
+                      .centAmount ?? 0) / 100}{" "}
+                    $
+                  </p>
+                  <img
+                    src={saleIcon}
+                    alt="sale-icon"
+                    className="item-container_product_price_icon"
+                  />
+                  <p className="item-container_product_price_discount">
+                    {(detailProduct?.masterVariant.prices?.[0].discounted?.value
+                      .centAmount ?? 0) / 100}{" "}
+                    $
+                  </p>
+                </div>
+              ) : (
+                <div className="item-container_product_price">
+                  <p className="item-container_product_price_value">
+                    {(detailProduct?.masterVariant.prices?.[0].value
+                      .centAmount ?? 0) / 100}{" "}
+                    $
+                  </p>
+                </div>
+              )}
 
-            <p className="item-container_product_description">
-              {detailProduct?.description?.["en-GB"]}
-            </p>
+              <p className="item-container_product_description">
+                {detailProduct?.description?.["en-GB"]}
+              </p>
+            </div>
+            {selectedImage && (
+              <ModalImage
+                closeModal={closeModal}
+                selectedImage={selectedImage}
+                modalNext={modalNext}
+                modalPrev={modalPrev}
+              />
+            )}
+          </>
+        ) : (
+          <div className="item-container_loader">
+            <ClockLoader size={150} color="#8b4513" />
           </div>
-          {selectedImage && (
-            <ModalImage
-              closeModal={closeModal}
-              selectedImage={selectedImage}
-              modalNext={modalNext}
-              modalPrev={modalPrev}
-            />
-          )}
-        </>
-      ) : (
-        <div className="item-container_loader">
-          <ClockLoader size={150} color="#8b4513" />
-        </div>
-      )}
+        )}
+      </div>
     </section>
   );
 }

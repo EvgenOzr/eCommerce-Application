@@ -8,3 +8,10 @@ export const scopes = import.meta.env.VITE_CTP_SCOPES;
 export const LIMIT_ITEMS_PER_PAGE = 9;
 export const FIRST_PAGE = 1;
 export const LIMIT_CATEGORIES = 100;
+
+export const SORT_OPTIONS = {
+  PRICE_ASC: "price asc",
+  PRICE_DESC: "price desc",
+  NAME_ASC: "name.en-GB asc",
+  NAME_DESC: "name.en-GB desc",
+};

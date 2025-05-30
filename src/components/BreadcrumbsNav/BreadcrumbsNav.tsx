@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 import { useEffect, useState } from "react";
 import { getAllCategories } from "../../API/GetAllCategories";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
@@ -6,50 +6,42 @@ import Link from "@mui/material/Link";
 import { Category } from "@commercetools/platform-sdk";
 
 export function BreadcrumbsNav() {
-  const { categorySlug } = useParams();
+  const location = useLocation();
   const [breadcrumbItems, setBreadcrumbItems] = useState<Category[]>([]);
   const navigate = useNavigate();
 
+  const rawCategoryPath = location.pathname.includes("/products/category/")
+    ? location.pathname.replace("/products/category/", "").replace(/\/$/, "")
+    : location.state?.categoryPath || "";
+
   useEffect(() => {
     const buildBreadcrumb = async () => {
-      if (!categorySlug) return setBreadcrumbItems([]);
+      if (!rawCategoryPath) {
+        setBreadcrumbItems([]);
+        return;
+      }
 
       const allCategories = await getAllCategories();
-      const currentCategory = allCategories.find(
-        (cat) => cat.slug?.["en-GB"] === categorySlug
-      );
-      if (!currentCategory) return;
+      const slugs = rawCategoryPath.split("/");
 
-      const collectAncestors = (
-        category: Category,
-        path: Category[] = []
-      ): Category[] => {
-        if (!category.parent?.id) return path;
+      const pathCategories: Category[] = [];
+      let currentSlug = "";
 
-        const parentCategory = allCategories.find(
-          (cat) => cat.id === category.parent?.id
+      for (const slug of slugs) {
+        currentSlug = currentSlug ? `${currentSlug}/${slug}` : slug;
+        const category = allCategories.find(
+          (cat) => cat.slug?.["en-GB"] === slug
         );
-        if (!parentCategory) return path;
-
-        path = collectAncestors(parentCategory, path);
-
-        if (parentCategory.slug?.["en-GB"] !== "clothes") {
-          path.push(parentCategory);
+        if (category) {
+          pathCategories.push(category);
         }
-
-        return path;
-      };
-
-      const path = collectAncestors(currentCategory);
-
-      if (currentCategory.slug?.["en-GB"] !== "clothes") {
-        path.push(currentCategory);
       }
-      setBreadcrumbItems(path);
+
+      setBreadcrumbItems(pathCategories);
     };
 
     buildBreadcrumb();
-  }, [categorySlug]);
+  }, [rawCategoryPath]);
 
   return (
     <Breadcrumbs sx={{ marginBottom: "16px" }}>
@@ -71,20 +63,23 @@ export function BreadcrumbsNav() {
       </Link>
       {breadcrumbItems.map((cat, index) => {
         const isLast = index === breadcrumbItems.length - 1;
+        const path = breadcrumbItems
+          .slice(0, index + 1)
+          .map((c) => c.slug?.["en-GB"])
+          .join("/");
 
         return (
           <Link
             key={cat.id}
             underline={isLast ? "none" : "hover"}
-            color={isLast ? "text.primary" : "inherit"}
+            color={isLast ? "text.primary" : "#8b4513"}
             onClick={() => {
               if (isLast) {
-                navigate(
-                  `/products/category/${cat.slug?.["en-GB"]}?reload=${Date.now()}`,
-                  { replace: true }
-                );
+                navigate(`/products/category/${path}?reload=${Date.now()}`, {
+                  replace: true,
+                });
               } else {
-                navigate(`/products/category/${cat.slug?.["en-GB"]}`);
+                navigate(`/products/category/${path}`);
               }
             }}
             sx={{ cursor: "pointer" }}
