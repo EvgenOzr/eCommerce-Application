@@ -19,6 +19,7 @@ import {
 } from "../../utils/categoryUtils";
 import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import { SORT_OPTIONS } from "../../types/constants";
+import Search from "../../components/search/Search";
 
 export function ProductList() {
   const location = useLocation();
@@ -166,124 +167,129 @@ export function ProductList() {
       <h2 className="product-container_title">
         {lastPathPart ? lastPathPart.toUpperCase() : "ALL PRODUCTS"}
       </h2>
-      <div className="product-sort">
-        <FormControl sx={{ m: 2, minWidth: 150 }} size="small">
-          <InputLabel
-            id="sort-label"
-            sx={{
-              color: "#a0522d",
-              "&.Mui-focused": {
+      <div className="product-actions-container">
+        <div className="product-search">
+          <Search />
+        </div>
+        <div className="product-sort">
+          <FormControl sx={{ m: 2, minWidth: 150 }} size="small">
+            <InputLabel
+              id="sort-label"
+              sx={{
                 color: "#a0522d",
-              },
-            }}
-          >
-            Sort By
-          </InputLabel>
-          <Select
-            labelId="sort-label"
-            id="sort-select"
-            value={sortOption}
-            label="Sort By"
-            onChange={(e) => {
-              const value = e.target.value;
-              setSortOption(value);
-              setPage(FIRST_PAGE);
-              setSearchParams((prev) => {
-                const params = new URLSearchParams(prev);
-                if (value) {
-                  params.set("sort", value);
-                } else {
-                  params.delete("sort");
-                }
-                params.set("page", FIRST_PAGE.toString());
-                return params;
-              });
-            }}
-            sx={{
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#a0522d",
-              },
-              "&:hover .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#a0522d",
-              },
-              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#a0522d",
-                boxShadow: "0 0 5px 2px rgba(160, 82, 45, 0.5)",
-              },
-            }}
-          >
-            <MenuItem
-              value=""
-              sx={{
-                "&.Mui-selected": {
-                  backgroundColor: "#a0522d",
-                  color: "#fff",
-                  "&:hover": {
-                    backgroundColor: "#8b4513",
-                  },
+                "&.Mui-focused": {
+                  color: "#a0522d",
                 },
               }}
             >
-              Default
-            </MenuItem>
-            <MenuItem
-              value={SORT_OPTIONS.PRICE_ASC}
+              Sort By
+            </InputLabel>
+            <Select
+              labelId="sort-label"
+              id="sort-select"
+              value={sortOption}
+              label="Sort By"
+              onChange={(e) => {
+                const value = e.target.value;
+                setSortOption(value);
+                setPage(FIRST_PAGE);
+                setSearchParams((prev) => {
+                  const params = new URLSearchParams(prev);
+                  if (value) {
+                    params.set("sort", value);
+                  } else {
+                    params.delete("sort");
+                  }
+                  params.set("page", FIRST_PAGE.toString());
+                  return params;
+                });
+              }}
               sx={{
-                "&.Mui-selected": {
-                  backgroundColor: "#a0522d",
-                  color: "#fff",
-                  "&:hover": {
-                    backgroundColor: "#8b4513",
-                  },
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#a0522d",
+                },
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#a0522d",
+                },
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#a0522d",
+                  boxShadow: "0 0 5px 2px rgba(160, 82, 45, 0.5)",
                 },
               }}
             >
-              Price: Low to High
-            </MenuItem>
-            <MenuItem
-              value={SORT_OPTIONS.PRICE_DESC}
-              sx={{
-                "&.Mui-selected": {
-                  backgroundColor: "#a0522d",
-                  color: "#fff",
-                  "&:hover": {
-                    backgroundColor: "#8b4513",
+              <MenuItem
+                value=""
+                sx={{
+                  "&.Mui-selected": {
+                    backgroundColor: "#a0522d",
+                    color: "#fff",
+                    "&:hover": {
+                      backgroundColor: "#8b4513",
+                    },
                   },
-                },
-              }}
-            >
-              Price: High to Low
-            </MenuItem>
-            <MenuItem
-              value={SORT_OPTIONS.NAME_ASC}
-              sx={{
-                "&.Mui-selected": {
-                  backgroundColor: "#a0522d",
-                  color: "#fff",
-                  "&:hover": {
-                    backgroundColor: "#8b4513",
+                }}
+              >
+                Default
+              </MenuItem>
+              <MenuItem
+                value={SORT_OPTIONS.PRICE_ASC}
+                sx={{
+                  "&.Mui-selected": {
+                    backgroundColor: "#a0522d",
+                    color: "#fff",
+                    "&:hover": {
+                      backgroundColor: "#8b4513",
+                    },
                   },
-                },
-              }}
-            >
-              Name: A-Z
-            </MenuItem>
-            <MenuItem
-              value={SORT_OPTIONS.NAME_DESC}
-              sx={{
-                "&.Mui-selected": {
-                  backgroundColor: "#a0522d",
-                  color: "#fff",
-                  "&:hover": {
-                    backgroundColor: "#8b4513",
+                }}
+              >
+                Price: Low to High
+              </MenuItem>
+              <MenuItem
+                value={SORT_OPTIONS.PRICE_DESC}
+                sx={{
+                  "&.Mui-selected": {
+                    backgroundColor: "#a0522d",
+                    color: "#fff",
+                    "&:hover": {
+                      backgroundColor: "#8b4513",
+                    },
                   },
-                },
-              }}
-            >
-              Name: Z-A
-            </MenuItem>
-          </Select>
-        </FormControl>
+                }}
+              >
+                Price: High to Low
+              </MenuItem>
+              <MenuItem
+                value={SORT_OPTIONS.NAME_ASC}
+                sx={{
+                  "&.Mui-selected": {
+                    backgroundColor: "#a0522d",
+                    color: "#fff",
+                    "&:hover": {
+                      backgroundColor: "#8b4513",
+                    },
+                  },
+                }}
+              >
+                Name: A-Z
+              </MenuItem>
+              <MenuItem
+                value={SORT_OPTIONS.NAME_DESC}
+                sx={{
+                  "&.Mui-selected": {
+                    backgroundColor: "#a0522d",
+                    color: "#fff",
+                    "&:hover": {
+                      backgroundColor: "#8b4513",
+                    },
+                  },
+                }}
+              >
+                Name: Z-A
+              </MenuItem>
+            </Select>
+          </FormControl>
+        </div>
       </div>
       <div className="product-wrapper">
         <aside className="product-wrapper_category">

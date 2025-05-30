@@ -33,6 +33,11 @@
   }
 }
 
+.product-actions-container {
+  display: flex;
+  align-items: center;
+}
+
 .product-sort {
   display: flex;
   justify-content: flex-end;
