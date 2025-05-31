@@ -54,3 +54,7 @@ export type ModalType = {
 export interface CategoryWithChildren extends Category {
   children: CategoryWithChildren[];
 }
+
+export type SearchRequest = {
+  onSearch: (searchTerm: string) => void;
+};

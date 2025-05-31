@@ -49,6 +49,8 @@ export function ProductList() {
     return parts.length ? parts[parts.length - 1].replace(/-/g, " ") : "";
   })();
 
+  const handleSearch = () => {};
+
   useEffect(() => {
     const fetchAllCategoriesData = async () => {
       try {
@@ -169,7 +171,7 @@ export function ProductList() {
       </h2>
       <div className="product-actions-container">
         <div className="product-search">
-          <Search />
+          <Search onSearch={handleSearch} />
         </div>
         <div className="product-sort">
           <FormControl sx={{ m: 2, minWidth: 150 }} size="small">
