@@ -1,5 +1,9 @@
 @use "../../assets/variables.scss" as variables;
 
+.page-container {
+  width: 100%;
+}
+
 .item-container {
   display: flex;
   width: 100%;
