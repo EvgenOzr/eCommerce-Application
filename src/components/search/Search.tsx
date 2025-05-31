@@ -4,6 +4,10 @@ import { SearchRequest } from "../../types/shopTypes";
 function Search({ onSearch }: SearchRequest) {
   const [searchTerm, setSearchTerm] = useState("");
 
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+
   useEffect(() => {
     const timerId = setTimeout(() => {
       onSearch(searchTerm);
@@ -20,7 +24,7 @@ function Search({ onSearch }: SearchRequest) {
         className="header_active-search__text"
         placeholder="Search"
         value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
+        onChange={handleSearch}
       />
     </div>
   );
