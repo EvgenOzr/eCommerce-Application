@@ -20,6 +20,7 @@ import {
 import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import { SORT_OPTIONS } from "../../types/constants";
 import Search from "../../components/search/Search";
+import { searchProducts } from "../../API/SearchProduct";
 
 export function ProductList() {
   const location = useLocation();
@@ -49,7 +50,10 @@ export function ProductList() {
     return parts.length ? parts[parts.length - 1].replace(/-/g, " ") : "";
   })();
 
-  const handleSearch = () => {};
+  const handleSearch = async (text: string) => {
+    const response = await searchProducts(text);
+    console.log(response);
+  };
 
   useEffect(() => {
     const fetchAllCategoriesData = async () => {
