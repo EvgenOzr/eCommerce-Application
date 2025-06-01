@@ -54,3 +54,21 @@ export type ModalType = {
 export interface CategoryWithChildren extends Category {
   children: CategoryWithChildren[];
 }
+
+export type Option = { key: string; label: string };
+
+export type FilterSidebarProps = {
+  priceMinLimit: number;
+  priceMaxLimit: number;
+  brandOptions: Option[];
+  colorOptions: Option[];
+  sizeOptions: Option[];
+};
+
+export interface ProductSearchFilters {
+  priceMin?: number;
+  priceMax?: number;
+  color?: string[];
+  size?: string[];
+  brand?: string[];
+}
