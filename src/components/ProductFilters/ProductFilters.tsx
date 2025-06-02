@@ -6,8 +6,13 @@ import {
   Button,
   Checkbox,
   FormControlLabel,
+  useMediaQuery,
+  useTheme,
+  IconButton,
+  Collapse,
 } from "@mui/material";
 import type { FilterSidebarProps } from "../../types/shopTypes";
+import { BiChevronDown, BiChevronUp } from "react-icons/bi";
 
 export const FilterSidebar: React.FC<FilterSidebarProps> = ({
   priceMinLimit,
@@ -26,6 +31,17 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const [isOpen, setIsOpen] = useState(!isMobile);
+  const toggleVisibility = () => {
+    setIsOpen(!isOpen);
+  };
+
+  useEffect(() => {
+    setIsOpen(!isMobile);
+  }, [isMobile]);
 
   useEffect(() => {
     setPriceRange([priceMinLimit, priceMaxLimit]);
@@ -91,133 +107,140 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
 
   return (
     <div style={{ padding: 16 }}>
-      <Typography variant="h6" gutterBottom sx={{ color: "#333333", mb: 2 }}>
+      <Typography variant="h6" gutterBottom sx={{ color: "#333333" }}>
         Filters
       </Typography>
-
-      <div style={{ marginBottom: 24 }}>
-        <Typography gutterBottom sx={{ color: "#666666" }}>
-          Price Range
-        </Typography>
-        <Slider
-          value={priceRange}
-          onChange={handlePriceChange}
-          valueLabelDisplay="auto"
-          min={priceMinLimit}
-          max={priceMaxLimit}
-          disableSwap
-          sx={{
-            color: "#8b4513",
-            "& .MuiSlider-thumb": {
-              borderColor: "#8b4513",
-            },
-            "& .MuiSlider-rail": {
-              opacity: 0.5,
-              backgroundColor: "#f5f5f5",
-            },
-          }}
-        />
-        <div>
-          <span>Min: {priceRange[0]}</span> - <span>Max: {priceRange[1]}</span>
+      {isMobile && (
+        <IconButton onClick={toggleVisibility} size="medium">
+          {isOpen ? <BiChevronUp /> : <BiChevronDown />}
+        </IconButton>
+      )}
+      <Collapse in={isOpen}>
+        <div style={{ marginBottom: 24 }}>
+          <Typography gutterBottom sx={{ color: "#666666" }}>
+            Price Range
+          </Typography>
+          <Slider
+            value={priceRange}
+            onChange={handlePriceChange}
+            valueLabelDisplay="auto"
+            min={priceMinLimit}
+            max={priceMaxLimit}
+            disableSwap
+            sx={{
+              color: "#8b4513",
+              "& .MuiSlider-thumb": {
+                borderColor: "#8b4513",
+              },
+              "& .MuiSlider-rail": {
+                opacity: 0.5,
+                backgroundColor: "#f5f5f5",
+              },
+            }}
+          />
+          <div>
+            <span>Min: {priceRange[0]}</span> -{" "}
+            <span>Max: {priceRange[1]}</span>
+          </div>
         </div>
-      </div>
 
-      <div style={{ marginBottom: 16 }}>
-        <Typography gutterBottom>Brand</Typography>
-        {brandOptions.map(({ key, label }) => (
-          <FormControlLabel
-            key={key}
-            control={
-              <Checkbox
-                checked={selectedBrands.includes(key)}
-                onChange={() => toggleValue(key, setSelectedBrands)}
-                sx={{
-                  color: "#8b4513",
-                  "&.Mui-checked": {
+        <div style={{ marginBottom: 16 }}>
+          <Typography gutterBottom>Brand</Typography>
+          {brandOptions.map(({ key, label }) => (
+            <FormControlLabel
+              key={key}
+              control={
+                <Checkbox
+                  checked={selectedBrands.includes(key)}
+                  onChange={() => toggleValue(key, setSelectedBrands)}
+                  sx={{
                     color: "#8b4513",
-                  },
-                }}
-              />
-            }
-            label={label}
-          />
-        ))}
-      </div>
+                    "&.Mui-checked": {
+                      color: "#8b4513",
+                    },
+                  }}
+                />
+              }
+              label={label}
+            />
+          ))}
+        </div>
 
-      <div style={{ marginBottom: 16 }}>
-        <Typography gutterBottom>Color</Typography>
-        {colorOptions.map(({ key, label }) => (
-          <FormControlLabel
-            key={key}
-            control={
-              <Checkbox
-                checked={selectedColors.includes(key)}
-                onChange={() => toggleValue(key, setSelectedColors)}
-                sx={{
-                  color: "#8b4513",
-                  "&.Mui-checked": {
+        <div style={{ marginBottom: 16 }}>
+          <Typography gutterBottom>Color</Typography>
+          {colorOptions.map(({ key, label }) => (
+            <FormControlLabel
+              key={key}
+              control={
+                <Checkbox
+                  checked={selectedColors.includes(key)}
+                  onChange={() => toggleValue(key, setSelectedColors)}
+                  sx={{
                     color: "#8b4513",
-                  },
-                }}
-              />
-            }
-            label={label}
-          />
-        ))}
-      </div>
+                    "&.Mui-checked": {
+                      color: "#8b4513",
+                    },
+                  }}
+                />
+              }
+              label={label}
+            />
+          ))}
+        </div>
 
-      <div style={{ marginBottom: 16 }}>
-        <Typography gutterBottom>Size</Typography>
-        {sizeOptions.map(({ key, label }) => (
-          <FormControlLabel
-            key={key}
-            control={
-              <Checkbox
-                checked={selectedSizes.includes(key)}
-                onChange={() => toggleValue(key, setSelectedSizes)}
-                sx={{
-                  color: "#8b4513",
-                  "&.Mui-checked": {
+        <div style={{ marginBottom: 16 }}>
+          <Typography gutterBottom>Size</Typography>
+          {sizeOptions.map(({ key, label }) => (
+            <FormControlLabel
+              key={key}
+              control={
+                <Checkbox
+                  checked={selectedSizes.includes(key)}
+                  onChange={() => toggleValue(key, setSelectedSizes)}
+                  sx={{
                     color: "#8b4513",
-                  },
-                }}
-              />
-            }
-            label={label}
-          />
-        ))}
-      </div>
+                    "&.Mui-checked": {
+                      color: "#8b4513",
+                    },
+                  }}
+                />
+              }
+              label={label}
+            />
+          ))}
+        </div>
 
-      <div>
-        <Button
-          variant="contained"
-          onClick={updateFilters}
-          sx={{
-            mr: 1,
-            backgroundColor: "#8b4513",
-            color: "white",
-            "&:hover": {
-              backgroundColor: "#6a340f",
-            },
-          }}
-        >
-          Apply Filters
-        </Button>
-        <Button
-          variant="outlined"
-          onClick={resetFilters}
-          sx={{
-            color: "#8b4513",
-            borderColor: "#8b4513",
-            "&:hover": {
-              backgroundColor: "rgba(139, 69, 19, 0.1)",
-              borderColor: "#6a340f",
-            },
-          }}
-        >
-          Reset
-        </Button>
-      </div>
+        <div>
+          <Button
+            variant="contained"
+            onClick={updateFilters}
+            sx={{
+              mr: 1,
+              backgroundColor: "#8b4513",
+              color: "white",
+              "&:hover": {
+                backgroundColor: "#6a340f",
+              },
+            }}
+          >
+            Apply Filters
+          </Button>
+          <Button
+            variant="outlined"
+            onClick={resetFilters}
+            sx={{
+              color: "#8b4513",
+              borderColor: "#8b4513",
+              "&:hover": {
+                backgroundColor: "rgba(139, 69, 19, 0.1)",
+                borderColor: "#6a340f",
+              },
+            }}
+          >
+            Reset
+          </Button>
+        </div>
+      </Collapse>
     </div>
   );
 };
