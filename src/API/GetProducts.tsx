@@ -1,6 +1,15 @@
 import { apiRoot } from "./Client";
+import { ProductSearchFilters } from "../types/shopTypes";
+import { buildFilterQueries } from "../utils/buildFilterQueries";
 
-export const getProducts = (limit: number, offset: number, sort?: string) => {
+export const getProducts = (
+  limit: number,
+  offset: number,
+  sort?: string,
+  filters?: ProductSearchFilters
+) => {
+  const filterQuery = buildFilterQueries(filters);
+
   const queryArgs: { [key: string]: string | number | boolean | string[] } = {
     limit,
     offset,
@@ -8,6 +17,10 @@ export const getProducts = (limit: number, offset: number, sort?: string) => {
 
   if (sort) {
     queryArgs.sort = [sort];
+  }
+
+  if (filterQuery.length > 0) {
+    queryArgs.filter = filterQuery;
   }
 
   return apiRoot
