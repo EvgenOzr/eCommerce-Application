@@ -7,6 +7,7 @@ import { ClockLoader } from "react-spinners";
 import saleIcon from "../../assets/images/Product/sale-icon.png";
 import ModalImage from "../../components/modal/ModalImage";
 import { BreadcrumbsNav } from "../../components/BreadcrumbsNav/BreadcrumbsNav";
+import { formatPrice } from "../../utils/formatPrice";
 
 export function ProductDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -137,8 +138,10 @@ export function ProductDetailPage() {
               {productDiscount ? (
                 <div className="item-container_product_price">
                   <p className="item-container_product_price_value discounted">
-                    {(detailProduct?.masterVariant.prices?.[0].value
-                      .centAmount ?? 0) / 100}{" "}
+                    {formatPrice(
+                      (detailProduct?.masterVariant.prices?.[0].value
+                        .centAmount ?? 0) / 100
+                    )}{" "}
                     $
                   </p>
                   <img
@@ -147,16 +150,20 @@ export function ProductDetailPage() {
                     className="item-container_product_price_icon"
                   />
                   <p className="item-container_product_price_discount">
-                    {(detailProduct?.masterVariant.prices?.[0].discounted?.value
-                      .centAmount ?? 0) / 100}{" "}
+                    {formatPrice(
+                      (detailProduct?.masterVariant.prices?.[0].discounted
+                        ?.value.centAmount ?? 0) / 100
+                    )}{" "}
                     $
                   </p>
                 </div>
               ) : (
                 <div className="item-container_product_price">
                   <p className="item-container_product_price_value">
-                    {(detailProduct?.masterVariant.prices?.[0].value
-                      .centAmount ?? 0) / 100}{" "}
+                    {formatPrice(
+                      (detailProduct?.masterVariant.prices?.[0].value
+                        .centAmount ?? 0) / 100
+                    )}{" "}
                     $
                   </p>
                 </div>

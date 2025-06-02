@@ -1,6 +1,7 @@
 import { ProductProjection } from "@commercetools/platform-sdk";
 import "./ProductItem.scss";
 import saleIcon from "../../assets/images/Product/sale-icon.png";
+import { formatPrice } from "../../utils/formatPrice";
 
 type ProductItem = {
   product: ProductProjection;
@@ -13,10 +14,6 @@ export const ProductItem = ({ product, onClick }: ProductItem) => {
       ? `${product.description["en-GB"].slice(0, 100)}...`
       : product.description["en-GB"]
     : "No description available";
-
-  const formatPrice = (price: number) => {
-    return Number.isInteger(price) ? price.toFixed(2) : price.toString();
-  };
 
   const productPrice =
     (product.masterVariant?.prices?.[0]?.value?.centAmount ?? 0) / 100;
