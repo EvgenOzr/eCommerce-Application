@@ -17,6 +17,7 @@ export function ProductDetailPage() {
 
   const productDiscount = detailProduct?.masterVariant?.prices?.[0].discounted;
   const imageUrlArray = detailProduct?.masterVariant.images;
+  const hasImages = (detailProduct?.masterVariant.images?.length ?? 0) > 0;
 
   const goToNext = () => {
     if (!detailProduct?.masterVariant.images) return;
@@ -165,7 +166,7 @@ export function ProductDetailPage() {
                 {detailProduct?.description?.["en-GB"]}
               </p>
             </div>
-            {selectedImage && (
+            {selectedImage && hasImages && (
               <ModalImage
                 closeModal={closeModal}
                 selectedImage={selectedImage}
