@@ -55,6 +55,10 @@ export interface CategoryWithChildren extends Category {
   children: CategoryWithChildren[];
 }
 
+export type SearchRequest = {
+  onSearch: (searchTerm: string) => void;
+};
+
 export type Option = { key: string; label: string };
 
 export type FilterSidebarProps = {
