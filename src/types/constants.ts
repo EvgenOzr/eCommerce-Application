@@ -15,3 +15,15 @@ export const SORT_OPTIONS = {
   NAME_ASC: "name.en-GB asc",
   NAME_DESC: "name.en-GB desc",
 };
+
+export enum DEFAULT_RANGE {
+  MIN = 0,
+  MAX = 500,
+}
+
+export enum PRICE_RANGE {
+  START = 0,
+  END = 100000,
+}
+
+export const CONVERT_CENT_USD = 100;

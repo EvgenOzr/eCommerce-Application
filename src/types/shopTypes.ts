@@ -58,3 +58,21 @@ export interface CategoryWithChildren extends Category {
 export type SearchRequest = {
   onSearch: (searchTerm: string) => void;
 };
+
+export type Option = { key: string; label: string };
+
+export type FilterSidebarProps = {
+  priceMinLimit: number;
+  priceMaxLimit: number;
+  brandOptions: Option[];
+  colorOptions: Option[];
+  sizeOptions: Option[];
+};
+
+export interface ProductSearchFilters {
+  priceMin?: number;
+  priceMax?: number;
+  color?: string[];
+  size?: string[];
+  brand?: string[];
+}

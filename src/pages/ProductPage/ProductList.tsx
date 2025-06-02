@@ -6,21 +6,29 @@ import { ProductItem } from "../../components/productItem/ProductItem";
 import { useNavigate, useSearchParams, useLocation } from "react-router";
 import { ClockLoader } from "react-spinners";
 import Pagination from "@mui/material/Pagination";
-import { LIMIT_ITEMS_PER_PAGE } from "../../types/constants";
+import {
+  LIMIT_ITEMS_PER_PAGE,
+  FIRST_PAGE,
+  SORT_OPTIONS,
+  DEFAULT_RANGE,
+  PRICE_RANGE,
+  CONVERT_CENT_USD,
+} from "../../types/constants";
 import { getProductsByCategory } from "../../API/GetProductsByCategory";
 import { Sidebar } from "../../components/Sidebar/Sidebar";
 import { BreadcrumbsNav } from "../../components/BreadcrumbsNav/BreadcrumbsNav";
-import { FIRST_PAGE } from "../../types/constants";
 import { getAllCategories } from "../../API/GetAllCategories";
-import { CategoryWithChildren } from "../../types/shopTypes";
+import { CategoryWithChildren, Option } from "../../types/shopTypes";
 import {
   buildCategoryTree,
   findCategoryInTreeByPath,
 } from "../../utils/categoryUtils";
 import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
-import { SORT_OPTIONS } from "../../types/constants";
 import Search from "../../components/search/Search";
 import { searchProducts } from "../../API/SearchProduct";
+import { FilterSidebar } from "../../components/ProductFilters/ProductFilters";
+import { getProductFacets } from "../../API/GetProductFacets";
+
 
 export function ProductList() {
   const location = useLocation();
@@ -50,10 +58,108 @@ export function ProductList() {
     return parts.length ? parts[parts.length - 1].replace(/-/g, " ") : "";
   })();
 
+
   const handleSearch = async (text: string) => {
     const response = await searchProducts(text);
     console.log(response);
   };
+
+  const [priceMinMax, setPriceMinMax] = useState<{ min: number; max: number }>({
+    min: DEFAULT_RANGE.MIN,
+    max: DEFAULT_RANGE.MAX,
+  });
+
+  const [brandOptions, setBrandOptions] = useState<Option[]>([]);
+  const [colorOptions, setColorOptions] = useState<Option[]>([]);
+  const [sizeOptions, setSizeOptions] = useState<Option[]>([]);
+
+  useEffect(() => {
+    const fetchFacets = async () => {
+      try {
+        const facets = await getProductFacets();
+        console.log("Facets data:", facets);
+
+        if (facets) {
+          const brandFacet = facets["variants.attributes.brand-enum.label"];
+          const colorFacet = facets["variants.attributes.color-enum.label"];
+          const sizeFacet = facets["variants.attributes.size-enum.label"];
+          const priceFacet = facets["variants.price.centAmount"];
+
+          if (
+            brandFacet &&
+            brandFacet.type === "terms" &&
+            Array.isArray(brandFacet.terms)
+          ) {
+            setBrandOptions(
+              brandFacet.terms.map((term) => ({
+                key: term.term,
+                label: term.term,
+              }))
+            );
+          } else {
+            setBrandOptions([]);
+          }
+
+          if (
+            colorFacet &&
+            colorFacet.type === "terms" &&
+            Array.isArray(colorFacet.terms)
+          ) {
+            setColorOptions(
+              colorFacet.terms.map((term) => ({
+                key: term.term,
+                label: term.term,
+              }))
+            );
+          } else {
+            setColorOptions([]);
+          }
+
+          if (
+            sizeFacet &&
+            sizeFacet.type === "terms" &&
+            Array.isArray(sizeFacet.terms)
+          ) {
+            setSizeOptions(
+              sizeFacet.terms.map((term) => ({
+                key: term.term,
+                label: term.term,
+              }))
+            );
+          } else {
+            setSizeOptions([]);
+          }
+
+          if (
+            priceFacet &&
+            priceFacet.type === "range" &&
+            Array.isArray(priceFacet.ranges) &&
+            priceFacet.ranges.length > 0
+          ) {
+            const priceRange = priceFacet.ranges[0];
+            const minOverallCents =
+              priceRange.min ?? priceRange.from ?? PRICE_RANGE.START;
+            const maxOverallCents =
+              priceRange.max ?? priceRange.to ?? PRICE_RANGE.END;
+
+            setPriceMinMax({
+              min: minOverallCents / CONVERT_CENT_USD,
+              max: maxOverallCents / CONVERT_CENT_USD,
+            });
+          } else {
+            setPriceMinMax({ min: DEFAULT_RANGE.MIN, max: DEFAULT_RANGE.MAX });
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching facets", error);
+        setBrandOptions([]);
+        setColorOptions([]);
+        setSizeOptions([]);
+        setPriceMinMax({ min: DEFAULT_RANGE.MIN, max: DEFAULT_RANGE.MAX });
+      }
+    };
+    fetchFacets();
+  }, []);
 
   useEffect(() => {
     const fetchAllCategoriesData = async () => {
@@ -81,6 +187,21 @@ export function ProductList() {
       let productsData: ProductProjection[] = [];
       let totalProductsCount = 0;
       const apiSortParam = sortOption === "" ? undefined : sortOption;
+
+      const priceMin = searchParams.get("priceMin");
+      const priceMax = searchParams.get("priceMax");
+      const brand = searchParams.getAll("brand");
+      const color = searchParams.getAll("color");
+      const size = searchParams.getAll("size");
+
+      const filters = {
+        priceMin: priceMin ? Number(priceMin) : undefined,
+        priceMax: priceMax ? Number(priceMax) : undefined,
+        brand: brand.length > 0 ? brand : undefined,
+        color: color.length > 0 ? color : undefined,
+        size: size.length > 0 ? size : undefined,
+      };
+
       try {
         const isAllProductsPage =
           location.pathname === "/products" || location.pathname === "/";
@@ -89,7 +210,8 @@ export function ProductList() {
           const data = await getProducts(
             LIMIT_ITEMS_PER_PAGE,
             offset,
-            apiSortParam
+            apiSortParam,
+            filters
           );
           productsData = data.body.results;
           totalProductsCount = data.body.total != null ? data.body.total : 0;
@@ -123,7 +245,8 @@ export function ProductList() {
               categoryIdForSubtreeFilter,
               LIMIT_ITEMS_PER_PAGE,
               offset,
-              apiSortParam
+              apiSortParam,
+              filters
             );
             productsData = data.body.results;
             totalProductsCount = data.body.total != null ? data.body.total : 0;
@@ -146,6 +269,7 @@ export function ProductList() {
     allAvailableCategories,
     categoryPathName,
     sortOption,
+    searchParams,
   ]);
 
   const handleDetailedPageClick = (id: string) => {
@@ -300,6 +424,13 @@ export function ProductList() {
       <div className="product-wrapper">
         <aside className="product-wrapper_category">
           <Sidebar />
+          <FilterSidebar
+            priceMinLimit={priceMinMax.min}
+            priceMaxLimit={priceMinMax.max}
+            brandOptions={brandOptions}
+            colorOptions={colorOptions}
+            sizeOptions={sizeOptions}
+          />
         </aside>
         <div className="product-wrapper_list">
           {products ? (

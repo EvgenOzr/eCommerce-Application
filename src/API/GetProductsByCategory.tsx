@@ -1,11 +1,14 @@
 import { apiRoot } from "./Client";
 import { ProductProjectionPagedSearchResponse } from "@commercetools/platform-sdk";
+import { ProductSearchFilters } from "../types/shopTypes";
+import { buildFilterQueries } from "../utils/buildFilterQueries";
 
 export const getProductsByCategory = async (
   categoryId: string,
   limit: number,
   offset: number,
-  sort?: string
+  sort?: string,
+  filters?: ProductSearchFilters
 ): Promise<{ body: ProductProjectionPagedSearchResponse }> => {
   if (!categoryId) {
     return {
@@ -19,15 +22,16 @@ export const getProductsByCategory = async (
     };
   }
 
-  const filterString = `categories.id:subtree("${categoryId}")`;
+  const categoryFilter = [`categories.id: subtree("${categoryId}")`];
+  const filterQuery = buildFilterQueries(filters, categoryFilter);
 
   const queryArgs: {
-    filter: string;
+    filter: string[];
     limit: number;
     offset: number;
     sort?: string[];
   } = {
-    filter: filterString,
+    filter: filterQuery,
     limit,
     offset,
   };
