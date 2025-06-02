@@ -14,6 +14,10 @@ export const ProductItem = ({ product, onClick }: ProductItem) => {
       : product.description["en-GB"]
     : "No description available";
 
+  const formatPrice = (price: number) => {
+    return Number.isInteger(price) ? price.toFixed(2) : price.toString();
+  };
+
   const productPrice =
     (product.masterVariant?.prices?.[0]?.value?.centAmount ?? 0) / 100;
   const productName = product.name["en-GB"];
@@ -41,7 +45,7 @@ export const ProductItem = ({ product, onClick }: ProductItem) => {
       {productDiscount ? (
         <div className="product-item-container_price">
           <p className="product-item-container_price_value discounted">
-            {productPrice} $
+            {formatPrice(productPrice)} $
           </p>
           <img
             src={saleIcon}
@@ -49,12 +53,14 @@ export const ProductItem = ({ product, onClick }: ProductItem) => {
             className="product-item-container_price_icon"
           />
           <p className="product-item-container_price_discount">
-            {productDiscount.value.centAmount / 100} $
+            {formatPrice(productDiscount.value.centAmount / 100)} $
           </p>
         </div>
       ) : (
         <div className="product-item-container_price">
-          <p className="product-item-container_price_value">{productPrice} $</p>
+          <p className="product-item-container_price_value">
+            {formatPrice(productPrice)} $
+          </p>
         </div>
       )}
     </div>
