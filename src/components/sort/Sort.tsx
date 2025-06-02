@@ -8,16 +8,10 @@ import {
 import { FIRST_PAGE, SORT_OPTIONS } from "../../types/constants";
 import { SortProps } from "../../types/shopTypes";
 
-function Sort({
-  sortOption,
-  setSortOption,
-  setPage,
-  setSearchParams,
-}: SortProps) {
+function Sort({ sortOption, setSortOption, setSearchParams }: SortProps) {
   const handleChange = (e: SelectChangeEvent) => {
     const value = e.target.value;
     setSortOption(value);
-    setPage(FIRST_PAGE);
     setSearchParams((prev) => {
       const params = new URLSearchParams(prev);
       if (value) {

@@ -80,7 +80,6 @@ export interface ProductSearchFilters {
 export type SortProps = {
   sortOption: string;
   setSortOption: (value: string) => void;
-  setPage: (page: number) => void;
   setSearchParams: (
     updater: (prev: URLSearchParams) => URLSearchParams
   ) => void;

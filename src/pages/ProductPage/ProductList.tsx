@@ -34,10 +34,8 @@ export function ProductList() {
   const [totalProducts, setTotalProducts] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
+  const page = Number(searchParams.get("page")) || FIRST_PAGE;
 
-  const [page, setPage] = useState(
-    () => Number(searchParams.get("page")) || FIRST_PAGE
-  );
   const navigate = useNavigate();
 
   const [allAvailableCategories, setAllAvailableCategories] = useState<
@@ -62,7 +60,11 @@ export function ProductList() {
 
   const handleSearch = (text: string) => {
     setSearchQuery(text);
-    setPage(FIRST_PAGE);
+    setSearchParams((prev) => {
+      const params = new URLSearchParams(prev);
+      params.set("page", FIRST_PAGE.toString());
+      return params;
+    });
   };
 
   const [priceMinMax, setPriceMinMax] = useState<{ min: number; max: number }>({
@@ -174,13 +176,6 @@ export function ProductList() {
   }, []);
 
   useEffect(() => {
-    const currentPage = Number(searchParams.get("page")) || FIRST_PAGE;
-    if (currentPage !== page) {
-      setPage(currentPage);
-    }
-  }, [searchParams, page]);
-
-  useEffect(() => {
     if (!searchQuery) return;
     const timer = setTimeout(async () => {
       setProducts(undefined);
@@ -201,7 +196,7 @@ export function ProductList() {
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [offset, page, searchQuery]);
+  }, [offset, searchQuery]);
 
   useEffect(() => {
     const fetchProductsData = async () => {
@@ -286,7 +281,6 @@ export function ProductList() {
     fetchProductsData();
   }, [
     location.pathname,
-    page,
     allAvailableCategories,
     categoryPathName,
     sortOption,
@@ -304,7 +298,6 @@ export function ProductList() {
   };
 
   const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value);
     setSearchParams((prev) => {
       const params = new URLSearchParams(prev);
       params.set("page", value.toString());
@@ -328,7 +321,6 @@ export function ProductList() {
           <Sort
             sortOption={sortOption}
             setSortOption={setSortOption}
-            setPage={setPage}
             setSearchParams={setSearchParams}
           />
         </div>
