@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { SearchRequest } from "../../types/shopTypes";
 
 function Search({ onSearch }: SearchRequest) {
@@ -6,15 +6,8 @@ function Search({ onSearch }: SearchRequest) {
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
+    onSearch(e.target.value);
   };
-
-  useEffect(() => {
-    const timerId = setTimeout(() => {
-      onSearch(searchTerm);
-    }, 500);
-
-    return () => clearTimeout(timerId);
-  }, [onSearch, searchTerm]);
 
   return (
     <div className="header_active-search">

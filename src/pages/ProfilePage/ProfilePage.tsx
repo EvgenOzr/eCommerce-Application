@@ -10,6 +10,7 @@ import { Tooltip } from "react-tooltip";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { RegistrationFormData } from "../../types/shopTypes";
 import ChangePassword from "../../components/changePassword/ChangePassword";
+import Banner from "../../components/banner/Banner";
 
 const ProfilePage = () => {
   const {
@@ -24,6 +25,7 @@ const ProfilePage = () => {
   const [version, setNewVersion] = useState(0);
   const [editMode, setEditMode] = useState(false);
   const [changePassMode, setChangePassMode] = useState(false);
+  const [showBanner, setShowBanner] = useState(false);
 
   useEffect(() => {
     if (isLoginned) {
@@ -44,6 +46,7 @@ const ProfilePage = () => {
 
   useEffect(() => {
     if (profile) {
+      setShowBanner(false);
       reset({
         firstName: profile.firstName,
         lastName: profile.lastName,
@@ -107,6 +110,7 @@ const ProfilePage = () => {
       setUserProfile(customerId, updateData)
         .then((updatedCustomer) => {
           setNewVersion(updatedCustomer.body.version);
+          setShowBanner(true);
           setEditMode(false);
         })
         .catch((err) => console.log("Error:", err));
@@ -115,6 +119,12 @@ const ProfilePage = () => {
 
   return (
     <>
+      {showBanner && (
+        <Banner
+          textMain="Your profile has been "
+          textAdd="successfully updated!"
+        />
+      )}
       {changePassMode ? (
         <ChangePassword
           version={version}

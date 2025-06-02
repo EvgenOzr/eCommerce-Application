@@ -76,3 +76,11 @@ export interface ProductSearchFilters {
   size?: string[];
   brand?: string[];
 }
+
+export type SortProps = {
+  sortOption: string;
+  setSortOption: (value: string) => void;
+  setSearchParams: (
+    updater: (prev: URLSearchParams) => URLSearchParams
+  ) => void;
+};

@@ -43,3 +43,23 @@
   justify-content: flex-end;
   color: variables.$textColor;
 }
+
+@media (max-width: 480px) {
+  .product-container {
+    padding: 0 10px;
+  }
+
+  .product-actions-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .product-wrapper {
+    flex-direction: column;
+
+    &_category {
+      width: 100%;
+    }
+  }
+}
