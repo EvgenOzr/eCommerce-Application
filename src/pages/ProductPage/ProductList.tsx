@@ -29,12 +29,13 @@ import { searchProducts } from "../../API/SearchProduct";
 import { FilterSidebar } from "../../components/ProductFilters/ProductFilters";
 import { getProductFacets } from "../../API/GetProductFacets";
 
-
 export function ProductList() {
   const location = useLocation();
   const [products, setProducts] = useState<ProductProjection[]>();
   const [totalProducts, setTotalProducts] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
+
   const [page, setPage] = useState(
     () => Number(searchParams.get("page")) || FIRST_PAGE
   );
@@ -58,10 +59,9 @@ export function ProductList() {
     return parts.length ? parts[parts.length - 1].replace(/-/g, " ") : "";
   })();
 
-
-  const handleSearch = async (text: string) => {
-    const response = await searchProducts(text);
-    console.log(response);
+  const handleSearch = (text: string) => {
+    setSearchQuery(text);
+    setPage(FIRST_PAGE);
   };
 
   const [priceMinMax, setPriceMinMax] = useState<{ min: number; max: number }>({
@@ -77,7 +77,6 @@ export function ProductList() {
     const fetchFacets = async () => {
       try {
         const facets = await getProductFacets();
-        console.log("Facets data:", facets);
 
         if (facets) {
           const brandFacet = facets["variants.attributes.brand-enum.label"];
@@ -203,46 +202,19 @@ export function ProductList() {
       };
 
       try {
-        const isAllProductsPage =
-          location.pathname === "/products" || location.pathname === "/";
-
-        if (isAllProductsPage) {
-          const data = await getProducts(
+        if (searchQuery) {
+          const data = await searchProducts(
+            searchQuery,
             LIMIT_ITEMS_PER_PAGE,
-            offset,
-            apiSortParam,
-            filters
+            offset
           );
           productsData = data.body.results;
           totalProductsCount = data.body.total != null ? data.body.total : 0;
-        } else if (categoryPathName && allAvailableCategories.length > 0) {
-          const pathParts = categoryPathName.split("/");
-
-          const clothesCategory = allAvailableCategories.find(
-            (cat) => cat.slug?.["en-GB"] === "clothes"
-          );
-
-          let fullCategoryTree: CategoryWithChildren[] = [];
-          if (clothesCategory) {
-            fullCategoryTree = buildCategoryTree(
-              allAvailableCategories,
-              clothesCategory.id
-            );
-          }
-
-          const targetCategoryInTree = findCategoryInTreeByPath(
-            fullCategoryTree,
-            pathParts
-          );
-
-          let categoryIdForSubtreeFilter: string | undefined;
-          if (targetCategoryInTree) {
-            categoryIdForSubtreeFilter = targetCategoryInTree.id;
-          }
-
-          if (categoryIdForSubtreeFilter) {
-            const data = await getProductsByCategory(
-              categoryIdForSubtreeFilter,
+        } else {
+          const isAllProductsPage =
+            location.pathname === "/products" || location.pathname === "/";
+          if (isAllProductsPage) {
+            const data = await getProducts(
               LIMIT_ITEMS_PER_PAGE,
               offset,
               apiSortParam,
@@ -250,9 +222,45 @@ export function ProductList() {
             );
             productsData = data.body.results;
             totalProductsCount = data.body.total != null ? data.body.total : 0;
+          } else if (categoryPathName && allAvailableCategories.length > 0) {
+            const pathParts = categoryPathName.split("/");
+
+            const clothesCategory = allAvailableCategories.find(
+              (cat) => cat.slug?.["en-GB"] === "clothes"
+            );
+
+            let fullCategoryTree: CategoryWithChildren[] = [];
+            if (clothesCategory) {
+              fullCategoryTree = buildCategoryTree(
+                allAvailableCategories,
+                clothesCategory.id
+              );
+            }
+
+            const targetCategoryInTree = findCategoryInTreeByPath(
+              fullCategoryTree,
+              pathParts
+            );
+
+            let categoryIdForSubtreeFilter: string | undefined;
+            if (targetCategoryInTree) {
+              categoryIdForSubtreeFilter = targetCategoryInTree.id;
+            }
+
+            if (categoryIdForSubtreeFilter) {
+              const data = await getProductsByCategory(
+                categoryIdForSubtreeFilter,
+                LIMIT_ITEMS_PER_PAGE,
+                offset,
+                apiSortParam,
+                filters
+              );
+              productsData = data.body.results;
+              totalProductsCount =
+                data.body.total != null ? data.body.total : 0;
+            }
           }
         }
-
         setProducts(productsData);
         setTotalProducts(totalProductsCount);
       } catch (error) {
@@ -270,6 +278,7 @@ export function ProductList() {
     categoryPathName,
     sortOption,
     searchParams,
+    searchQuery,
   ]);
 
   const handleDetailedPageClick = (id: string) => {

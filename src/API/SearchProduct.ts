@@ -5,11 +5,13 @@ import {
 import { apiRoot } from "./Client";
 
 export const searchProducts = (
-  text: string
+  text: string,
+  limit: number,
+  offset: number
 ): Promise<ClientResponse<ProductProjectionPagedSearchResponse>> => {
   return apiRoot
     .productProjections()
     .search()
-    .get({ queryArgs: { "text.en-GB": text, fuzzy: true } })
+    .get({ queryArgs: { "text.en-GB": text, fuzzy: true, limit, offset } })
     .execute();
 };
