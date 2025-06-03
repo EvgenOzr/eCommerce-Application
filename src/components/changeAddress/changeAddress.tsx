@@ -6,8 +6,8 @@ import { getProfile } from "../../API/GetProfile";
 import ModalAddAddress from "../modalAddAddress/modalAddAddress";
 import "./changeAddress.scss";
 import { useNavigate } from "react-router";
-import ModalEditAddress from "../modalEditAddress/ModaleditAddress";
 import { ClockLoader } from "react-spinners";
+import ModalEditAddress from "../modalEditAddress/modalEditAddress";
 
 const ChangeAddress = () => {
   const [profile, setProfile] = useState<Customer | undefined>();
