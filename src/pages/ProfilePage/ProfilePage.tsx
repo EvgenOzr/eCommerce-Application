@@ -10,7 +10,6 @@ import { Tooltip } from "react-tooltip";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { RegistrationFormData } from "../../types/shopTypes";
 import ChangePassword from "../../components/changePassword/ChangePassword";
-import Banner from "../../components/banner/Banner";
 
 const ProfilePage = () => {
   const {
@@ -25,7 +24,6 @@ const ProfilePage = () => {
   const [version, setNewVersion] = useState(0);
   const [editMode, setEditMode] = useState(false);
   const [changePassMode, setChangePassMode] = useState(false);
-  const [showBanner, setShowBanner] = useState(false);
 
   useEffect(() => {
     if (isLoginned) {
@@ -46,22 +44,9 @@ const ProfilePage = () => {
 
   useEffect(() => {
     if (profile) {
-      setShowBanner(false);
       reset({
         firstName: profile.firstName,
         lastName: profile.lastName,
-        billingAdresses: {
-          country: profile.addresses[0]?.country,
-          postalcode: profile.addresses[0]?.postalCode,
-          city: profile.addresses[0]?.city,
-          street: profile.addresses[0]?.streetName,
-        },
-        shippingAdresses: {
-          country: profile.addresses[1]?.country,
-          postalcode: profile.addresses[1]?.postalCode,
-          city: profile.addresses[1]?.city,
-          street: profile.addresses[1]?.streetName,
-        },
         date: profile.dateOfBirth,
         email: profile.email,
       });
@@ -83,26 +68,6 @@ const ProfilePage = () => {
         actions: [
           { action: "setFirstName", firstName: data.firstName },
           { action: "setLastName", lastName: data.lastName },
-          {
-            action: "changeAddress",
-            addressId: profile.addresses[0].id,
-            address: {
-              country: data.billingAdresses.country,
-              postalCode: data.billingAdresses.postalcode,
-              city: data.billingAdresses.city,
-              streetName: data.billingAdresses.street,
-            },
-          },
-          {
-            action: "changeAddress",
-            addressId: profile.addresses[1].id,
-            address: {
-              country: data.shippingAdresses.country,
-              postalCode: data.shippingAdresses.postalcode,
-              city: data.shippingAdresses.city,
-              streetName: data.shippingAdresses.street,
-            },
-          },
           { action: "setDateOfBirth", dateOfBirth: data.date },
           { action: "changeEmail", email: data.email },
         ],
@@ -110,7 +75,6 @@ const ProfilePage = () => {
       setUserProfile(customerId, updateData)
         .then((updatedCustomer) => {
           setNewVersion(updatedCustomer.body.version);
-          setShowBanner(true);
           setEditMode(false);
         })
         .catch((err) => console.log("Error:", err));
@@ -119,12 +83,6 @@ const ProfilePage = () => {
 
   return (
     <>
-      {showBanner && (
-        <Banner
-          textMain="Your profile has been "
-          textAdd="successfully updated!"
-        />
-      )}
       {changePassMode ? (
         <ChangePassword
           version={version}
@@ -193,232 +151,6 @@ const ProfilePage = () => {
                 variant="error"
                 isOpen={!!errors.lastName}
               />
-            </div>
-            <div className="register-input-adress-container">
-              <label className="input-country-title">BILLING ADRESS</label>
-              <div className="adress-containers">
-                <div className="register-input-country">
-                  <select
-                    className="adress-select"
-                    disabled={!editMode}
-                    data-tooltip-id="country-tooltip"
-                    data-tooltip-content={
-                      errors.billingAdresses?.country?.message
-                    }
-                    {...register("billingAdresses.country", {
-                      required: "Contry is required",
-                    })}
-                  >
-                    <option value="">Choose country</option>
-                    <option
-                      value="US"
-                      selected={
-                        profile?.addresses[0]?.country === "US" ? true : false
-                      }
-                    >
-                      United States
-                    </option>
-                    <option
-                      value="GB"
-                      selected={
-                        profile?.addresses[0]?.country === "GB" ? true : false
-                      }
-                    >
-                      Great Britain
-                    </option>
-                  </select>
-                  <Tooltip
-                    id="country-tooltip"
-                    place="top"
-                    variant="error"
-                    isOpen={!!errors.billingAdresses?.country}
-                  />
-                </div>
-                <div className="register-input-postalcode">
-                  <input
-                    type="text"
-                    className="adress-input"
-                    disabled={!editMode}
-                    placeholder="Postal Code, ex. 12345"
-                    data-tooltip-id="postalcode-tooltip"
-                    data-tooltip-content={
-                      errors.billingAdresses?.postalcode?.message
-                    }
-                    {...register("billingAdresses.postalcode", {
-                      required: "Postalcode is required",
-                      pattern: {
-                        value:
-                          /^(?:\d{5}(?:-\d{4})?|[A-Za-z]\d[A-Za-z] \d[A-Za-z]\d)$/,
-                        message: "Incorrect postal code format",
-                      },
-                    })}
-                  />
-                  <Tooltip
-                    id="postalcode-tooltip"
-                    place="top"
-                    variant="error"
-                    isOpen={!!errors.billingAdresses?.postalcode}
-                  />
-                </div>
-                <div className="register-input-city">
-                  <input
-                    type="text"
-                    disabled={!editMode}
-                    className="adress-input"
-                    placeholder="City"
-                    data-tooltip-id="city-tooltip"
-                    data-tooltip-content={errors.billingAdresses?.city?.message}
-                    {...register("billingAdresses.city", {
-                      required: "City is required",
-                      pattern: {
-                        value: /^[A-Za-zА-Яа-я\s]+$/,
-                        message: "Must contain only letters",
-                      },
-                    })}
-                  />
-                  <Tooltip
-                    id="city-tooltip"
-                    place="top"
-                    variant="error"
-                    isOpen={!!errors.billingAdresses?.city}
-                  />
-                </div>
-                <div className="register-input-street">
-                  <input
-                    type="text"
-                    className="adress-input"
-                    disabled={!editMode}
-                    placeholder="Street"
-                    data-tooltip-id="street-tooltip"
-                    data-tooltip-content={
-                      errors.billingAdresses?.street?.message
-                    }
-                    {...register("billingAdresses.street", {
-                      required: "Street is required",
-                    })}
-                  />
-                  <Tooltip
-                    id="street-tooltip"
-                    place="top"
-                    variant="error"
-                    isOpen={!!errors.billingAdresses?.street}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="register-input-adress-container">
-              <label className="input-country-title">SHIPPING ADRESS</label>
-              <div className="adress-containers">
-                <div className="register-input-country">
-                  <select
-                    className="adress-select"
-                    disabled={!editMode}
-                    data-tooltip-id="country-tooltip"
-                    data-tooltip-content={
-                      errors.shippingAdresses?.country?.message
-                    }
-                    {...register("shippingAdresses.country", {
-                      required: "Contry is required",
-                    })}
-                  >
-                    <option value="">Choose country</option>
-                    <option
-                      value="US"
-                      selected={
-                        profile?.addresses[0]?.country === "US" ? true : false
-                      }
-                    >
-                      United States
-                    </option>
-                    <option
-                      value="GB"
-                      selected={
-                        profile?.addresses[0]?.country === "GB" ? true : false
-                      }
-                    >
-                      Great Britain
-                    </option>
-                  </select>
-                  <Tooltip
-                    id="country-tooltip"
-                    place="top"
-                    variant="error"
-                    isOpen={!!errors.shippingAdresses?.country}
-                  />
-                </div>
-                <div className="register-input-postalcode">
-                  <input
-                    type="text"
-                    className="adress-input"
-                    disabled={!editMode}
-                    placeholder="Postal Code, ex. 12345"
-                    data-tooltip-id="postalcode-tooltip"
-                    data-tooltip-content={
-                      errors.shippingAdresses?.postalcode?.message
-                    }
-                    {...register("shippingAdresses.postalcode", {
-                      required: "Postalcode is required",
-                      pattern: {
-                        value:
-                          /^(?:\d{5}(?:-\d{4})?|[A-Za-z]\d[A-Za-z] \d[A-Za-z]\d)$/,
-                        message: "Incorrect postal code format",
-                      },
-                    })}
-                  />
-                  <Tooltip
-                    id="postalcode-tooltip"
-                    place="top"
-                    variant="error"
-                    isOpen={!!errors.shippingAdresses?.postalcode}
-                  />
-                </div>
-                <div className="register-input-city">
-                  <input
-                    type="text"
-                    className="adress-input"
-                    disabled={!editMode}
-                    placeholder="City"
-                    data-tooltip-id="city-tooltip"
-                    data-tooltip-content={
-                      errors.shippingAdresses?.city?.message
-                    }
-                    {...register("shippingAdresses.city", {
-                      required: "City is required",
-                      pattern: {
-                        value: /^[A-Za-zА-Яа-я\s]+$/,
-                        message: "Must contain only letters",
-                      },
-                    })}
-                  />
-                  <Tooltip
-                    id="city-tooltip"
-                    place="top"
-                    variant="error"
-                    isOpen={!!errors.shippingAdresses?.city}
-                  />
-                </div>
-                <div className="register-input-street">
-                  <input
-                    type="text"
-                    disabled={!editMode}
-                    className="adress-input"
-                    placeholder="Street"
-                    data-tooltip-id="street-tooltip"
-                    data-tooltip-content={
-                      errors.shippingAdresses?.street?.message
-                    }
-                    {...register("shippingAdresses.street", {
-                      required: "Street is required",
-                    })}
-                  />
-                  <Tooltip
-                    id="street-tooltip"
-                    place="top"
-                    variant="error"
-                    isOpen={!!errors.shippingAdresses?.street}
-                  />
-                </div>
-              </div>
             </div>
             <div className="register-input-date-container">
               <label className="register-input-name-title">BIRTHDAY</label>
@@ -498,6 +230,12 @@ const ProfilePage = () => {
                 onClick={() => setChangePassMode(true)}
               >
                 Change password
+              </button>
+              <button
+                className="login-button profile-button_edit"
+                onClick={() => navigate("/profile/address")}
+              >
+                Change addresses
               </button>
             </div>
           </form>
