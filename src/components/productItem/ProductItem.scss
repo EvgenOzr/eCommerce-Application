@@ -9,6 +9,7 @@
   transition: 0.3s ease-out;
   cursor: pointer;
   align-self: baseline;
+  padding-bottom: 10px;
 
   &:hover {
     box-shadow: 0px 0px 5px 0px #000000;
@@ -28,6 +29,10 @@
     gap: 15px;
     margin-bottom: 15px;
     padding: 10px 15px;
+
+    &_title {
+      min-height: 66px;
+    }
 
     &_inf {
       font-size: 16px;
