@@ -13,18 +13,6 @@
     align-items: center;
     z-index: 1000;
   }
-
-  &_content {
-    position: relative;
-    max-width: 90%;
-    cursor: pointer;
-
-    &_image {
-      max-width: 100%;
-      max-height: 95vh;
-      display: block;
-    }
-  }
 }
 
 .register-form-container {

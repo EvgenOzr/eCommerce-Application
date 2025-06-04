@@ -72,7 +72,7 @@ const ModalEditAddress = ({
   return (
     <div className="modal-overlay_add" onClick={closeModal}>
       <div
-        className="modal-overlay_content"
+        className="modal-overlay_add_content"
         onClick={(e) => e.stopPropagation()}
       >
         <span className="close_button" onClick={closeModal}>

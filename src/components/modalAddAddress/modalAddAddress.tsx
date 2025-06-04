@@ -93,7 +93,6 @@ const ModalAddAddress = ({ version, closeModal }: modalAddAddressType) => {
                 <option value="Billing">Billing address</option>
                 <option value="Shipping">Shipping address</option>
               </select>
-              {/* <label className="input-country-title">BILLING ADRESS</label> */}
               <div className="adress-containers">
                 <div className="register-input-country">
                   <select

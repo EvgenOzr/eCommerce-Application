@@ -68,8 +68,6 @@ const ChangeAddress = () => {
   return (
     <div>
       {profile?.addresses.map((address) => {
-        console.log(address.id && version);
-
         return (
           <div
             className="register-input-adress-container"
@@ -160,6 +158,11 @@ const ChangeAddress = () => {
           </div>
         );
       })}
+      {profile.addresses.length === 0 ? (
+        <label className="input-country-title input-country-title_nodata">
+          No adresses added
+        </label>
+      ) : null}
       <button
         className="login-button profile-button_edit"
         onClick={() => setShowAddMode(true)}
@@ -172,6 +175,7 @@ const ChangeAddress = () => {
       >
         Back to profile page
       </button>
+
       {showAddModal && (
         <ModalAddAddress version={version} closeModal={closeAddModal} />
       )}
