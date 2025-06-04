@@ -8,6 +8,7 @@ import saleIcon from "../../assets/images/Product/sale-icon.png";
 import ModalImage from "../../components/modal/ModalImage";
 import { BreadcrumbsNav } from "../../components/BreadcrumbsNav/BreadcrumbsNav";
 import { formatPrice } from "../../utils/formatPrice";
+import Button from "../../components/button/Button";
 
 export function ProductDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -172,6 +173,8 @@ export function ProductDetailPage() {
               <p className="item-container_product_description">
                 {detailProduct?.description?.["en-GB"]}
               </p>
+
+              <Button className="add" value={"Add to cart"} />
             </div>
             {selectedImage && hasImages && (
               <ModalImage
