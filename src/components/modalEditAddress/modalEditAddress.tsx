@@ -1,7 +1,8 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Tooltip } from "react-tooltip";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
+  defaultAddressType,
   modalEditAddressType,
   RegistrationFormData,
 } from "../../types/shopTypes";
@@ -15,8 +16,11 @@ const ModalEditAddress = ({
   version,
   closeModal,
   address,
+  profile,
 }: modalEditAddressType) => {
   const { customerId, isLoginned } = useContext(ShopContext);
+  const [typeAddress, setTypeAddress] = useState(false);
+  const [isDefault, setIsDefault] = useState(false);
 
   const {
     reset,
@@ -26,6 +30,7 @@ const ModalEditAddress = ({
   } = useForm<RegistrationFormData>({ mode: "all" });
 
   const navigate = useNavigate();
+
   useEffect(() => {
     if (address) {
       reset({
@@ -38,6 +43,20 @@ const ModalEditAddress = ({
       });
     }
   }, [address, reset]);
+
+  useEffect(() => {
+    if (profile.billingAddressIds?.find((item) => item == address.id)) {
+      if (profile.defaultBillingAddressId == address.id) {
+        setIsDefault(true);
+      }
+    }
+    if (profile.shippingAddressIds?.find((item) => item == address.id)) {
+      setTypeAddress(true);
+      if (profile.defaultShippingAddressId == address.id) {
+        setIsDefault(true);
+      }
+    }
+  }, [address.id, profile]);
 
   const editAddress: SubmitHandler<
     Pick<RegistrationFormData, "billingAdresses">
@@ -60,11 +79,23 @@ const ModalEditAddress = ({
     setUserProfile(customerId, updateData)
       .then((response) => {
         if (response.statusCode === 200) {
-          closeModal();
+          const updateDefault: CustomerUpdate = {
+            version: response.body.version,
+            actions: [
+              {
+                action: !typeAddress
+                  ? defaultAddressType.defaultBillingAddress
+                  : defaultAddressType.defaultShippingAddress,
+                addressId: isDefault ? address.id : undefined,
+              },
+            ],
+          };
+          setUserProfile(customerId, updateDefault).then(closeModal);
         }
       })
       .catch((err) => console.log("Error:", err));
   };
+
   if (!isLoginned) {
     navigate("/login");
   }
@@ -177,6 +208,16 @@ const ModalEditAddress = ({
                   />
                 </div>
               </div>
+            </div>
+            <div className="adress-checkbox-default-container">
+              <input
+                type="checkbox"
+                onChange={(e) => setIsDefault(e.target.checked)}
+                checked={isDefault}
+              />
+              <label htmlFor="default-billing">
+                Default for {!typeAddress ? "billing" : "shipping"}
+              </label>
             </div>
             <button type="submit" className="login-button">
               Save changes

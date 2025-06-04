@@ -120,24 +120,32 @@ const ChangeAddress = () => {
                   placeholder="Street"
                 />
               </div>
-              <div className="adress-checkbox-default-container">
-                <input
-                  type="checkbox"
-                  disabled={true}
-                  checked={address.id === profile.defaultBillingAddressId}
-                  id="default-billing"
-                />
-                <label htmlFor="default-billing">Default for billing</label>
-              </div>
-              <div className="adress-checkbox-default-container">
-                <input
-                  type="checkbox"
-                  disabled={true}
-                  checked={address.id === profile.defaultShippingAddressId}
-                  id="default-shipping"
-                />
-                <label htmlFor="default-shipping">Default for shipping</label>
-              </div>
+              {profile.billingAddressIds?.find(
+                (item) => item == address.id
+              ) && (
+                <div className="adress-checkbox-default-container">
+                  <input
+                    type="checkbox"
+                    disabled={true}
+                    checked={address.id === profile.defaultBillingAddressId}
+                    id="default-billing"
+                  />
+                  <label htmlFor="default-billing">Default for billing</label>
+                </div>
+              )}
+              {profile.shippingAddressIds?.find(
+                (item) => item == address.id
+              ) && (
+                <div className="adress-checkbox-default-container">
+                  <input
+                    type="checkbox"
+                    disabled={true}
+                    checked={address.id === profile.defaultShippingAddressId}
+                    id="default-shipping"
+                  />
+                  <label htmlFor="default-shipping">Default for shipping</label>
+                </div>
+              )}
             </div>
             <div className="profile-button_container">
               <div
@@ -184,6 +192,7 @@ const ChangeAddress = () => {
           version={version}
           closeModal={closeEditModal}
           address={selectedAddress}
+          profile={profile}
         />
       )}
     </div>

@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { Tooltip } from "react-tooltip";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
+  addAddressType,
   defaultAddressType,
   modalAddAddressType,
   RegistrationFormData,
@@ -44,21 +45,43 @@ const ModalAddAddress = ({ version, closeModal }: modalAddAddressType) => {
     };
     setUserProfile(customerId, updateData)
       .then((response) => {
-        if (defaultBilling || defaultShipping) {
-          const updateDefault: CustomerUpdate = {
+        if (response.statusCode === 200) {
+          console.log(typeAddress);
+
+          const updateType: CustomerUpdate = {
             version: response.body.version,
             actions: [
               {
-                action: defaultBilling
-                  ? defaultAddressType.defaultBillingAddress
-                  : defaultAddressType.defaultShippingAddress,
+                action: !typeAddress
+                  ? addAddressType.addBillingAddress
+                  : addAddressType.addShippingAddress,
                 addressId:
                   response.body.addresses[response.body.addresses.length - 1]
                     .id,
               },
             ],
           };
-          setUserProfile(customerId, updateDefault);
+          setUserProfile(customerId, updateType).then((response) => {
+            if (response.statusCode === 200) {
+              if (defaultBilling || defaultShipping) {
+                const updateDefault: CustomerUpdate = {
+                  version: response.body.version,
+                  actions: [
+                    {
+                      action: defaultBilling
+                        ? defaultAddressType.defaultBillingAddress
+                        : defaultAddressType.defaultShippingAddress,
+                      addressId:
+                        response.body.addresses[
+                          response.body.addresses.length - 1
+                        ].id,
+                    },
+                  ],
+                };
+                setUserProfile(customerId, updateDefault);
+              }
+            }
+          });
         }
       })
       .then(closeModal)
