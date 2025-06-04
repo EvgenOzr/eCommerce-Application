@@ -79,7 +79,7 @@ const Header = () => {
           </svg>
         </Link>
         <Link to={"/registration"} className="header_active__reg"></Link>
-        <a href="#" className="header_active__cart"></a>
+        <Link to={"/cart"} className="header_active__cart"></Link>
         <a
           href="#"
           className={`header_active__exit ${exitStyle}`}

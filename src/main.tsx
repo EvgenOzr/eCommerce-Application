@@ -13,6 +13,7 @@ import { ProductList } from "./pages/ProductPage/ProductList";
 import { ProductDetailPage } from "./pages/ProductDetailPage/ProductDetailPage";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import ChangeAddress from "./components/changeAddress/changeAddress";
+import CartPage from "./pages/CartPage/CartPage";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -30,6 +31,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/profile/address" element={<ChangeAddress />} />
             <Route path="/products/category/*" element={<ProductList />} />
+            <Route path="cart" element={<CartPage />} />
           </Routes>
           <Footer />
         </BrowserRouter>

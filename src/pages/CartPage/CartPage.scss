@@ -1,0 +1,160 @@
+@use "../../assets/variables.scss" as variables;
+
+.cart-container {
+  display: flex;
+  gap: 15px;
+  flex-direction: column;
+  max-width: 1345px;
+  width: 100%;
+
+  &_title {
+    font-family: variables.$primaryFont;
+    font-size: min(7vw, 76px);
+    color: variables.$textColor;
+    font-weight: 400;
+    line-height: 130%;
+  }
+}
+
+.cart-wrapper {
+  display: flex;
+  min-height: 70vh;
+  
+  &_items {
+    width: 50%;
+
+    &_item {
+      display: flex;
+      justify-content: space-between;
+
+      &-inf {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        &_title {
+          font-family: "Lato";
+          font-size: 24px;
+          color: variables.$textColor;
+        }
+
+        &_price {
+          display: flex;
+          align-items: center;
+          font-family: "Lato";
+          font-size: 20px;
+          color: #757575;
+          text-decoration: line-through;
+
+          &_discount {
+            font-family: "Lato";
+            font-size: 20px;
+            color: red;
+          }
+        }
+
+        &_count {
+          display: flex;
+          justify-content: space-between;
+          width: 156px;
+          padding: 15px 20px;
+          border: 1px solid #3e3e3e;
+          align-items: center;
+        }
+      }
+    }
+  }
+
+  &_order {
+    display: flex;
+    justify-content: center;
+    width: 50%;
+
+    &-item {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      min-width: 60%;
+
+      &_title {
+        font-family: "Lato";
+        font-size: 32px;
+        color: variables.$textColor;
+        text-align: left;
+      }
+    }
+  }
+
+  &_button {
+    display: flex;
+    align-self: center;
+    justify-content: center;
+    background-color: #8b4513;
+    color: #fff;
+    font-family: "Lato";
+    font-size: 20px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    padding: 10px;
+    min-width: 100%;
+
+    &:hover {
+      background-color: rgba(62, 62, 62, 0.641);
+    }
+  }
+}
+
+.order-item-price {
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+  width: 100%;
+
+  &-subtotal,
+  &-total {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &-subtotal {
+    &_title,
+    &_subtitle {
+      font-family: "Lato";
+      color: #757575;
+      font-size: 24px;
+      letter-spacing: 130%;
+    }
+  }
+
+  &-total {
+    &_title,
+    &_subtitle {
+      font-family: "Lato";
+      color: variables.$textColor;
+      font-size: 24px;
+      letter-spacing: 130%;
+    }
+  }
+}
+
+.cart-img {
+  width: 116px;
+  height: 155px;
+}
+
+.count_button {
+  font-size: 20px;
+  border: none;
+  background-color: transparent;
+}
+
+.delete_button {
+  border: none;
+  background-color: transparent;
+  align-self: flex-end;
+}
+
+.sale-icon {
+  width: 30px;
+}
