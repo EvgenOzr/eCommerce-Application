@@ -12,6 +12,7 @@ import { ShopProvider } from "./context/contextProvider";
 import { ProductList } from "./pages/ProductPage/ProductList";
 import { ProductDetailPage } from "./pages/ProductDetailPage/ProductDetailPage";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
+import ChangeAddress from "./components/changeAddress/changeAddress";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -27,6 +28,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/products" element={<ProductList />} />
             <Route path="/products/:id" element={<ProductDetailPage />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/profile/address" element={<ChangeAddress />} />
             <Route path="/products/category/*" element={<ProductList />} />
           </Routes>
           <Footer />

@@ -1,0 +1,43 @@
+@use "../../assets/variables.scss" as variables;
+
+.modal-overlay {
+  &_add {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  &_content {
+    position: relative;
+  }
+}
+
+.register-form-container {
+  background-color: #fff;
+  padding: 10px;
+}
+.register-form-title {
+  font-size: 36px;
+}
+
+.close_button {
+  position: absolute;
+  top: 0px;
+  right: 10px;
+  color: variables.$textColor;
+  font-size: 40px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.3s;
+
+  &:hover {
+    color: #ffffff;
+  }
+}
