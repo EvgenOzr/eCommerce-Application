@@ -1,4 +1,4 @@
-import { Address, Category } from "@commercetools/platform-sdk";
+import { Address, Category, Customer } from "@commercetools/platform-sdk";
 
 export interface BannerProps {
   textMain: string;
@@ -82,6 +82,11 @@ export enum defaultAddressType {
   defaultShippingAddress = "setDefaultShippingAddress",
 }
 
+export enum addAddressType {
+  addBillingAddress = "addBillingAddressId",
+  addShippingAddress = "addShippingAddressId",
+}
+
 export interface modalAddAddressType {
   version: number;
   closeModal: () => void;
@@ -91,6 +96,7 @@ export interface modalEditAddressType {
   version: number;
   closeModal: () => void;
   address: Address;
+  profile: Customer;
 }
 
 export type SortProps = {
