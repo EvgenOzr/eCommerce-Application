@@ -40,6 +40,12 @@
     padding-right: 10px;
     gap: 4px;
   }
+  &_menu-submenu-item {
+    cursor: pointer;
+  }
+  &_menu-submenu-item:hover {
+    box-shadow: 0px 0px 5px 0px #000000;
+  }
   &_menu {
     display: flex;
     line-height: 135%;
@@ -67,6 +73,12 @@
 
 p {
   margin: 0;
+}
+
+a {
+  text-decoration: none;
+  list-style-type: none;
+  color: #fff;
 }
 
 @media (max-width: 750px) {

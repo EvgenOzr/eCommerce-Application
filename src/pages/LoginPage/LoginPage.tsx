@@ -24,7 +24,8 @@ export default function LoginPage() {
     message: string;
   } | null>(null);
 
-  const { isLoginned, setLogin, setIsLoginned } = useContext(ShopContext);
+  const { isLoginned, setLogin, setIsLoginned, setCustomerId } =
+    useContext(ShopContext);
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -39,6 +40,8 @@ export default function LoginPage() {
       const response = await authRequestResponse(data.email, data.password);
       setLogin(response.body.customer.email);
       setIsLoginned(true);
+      setCustomerId(response.body.customer.id);
+      localStorage.setItem("customerId", response.body.customer.id);
       navigate("/");
     } catch (error) {
       const authApiError = authError(error);

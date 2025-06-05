@@ -12,6 +12,7 @@ const Header = () => {
 
   const handleLogOut = () => {
     localStorage.removeItem("Token");
+    localStorage.removeItem("customerId");
     setLogin("");
     setIsLoginned(false);
   };
@@ -45,29 +46,15 @@ const Header = () => {
         <Link to="/" className="header_menu_item">
           Main page
         </Link>
-        <a className="header_menu_item" href="#">
-          Catalog<div className="header_menu_catalog"></div>
-        </a>
-        <a className="header_menu_item" href="#">
-          Sale
-        </a>
-        <a className="header_menu_item" href="#">
-          New Arrival
-        </a>
-        <a className="header_menu_item" href="#">
-          About
-        </a>
+        <Link className="header_menu_item" to={"/products"}>
+          Catalog
+        </Link>
       </div>
       <div className="header_active">
-        {/* <div className="header_active-search">
-          <div className="header_active-search__glass"></div>
-          <input
-            type="text"
-            className="header_active-search__text"
-            placeholder="Search"
-          />
-        </div> */}
-        <Link to="/login" className={`header_active__user ${userStyle}`}>
+        <Link
+          to={!isLoginned ? "/login" : "/profile"}
+          className={`header_active__user ${userStyle}`}
+        >
           <svg
             width="24"
             height="24"

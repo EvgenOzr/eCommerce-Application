@@ -1,0 +1,137 @@
+@use "../../assets/variables.scss" as variables;
+
+.page-container {
+  width: 100%;
+}
+
+.item-container {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+
+  &_images {
+    display: flex;
+    width: 600px;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    &_slider {
+      position: relative;
+
+      &_buttons {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        top: 45%;
+        width: 40px;
+        height: 40px;
+        padding: 35px 30px;
+        font-size: 30px;
+        border: none;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: rgba(255, 255, 255, 0.567);
+        border-radius: 20%;
+        transition: 0.3s ease-out;
+
+        &:hover {
+          color: rgba(255, 255, 255, 0.901);
+          background-color: rgba(0, 0, 0, 0.7);
+        }
+      }
+
+      &_buttons.left_button {
+        left: 10px;
+      }
+
+      &_buttons.right_button {
+        right: 10px;
+      }
+    }
+
+    &_file {
+      width: 100%;
+      cursor: zoom-in;
+    }
+
+    &_roll {
+      display: flex;
+      gap: 5px;
+      width: 100%;
+
+      &_item {
+        width: 100%;
+        cursor: zoom-in;
+
+        &_file {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  &_product {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    gap: 30px;
+    margin: 0 10px;
+
+    &_title {
+      font-family: variables.$primaryFont;
+      text-transform: uppercase;
+      font-size: min(3vw, 76px);
+      color: variables.$textColor;
+      font-weight: 400;
+    }
+
+    &_description {
+      font-size: min(2vw, 20px);
+      line-height: 135%;
+      font-family: variables.$secondaryFont;
+      color: variables.$descriptionColor;
+    }
+
+    &_price {
+      display: flex;
+      position: relative;
+      padding: 0 15px 15px;
+      width: 100%;
+      justify-content: space-around;
+
+      &_value,
+      &_discount {
+        font-family: variables.$secondaryFont;
+        color: variables.$textColor;
+        font-size: min(2vw, 24px);
+        font-weight: 300;
+      }
+
+      &_discount {
+        color: red;
+      }
+
+      &_value.discounted {
+        text-decoration: line-through;
+      }
+
+      &_icon {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        max-width: 47px;
+        bottom: 20px;
+        object-fit: contain;
+      }
+    }
+  }
+
+  &_loader {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+  }
+}

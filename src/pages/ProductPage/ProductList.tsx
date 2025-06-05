@@ -1,0 +1,382 @@
+import { useEffect, useState } from "react";
+import { getProducts } from "../../API/GetProducts";
+import "./ProductList.scss";
+import { ProductProjection, Category } from "@commercetools/platform-sdk";
+import { ProductItem } from "../../components/productItem/ProductItem";
+import { useNavigate, useSearchParams, useLocation } from "react-router";
+import { ClockLoader } from "react-spinners";
+import Pagination from "@mui/material/Pagination";
+import {
+  LIMIT_ITEMS_PER_PAGE,
+  FIRST_PAGE,
+  DEFAULT_RANGE,
+  PRICE_RANGE,
+  CONVERT_CENT_USD,
+} from "../../types/constants";
+import { getProductsByCategory } from "../../API/GetProductsByCategory";
+import { Sidebar } from "../../components/Sidebar/Sidebar";
+import { BreadcrumbsNav } from "../../components/BreadcrumbsNav/BreadcrumbsNav";
+import { getAllCategories } from "../../API/GetAllCategories";
+import { CategoryWithChildren, Option } from "../../types/shopTypes";
+import {
+  buildCategoryTree,
+  findCategoryInTreeByPath,
+} from "../../utils/categoryUtils";
+import Search from "../../components/search/Search";
+import { searchProducts } from "../../API/SearchProduct";
+import { FilterSidebar } from "../../components/ProductFilters/ProductFilters";
+import { getProductFacets } from "../../API/GetProductFacets";
+import Sort from "../../components/sort/Sort";
+
+export function ProductList() {
+  const location = useLocation();
+  const [products, setProducts] = useState<ProductProjection[]>();
+  const [totalProducts, setTotalProducts] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = Number(searchParams.get("page")) || FIRST_PAGE;
+
+  const navigate = useNavigate();
+
+  const [allAvailableCategories, setAllAvailableCategories] = useState<
+    Category[]
+  >([]);
+
+  const [sortOption, setSortOption] = useState<string>(() => {
+    return searchParams.get("sort") || "";
+  });
+
+  const categoryPathName = location.pathname
+    .replace("/products/category/", "")
+    .replace(/\/$/, "");
+
+  const offset = (page - FIRST_PAGE) * LIMIT_ITEMS_PER_PAGE;
+
+  const lastPathPart = (() => {
+    if (!categoryPathName) return "";
+    const parts = categoryPathName.split("/");
+    return parts.length ? parts[parts.length - 1].replace(/-/g, " ") : "";
+  })();
+
+  const handleSearch = (text: string) => {
+    setSearchQuery(text);
+    setSearchParams((prev) => {
+      const params = new URLSearchParams(prev);
+      params.set("page", FIRST_PAGE.toString());
+      return params;
+    });
+  };
+
+  const [priceMinMax, setPriceMinMax] = useState<{ min: number; max: number }>({
+    min: DEFAULT_RANGE.MIN,
+    max: DEFAULT_RANGE.MAX,
+  });
+
+  const [brandOptions, setBrandOptions] = useState<Option[]>([]);
+  const [colorOptions, setColorOptions] = useState<Option[]>([]);
+  const [sizeOptions, setSizeOptions] = useState<Option[]>([]);
+
+  useEffect(() => {
+    const fetchFacets = async () => {
+      try {
+        const facets = await getProductFacets();
+
+        if (facets) {
+          const brandFacet = facets["variants.attributes.brand-enum.label"];
+          const colorFacet = facets["variants.attributes.color-enum.label"];
+          const sizeFacet = facets["variants.attributes.size-enum.label"];
+          const priceFacet = facets["variants.price.centAmount"];
+
+          if (
+            brandFacet &&
+            brandFacet.type === "terms" &&
+            Array.isArray(brandFacet.terms)
+          ) {
+            setBrandOptions(
+              brandFacet.terms.map((term) => ({
+                key: term.term,
+                label: term.term,
+              }))
+            );
+          } else {
+            setBrandOptions([]);
+          }
+
+          if (
+            colorFacet &&
+            colorFacet.type === "terms" &&
+            Array.isArray(colorFacet.terms)
+          ) {
+            setColorOptions(
+              colorFacet.terms.map((term) => ({
+                key: term.term,
+                label: term.term,
+              }))
+            );
+          } else {
+            setColorOptions([]);
+          }
+
+          if (
+            sizeFacet &&
+            sizeFacet.type === "terms" &&
+            Array.isArray(sizeFacet.terms)
+          ) {
+            setSizeOptions(
+              sizeFacet.terms.map((term) => ({
+                key: term.term,
+                label: term.term,
+              }))
+            );
+          } else {
+            setSizeOptions([]);
+          }
+
+          if (
+            priceFacet &&
+            priceFacet.type === "range" &&
+            Array.isArray(priceFacet.ranges) &&
+            priceFacet.ranges.length > 0
+          ) {
+            const priceRange = priceFacet.ranges[0];
+            const minOverallCents =
+              priceRange.min ?? priceRange.from ?? PRICE_RANGE.START;
+            const maxOverallCents =
+              priceRange.max ?? priceRange.to ?? PRICE_RANGE.END;
+
+            setPriceMinMax({
+              min: minOverallCents / CONVERT_CENT_USD,
+              max: maxOverallCents / CONVERT_CENT_USD,
+            });
+          } else {
+            setPriceMinMax({ min: DEFAULT_RANGE.MIN, max: DEFAULT_RANGE.MAX });
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching facets", error);
+        setBrandOptions([]);
+        setColorOptions([]);
+        setSizeOptions([]);
+        setPriceMinMax({ min: DEFAULT_RANGE.MIN, max: DEFAULT_RANGE.MAX });
+      }
+    };
+    fetchFacets();
+  }, []);
+
+  useEffect(() => {
+    const fetchAllCategoriesData = async () => {
+      try {
+        const data = await getAllCategories();
+        setAllAvailableCategories(data);
+      } catch (error) {
+        console.error("Error getting all categories:", error);
+      }
+    };
+    fetchAllCategoriesData();
+  }, []);
+
+  useEffect(() => {
+    if (!searchQuery) return;
+    const timer = setTimeout(async () => {
+      setProducts(undefined);
+
+      try {
+        const data = await searchProducts(
+          searchQuery,
+          LIMIT_ITEMS_PER_PAGE,
+          offset
+        );
+        setProducts(data.body.results);
+        setTotalProducts(data.body.total ?? 0);
+      } catch (error) {
+        setProducts([]);
+        setTotalProducts(0);
+        console.error("Search error:", error);
+      }
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [offset, searchQuery]);
+
+  useEffect(() => {
+    const fetchProductsData = async () => {
+      setProducts(undefined);
+      let productsData: ProductProjection[] = [];
+      let totalProductsCount = 0;
+      const apiSortParam = sortOption === "" ? undefined : sortOption;
+
+      const priceMin = searchParams.get("priceMin");
+      const priceMax = searchParams.get("priceMax");
+      const brand = searchParams.getAll("brand");
+      const color = searchParams.getAll("color");
+      const size = searchParams.getAll("size");
+
+      const filters = {
+        priceMin: priceMin ? Number(priceMin) : undefined,
+        priceMax: priceMax ? Number(priceMax) : undefined,
+        brand: brand.length > 0 ? brand : undefined,
+        color: color.length > 0 ? color : undefined,
+        size: size.length > 0 ? size : undefined,
+      };
+
+      if (searchQuery) return;
+
+      try {
+        const isAllProductsPage =
+          location.pathname === "/products" || location.pathname === "/";
+        if (isAllProductsPage) {
+          const data = await getProducts(
+            LIMIT_ITEMS_PER_PAGE,
+            offset,
+            apiSortParam,
+            filters
+          );
+          productsData = data.body.results;
+          totalProductsCount = data.body.total != null ? data.body.total : 0;
+        } else if (categoryPathName && allAvailableCategories.length > 0) {
+          const pathParts = categoryPathName.split("/");
+
+          const clothesCategory = allAvailableCategories.find(
+            (cat) => cat.slug?.["en-GB"] === "clothes"
+          );
+
+          let fullCategoryTree: CategoryWithChildren[] = [];
+          if (clothesCategory) {
+            fullCategoryTree = buildCategoryTree(
+              allAvailableCategories,
+              clothesCategory.id
+            );
+          }
+
+          const targetCategoryInTree = findCategoryInTreeByPath(
+            fullCategoryTree,
+            pathParts
+          );
+
+          let categoryIdForSubtreeFilter: string | undefined;
+          if (targetCategoryInTree) {
+            categoryIdForSubtreeFilter = targetCategoryInTree.id;
+          }
+
+          if (categoryIdForSubtreeFilter) {
+            const data = await getProductsByCategory(
+              categoryIdForSubtreeFilter,
+              LIMIT_ITEMS_PER_PAGE,
+              offset,
+              apiSortParam,
+              filters
+            );
+            productsData = data.body.results;
+            totalProductsCount = data.body.total != null ? data.body.total : 0;
+          }
+        }
+        setProducts(productsData);
+        setTotalProducts(totalProductsCount);
+      } catch (error) {
+        setProducts([]);
+        setTotalProducts(0);
+        throw new Error(String(error));
+      }
+    };
+    fetchProductsData();
+  }, [
+    location.pathname,
+    allAvailableCategories,
+    categoryPathName,
+    sortOption,
+    searchParams,
+    offset,
+    searchQuery,
+  ]);
+
+  const handleDetailedPageClick = (id: string) => {
+    navigate(`/products/${id}`, {
+      state: {
+        categoryPath: categoryPathName,
+      },
+    });
+  };
+
+  const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => {
+    setSearchParams((prev) => {
+      const params = new URLSearchParams(prev);
+      params.set("page", value.toString());
+      return params;
+    });
+  };
+
+  const totalPages = Math.ceil(totalProducts / LIMIT_ITEMS_PER_PAGE);
+
+  return (
+    <section className="product-container">
+      <BreadcrumbsNav />
+      <h2 className="product-container_title">
+        {lastPathPart ? lastPathPart.toUpperCase() : "ALL PRODUCTS"}
+      </h2>
+      <div className="product-actions-container">
+        <div className="product-search">
+          <Search onSearch={handleSearch} />
+        </div>
+        <div className="product-sort">
+          <Sort
+            sortOption={sortOption}
+            setSortOption={setSortOption}
+            setSearchParams={setSearchParams}
+          />
+        </div>
+      </div>
+      <div className="product-wrapper">
+        <aside className="product-wrapper_category">
+          <Sidebar />
+          <FilterSidebar
+            priceMinLimit={priceMinMax.min}
+            priceMaxLimit={priceMinMax.max}
+            brandOptions={brandOptions}
+            colorOptions={colorOptions}
+            sizeOptions={sizeOptions}
+          />
+        </aside>
+        <div className="product-wrapper_list">
+          {products ? (
+            products.map((product) => (
+              <ProductItem
+                key={product.id}
+                product={product}
+                onClick={() => handleDetailedPageClick(product.id)}
+              />
+            ))
+          ) : (
+            <div className="item-container_loader">
+              <ClockLoader size={150} color="#8b4513" />
+            </div>
+          )}
+          {products && products.length === 0 && (
+            <p>No products found for this category.</p>
+          )}
+        </div>
+      </div>
+      <div>
+        {totalPages > 1 && (
+          <Pagination
+            count={totalPages}
+            page={page}
+            onChange={handlePageChange}
+            shape="rounded"
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              margin: "20px 0",
+              "& .MuiPaginationItem-root.Mui-selected": {
+                backgroundColor: "#a0522d",
+                color: "#fff",
+                "&:hover": {
+                  backgroundColor: "#8b4513",
+                },
+              },
+            }}
+          />
+        )}
+      </div>
+    </section>
+  );
+}

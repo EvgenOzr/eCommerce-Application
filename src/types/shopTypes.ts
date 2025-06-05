@@ -1,3 +1,5 @@
+import { Address, Category, Customer } from "@commercetools/platform-sdk";
+
 export interface BannerProps {
   textMain: string;
   textAdd: string;
@@ -28,9 +30,79 @@ export interface RegistrationFormData {
   password: string;
 }
 
+export type ChangePasswordType = {
+  oldPassword: string;
+  password: string;
+};
+
 export type contextType = {
   login: string;
   isLoginned: boolean;
+  customerId: string;
   setLogin: (login: string) => void;
   setIsLoginned: (isLoginned: boolean) => void;
+  setCustomerId: (customerId: string) => void;
+};
+
+export type ModalType = {
+  closeModal: () => void;
+  selectedImage: string;
+  modalNext: () => void;
+  modalPrev: () => void;
+};
+
+export interface CategoryWithChildren extends Category {
+  children: CategoryWithChildren[];
+}
+
+export type SearchRequest = {
+  onSearch: (searchTerm: string) => void;
+};
+
+export type Option = { key: string; label: string };
+
+export type FilterSidebarProps = {
+  priceMinLimit: number;
+  priceMaxLimit: number;
+  brandOptions: Option[];
+  colorOptions: Option[];
+  sizeOptions: Option[];
+};
+
+export interface ProductSearchFilters {
+  priceMin?: number;
+  priceMax?: number;
+  color?: string[];
+  size?: string[];
+  brand?: string[];
+}
+
+export enum defaultAddressType {
+  defaultBillingAddress = "setDefaultBillingAddress",
+  defaultShippingAddress = "setDefaultShippingAddress",
+}
+
+export enum addAddressType {
+  addBillingAddress = "addBillingAddressId",
+  addShippingAddress = "addShippingAddressId",
+}
+
+export interface modalAddAddressType {
+  version: number;
+  closeModal: () => void;
+}
+
+export interface modalEditAddressType {
+  version: number;
+  closeModal: () => void;
+  address: Address;
+  profile: Customer;
+}
+
+export type SortProps = {
+  sortOption: string;
+  setSortOption: (value: string) => void;
+  setSearchParams: (
+    updater: (prev: URLSearchParams) => URLSearchParams
+  ) => void;
 };

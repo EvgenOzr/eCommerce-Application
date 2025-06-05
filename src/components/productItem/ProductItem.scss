@@ -1,0 +1,68 @@
+@use "../../assets/variables.scss" as variables;
+
+.product-item-container {
+  display: flex;
+  max-width: 315px;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 25px;
+  transition: 0.3s ease-out;
+  cursor: pointer;
+  align-self: baseline;
+
+  &:hover {
+    box-shadow: 0px 0px 5px 0px #000000;
+  }
+
+  &_image {
+    width: 315px;
+    height: 420px;
+    border-radius: 25px;
+    object-fit: contain;
+  }
+
+  &_description {
+    display: flex;
+    justify-content: start;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 15px;
+    padding: 10px 15px;
+
+    &_inf {
+      font-size: 16px;
+      font-family: variables.$secondaryFont;
+      color: variables.$descriptionColor;
+    }
+  }
+
+  &_price {
+    display: flex;
+    gap: 30px;
+    position: relative;
+    padding: 0 15px 15px;
+
+    &_value,
+    &_discount {
+      font-family: variables.$secondaryFont;
+      color: variables.$textColor;
+      font-size: 16px;
+      font-weight: 300;
+    }
+
+    &_discount {
+      color: red;
+    }
+
+    &_value.discounted {
+      text-decoration: line-through;
+    }
+
+    &_icon {
+      position: absolute;
+      width: 30px;
+      bottom: 10px;
+      left: 68px;
+    }
+  }
+}

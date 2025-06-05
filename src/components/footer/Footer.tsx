@@ -1,6 +1,12 @@
 import "./Footer.scss";
+import { useNavigate } from "react-router";
 
 const Footer = () => {
+  const navigate = useNavigate();
+  const handleCategoryClick = (categorySlug: string) => {
+    navigate(`/products/category/${categorySlug}`);
+  };
+
   return (
     <div className="footer">
       <div className="footer_container">
@@ -13,12 +19,26 @@ const Footer = () => {
               <span>Address</span>
             </div>
             <div className="footer_contact-data">
-              <span>: +62 859 9999 999</span>
-              <span>: dreamstoremakers@gmail.com</span>
-              <span>
-                : Lorem ipsum street Block B Number 08, Jakarta, Indonesia,
-                12345
-              </span>
+              <a
+                href="https://wa.me/628599999999"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span>: +00 000 0000 000</span>
+              </a>
+              <a href="mailto:dreamstoremakers@gmail.com">
+                <span>: dreamstoremakers@gmail.com</span>
+              </a>
+              <a
+                href="https://www.google.com/maps/search/Lorem+ipsum+street+Block+B+Number+08,+Jakarta,+Indonesia,+12345" // Пример URL для Google Maps
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span>
+                  : Lorem ipsum street Block B Number 08, Jakarta, Indonesia,
+                  12345
+                </span>
+              </a>
             </div>
           </div>
         </div>
@@ -27,27 +47,32 @@ const Footer = () => {
             <p className="footer_menu-title">Menu</p>
             <div className="footer_menu-submenu">
               <span>Sale</span>
-              <span>New Arrivals</span>
-              <span>Formal Men</span>
-              <span>Formal Woman</span>
-              <span>Casual Men</span>
-              <span>Casual Woman</span>
-            </div>
-          </div>
-          <div>
-            <p className="footer_menu-title">Get Help</p>
-            <div className="footer_menu-submenu">
-              <span>FAQ</span>
-              <span>Customer Service</span>
-              <span>Refund and Return</span>
-              <span>Terms and Conditions</span>
-              <span>Shipping</span>
+              <span
+                className="footer_menu-submenu-item"
+                onClick={() => handleCategoryClick("formal-man")}
+              >
+                Formal Men
+              </span>
+              <span
+                className="footer_menu-submenu-item"
+                onClick={() => handleCategoryClick("formal-woman")}
+              >
+                Formal Woman
+              </span>
+              <span
+                className="footer_menu-submenu-item"
+                onClick={() => handleCategoryClick("casual-style")}
+              >
+                Casual Style
+              </span>
             </div>
           </div>
           <div>
             <p className="footer_menu-title">Account</p>
             <div className="footer_menu-submenu">
-              <span>My Account</span>
+              <a href="/profile">
+                <span>My Account</span>
+              </a>
               <span>My Orders</span>
               <span>Vouchers and Discounts</span>
             </div>

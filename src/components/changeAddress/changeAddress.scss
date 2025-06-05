@@ -1,0 +1,16 @@
+.profile-button {
+  &_edit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  &_container {
+    display: flex;
+    gap: 10px;
+  }
+}
+.input-country-title_nodata {
+  display: flex;
+  font-size: 25px;
+  justify-content: center;
+}
