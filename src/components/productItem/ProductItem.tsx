@@ -2,6 +2,7 @@ import { ProductProjection } from "@commercetools/platform-sdk";
 import "./ProductItem.scss";
 import saleIcon from "../../assets/images/Product/sale-icon.png";
 import { formatPrice } from "../../utils/formatPrice";
+import Button from "../button/Button";
 
 type ProductItem = {
   product: ProductProjection;
@@ -60,6 +61,7 @@ export const ProductItem = ({ product, onClick }: ProductItem) => {
           </p>
         </div>
       )}
+      <Button value={"Add to cart"} className="add" />
     </div>
   );
 };

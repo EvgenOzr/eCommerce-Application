@@ -106,3 +106,8 @@ export type SortProps = {
     updater: (prev: URLSearchParams) => URLSearchParams
   ) => void;
 };
+
+export type ButtonProps = {
+  className: string;
+  value: string;
+};
