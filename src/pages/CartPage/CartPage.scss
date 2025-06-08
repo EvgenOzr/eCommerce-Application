@@ -21,16 +21,18 @@
   min-height: 70vh;
   
   &_items {
-    width: 50%;
+    width: 65%;
+    margin-right: 15px;
 
     &_item {
       display: flex;
       justify-content: space-between;
+      margin: 10px 0;
 
       &-inf {
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 5px;
 
         &_title {
           font-family: "Lato";
@@ -62,13 +64,17 @@
           align-items: center;
         }
       }
+      &-wrapper{
+        display: flex;
+        gap: 20px;
+      }
     }
   }
 
   &_order {
     display: flex;
     justify-content: center;
-    width: 50%;
+    width: 35%;
 
     &-item {
       display: flex;
@@ -123,7 +129,6 @@
       font-family: "Lato";
       color: #757575;
       font-size: 24px;
-      letter-spacing: 130%;
     }
   }
 
@@ -133,14 +138,12 @@
       font-family: "Lato";
       color: variables.$textColor;
       font-size: 24px;
-      letter-spacing: 130%;
     }
   }
 }
 
-.cart-img {
-  width: 116px;
-  height: 155px;
+.cart-img img{
+  max-width: 116px;
 }
 
 .count_button {
@@ -153,6 +156,14 @@
   border: none;
   background-color: transparent;
   align-self: flex-end;
+  font-family: variables.$secondaryFont;
+  background-color: variables.$mainColor;
+  color: #fff;
+  transition: 0.3s ease-in-out;
+  padding: 10px;
+  &:hover {
+    background-color: rgba(62, 62, 62, 0.641);
+  }
 }
 
 .sale-icon {

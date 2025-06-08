@@ -11,7 +11,7 @@ import { httpMiddlewareOptions } from "./BuildClient";
 import { createApiBuilderFromCtpClient } from "@commercetools/platform-sdk";
 import { tokenCache } from "../utils/token";
 
-const authenticateUser = (email: string, password: string): Client => {
+export const authenticateUser = (email: string, password: string): Client => {
   const authMiddlewareOptions: PasswordAuthMiddlewareOptions = {
     host: authUrl,
     projectKey: projectKey,

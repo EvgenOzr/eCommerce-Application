@@ -1,17 +1,55 @@
-import { useState } from "react";
+import { useEffect, useContext } from "react";
 import Banner from "../../components/banner/Banner";
 import "./CartPage.scss";
 import saleIcon from "../../assets/images/Product/sale-icon.png";
+import { ShopContext } from "../../context/shopContext";
+import { getActiveCart } from "../../API/GetActiveCart";
+import { updateItemQuantity } from "../../API/UpdateItemQuantity";
+import { removeItemFromCart } from "../../API/RemoveItemFromCart";
+import { CONVERT_CENT_USD } from "../../types/constants";
 
 function CartPage() {
-  const [count, setCount] = useState(1);
+  const { cart, setCart, customerId, anonymousId, isLoginned } =
+    useContext(ShopContext);
 
-  const handleCountUp = () => {
-    setCount((prev) => prev + 1);
+  useEffect(() => {
+    const fetchCart = async () => {
+      const activeCart = await getActiveCart({
+        customerId: isLoginned ? customerId : undefined,
+        anonymousId: !isLoginned ? anonymousId : undefined,
+      });
+      if (activeCart) {
+        setCart(activeCart);
+      }
+    };
+
+    if (!cart) {
+      fetchCart();
+    }
+  }, [cart, customerId, anonymousId, setCart, isLoginned]);
+
+  const handleQuantityChange = async (lineItemId: string, quantity: number) => {
+    if (cart) {
+      const updatedCart = await updateItemQuantity(
+        cart.id,
+        cart.version,
+        lineItemId,
+        quantity,
+        isLoginned
+      );
+      setCart(updatedCart);
+    }
   };
 
-  const handleCountDown = () => {
-    setCount((prev) => (prev > 1 ? prev - 1 : 1));
+  const handleRemoveItem = async (lineItemId: string) => {
+    if (!cart) return;
+    const updatedCart = await removeItemFromCart({
+      cartId: cart.id,
+      cartVersion: cart.version,
+      lineItemId,
+      isAuthenticated: isLoginned,
+    });
+    setCart(updatedCart);
   };
 
   return (
@@ -19,28 +57,66 @@ function CartPage() {
       <h2 className="cart-container_title">CART</h2>
       <div className="cart-wrapper">
         <div className="cart-wrapper_items">
-          <div className="cart-wrapper_items_item">
-            <div className="cart-img"></div>
-            <div className="cart-wrapper_items_item-inf">
-              <h4 className="cart-wrapper_items_item-inf_title">
-                White casual t-shirt
-              </h4>
-              <p className="cart-wrapper_items_item-inf_price">
-                400$ <img className="sale-icon" src={saleIcon} alt="" />
-              </p>
-              <p className="cart-wrapper_items_item-inf_price_discount">350$</p>
-              <div className="cart-wrapper_items_item-inf_count">
-                <button onClick={handleCountDown} className="count_button">
-                  -
-                </button>
-                <p>{count}</p>
-                <button onClick={handleCountUp} className="count_button">
-                  +
-                </button>
+          {cart?.lineItems.map((item) => (
+            <div className="cart-wrapper_items_item" key={item.id}>
+              <div className="cart-wrapper_items_item-wrapper">
+                <div className="cart-img">
+                  {item.variant.images?.[0]?.url && (
+                    <img
+                      src={item.variant.images[0].url}
+                      alt={item.name["en-GB"]}
+                    />
+                  )}
+                </div>
+                <div className="cart-wrapper_items_item-inf">
+                  <h4 className="cart-wrapper_items_item-inf_title">
+                    {item.name["en-GB"]}
+                  </h4>
+                  <p className="cart-wrapper_items_item-inf_price">
+                    {(item.price.value.centAmount / CONVERT_CENT_USD).toFixed(
+                      2
+                    )}
+                    {item.price.discounted && (
+                      <img className="sale-icon" src={saleIcon} alt="sale" />
+                    )}
+                  </p>
+                  {item.price.discounted && (
+                    <p className="cart-wrapper_items_item-inf_price_discount">
+                      {(
+                        item.price.discounted.value.centAmount /
+                        CONVERT_CENT_USD
+                      ).toFixed(2)}
+                    </p>
+                  )}
+                  <div className="cart-wrapper_items_item-inf_count">
+                    <button
+                      onClick={() =>
+                        handleQuantityChange(item.id, item.quantity - 1)
+                      }
+                      className="count_button"
+                    >
+                      -
+                    </button>
+                    <p>{item.quantity}</p>
+                    <button
+                      onClick={() =>
+                        handleQuantityChange(item.id, item.quantity + 1)
+                      }
+                      className="count_button"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
               </div>
+              <button
+                className="delete_button"
+                onClick={() => handleRemoveItem(item.id)}
+              >
+                Delete
+              </button>
             </div>
-            <button className="delete_button">Delete</button>
-          </div>
+          ))}
         </div>
         <div className="cart-wrapper_order">
           <div className="cart-wrapper_order-item">
@@ -56,7 +132,11 @@ function CartPage() {
               </div>
               <div className="order-item-price-total">
                 <p className="order-item-price-total_title">Total</p>
-                <p className="order-item-price-total_subtitle">250.00$</p>
+                <p className="order-item-price-total_subtitle">
+                  {cart?.totalPrice
+                    ? `${(cart.totalPrice.centAmount / CONVERT_CENT_USD).toFixed(2)} ${cart.totalPrice.currencyCode}`
+                    : "0.00 $"}
+                </p>
               </div>
             </div>
             <button className="cart-wrapper_button">PROCEED TO CHECKOUT</button>

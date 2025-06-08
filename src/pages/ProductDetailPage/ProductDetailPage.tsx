@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router";
 import { getProductsId } from "../../API/GetProductsId";
 import { ProductProjection } from "@commercetools/platform-sdk";
@@ -9,6 +9,9 @@ import ModalImage from "../../components/modal/ModalImage";
 import { BreadcrumbsNav } from "../../components/BreadcrumbsNav/BreadcrumbsNav";
 import { formatPrice } from "../../utils/formatPrice";
 import Button from "../../components/button/Button";
+import { ShopContext } from "../../context/shopContext";
+import { addItemToCart } from "../../API/AddItemToCart";
+import { CONVERT_CENT_USD } from "../../types/constants";
 
 export function ProductDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -16,6 +19,8 @@ export function ProductDetailPage() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [currentModalIndex, setCurrentModalIndex] = useState(0);
+
+  const { cart, setCart, isLoginned } = useContext(ShopContext);
 
   const productDiscount = detailProduct?.masterVariant?.prices?.[0].discounted;
   const imageUrlArray = detailProduct?.masterVariant.images;
@@ -59,6 +64,31 @@ export function ProductDetailPage() {
 
   const closeModal = () => {
     setSelectedImage(null);
+  };
+
+  const isInCart = (productId: string) => {
+    return cart?.lineItems.some((item) => item.productId === productId);
+  };
+
+  const handleAddToCart = async () => {
+    if (!detailProduct || !cart) return;
+
+    const alreadyInCart = isInCart(detailProduct.id);
+
+    if (alreadyInCart) return;
+
+    try {
+      const updatedCart = await addItemToCart(
+        cart.id,
+        cart.version,
+        detailProduct.id,
+        detailProduct.masterVariant.id,
+        isLoginned
+      );
+      setCart(updatedCart);
+    } catch (error) {
+      console.error("Failed to add item to cart", error);
+    }
   };
 
   useEffect(() => {
@@ -141,7 +171,7 @@ export function ProductDetailPage() {
                   <p className="item-container_product_price_value discounted">
                     {formatPrice(
                       (detailProduct?.masterVariant.prices?.[0].value
-                        .centAmount ?? 0) / 100
+                        .centAmount ?? 0) / CONVERT_CENT_USD
                     )}{" "}
                     $
                   </p>
@@ -153,7 +183,7 @@ export function ProductDetailPage() {
                   <p className="item-container_product_price_discount">
                     {formatPrice(
                       (detailProduct?.masterVariant.prices?.[0].discounted
-                        ?.value.centAmount ?? 0) / 100
+                        ?.value.centAmount ?? 0) / CONVERT_CENT_USD
                     )}{" "}
                     $
                   </p>
@@ -163,7 +193,7 @@ export function ProductDetailPage() {
                   <p className="item-container_product_price_value">
                     {formatPrice(
                       (detailProduct?.masterVariant.prices?.[0].value
-                        .centAmount ?? 0) / 100
+                        .centAmount ?? 0) / CONVERT_CENT_USD
                     )}{" "}
                     $
                   </p>
@@ -174,7 +204,19 @@ export function ProductDetailPage() {
                 {detailProduct?.description?.["en-GB"]}
               </p>
 
-              <Button className="add" value={"Add to cart"} />
+              {isInCart(detailProduct.id) ? (
+                <Button
+                  className="disabled"
+                  value={"Already in cart"}
+                  disabled
+                />
+              ) : (
+                <Button
+                  className="add"
+                  value={"Add to cart"}
+                  onClick={handleAddToCart}
+                />
+              )}
             </div>
             {selectedImage && hasImages && (
               <ModalImage
