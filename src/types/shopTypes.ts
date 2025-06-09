@@ -1,5 +1,6 @@
 import { Address, Category, Customer } from "@commercetools/platform-sdk";
 import { Cart } from "@commercetools/platform-sdk";
+import { ProductProjection } from "@commercetools/platform-sdk";
 
 export interface BannerProps {
   textMain: string;
@@ -115,6 +116,11 @@ export type SortProps = {
 export type ButtonProps = {
   className: string;
   value: string;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   disabled?: boolean;
+};
+
+export type ProductItems = {
+  product: ProductProjection;
+  onClick: (productId: string) => void;
 };
