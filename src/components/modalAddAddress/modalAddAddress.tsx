@@ -92,10 +92,15 @@ const ModalAddAddress = ({ version, closeModal }: modalAddAddressType) => {
   }
 
   return (
-    <div className="modal-overlay_add" onClick={closeModal}>
+    <div
+      className="modal-overlay_add"
+      onClick={closeModal}
+      data-testid="modal-overlay"
+    >
       <div
         className="modal-overlay_content"
         onClick={(e) => e.stopPropagation()}
+        data-testid="modal-content"
       >
         <span className="close_button" onClick={closeModal}>
           &times;
@@ -111,6 +116,7 @@ const ModalAddAddress = ({ version, closeModal }: modalAddAddressType) => {
             <div className="register-input-adress-container">
               <select
                 className="adress-select"
+                data-testid="address-type-select"
                 onChange={() => setTypeAddress(!typeAddress)}
               >
                 <option value="Billing">Billing address</option>
@@ -121,6 +127,7 @@ const ModalAddAddress = ({ version, closeModal }: modalAddAddressType) => {
                   <select
                     className="adress-select"
                     data-tooltip-id="country-tooltip"
+                    data-testid="country-select"
                     data-tooltip-content={
                       errors.billingAdresses?.country?.message
                     }
@@ -213,20 +220,26 @@ const ModalAddAddress = ({ version, closeModal }: modalAddAddressType) => {
               style={typeAddress ? { display: "none" } : { display: "flex" }}
             >
               <input
+                id="default-billing-checkbox"
                 type="checkbox"
                 onChange={(e) => setDefaultBilling(e.target.checked)}
               />
-              <label htmlFor="default-billing">Default for billing</label>
+              <label htmlFor="default-billing-checkbox">
+                Default for billing
+              </label>
             </div>
             <div
               className="adress-checkbox-default-container"
               style={!typeAddress ? { display: "none" } : { display: "flex" }}
             >
               <input
+                id="default-shipping-checkbox"
                 type="checkbox"
                 onChange={(e) => setDefaultShipping(e.target.checked)}
               />
-              <label htmlFor="default-billing">Default for shipping</label>
+              <label htmlFor="default-shipping-checkbox">
+                Default for shipping
+              </label>
             </div>
             <button type="submit" className="login-button">
               Add address

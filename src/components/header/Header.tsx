@@ -37,12 +37,16 @@ const Header = () => {
       <div
         className={`header_burger ${isMenuOpen ? "active" : ""}`}
         onClick={toggleMenu}
+        data-testid="burger-button"
       >
         <span></span>
         <span></span>
         <span></span>
       </div>
-      <div className={`header_menu ${isMenuOpen ? "active" : ""}`}>
+      <div
+        className={`header_menu ${isMenuOpen ? "active" : ""}`}
+        data-testid="menu"
+      >
         <Link to="/" className="header_menu_item">
           Main page
         </Link>
@@ -54,6 +58,7 @@ const Header = () => {
         <Link
           to={!isLoginned ? "/login" : "/profile"}
           className={`header_active__user ${userStyle}`}
+          aria-label={isLoginned ? "User profile" : "Login"}
         >
           <svg
             width="24"
@@ -84,6 +89,7 @@ const Header = () => {
           href="#"
           className={`header_active__exit ${exitStyle}`}
           onClick={handleLogOut}
+          aria-label="Logout"
         ></a>
       </div>
     </header>
