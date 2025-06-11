@@ -53,6 +53,9 @@ const Header = () => {
         <Link className="header_menu_item" to={"/products"}>
           Catalog
         </Link>
+        <Link className="header_menu_item" to={"/about"}>
+          About us
+        </Link>
       </div>
       <div className="header_active">
         <Link

@@ -1,0 +1,66 @@
+@use "../../assets/variables.scss" as variables;
+
+.about {
+  font-family: variables.$primaryFont;
+  &-container {
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
+    padding: 20px;
+    align-items: center;
+    max-width: 800px;
+    width: 100%;
+    border: 1px solid variables.$mainColor;
+  }
+  &-card {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    font-family: variables.$primaryFont;
+    font-size: 25px;
+    &_personal {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 0 20px 20px 20px;
+      &_name {
+        color: variables.$mainColor;
+        font-size: 30px;
+      }
+      &_info,
+      &_role {
+        font-size: 20px;
+      }
+      &_github {
+        color: #000;
+        transition: 0.5s all;
+        &:hover {
+          color: variables.$mainColor;
+        }
+      }
+    }
+    &_foto {
+      width: 200px;
+      flex-shrink: 0;
+      border-radius: 10px;
+      overflow: hidden;
+      img {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: cover;
+      }
+    }
+  }
+  &_logo {
+    background: url("../../assets/images/AboutPage/rss-logo.svg") center center
+      no-repeat;
+    width: 50px;
+    height: 50px;
+  }
+}
+@media (max-width: 750px) {
+  .about-card {
+    flex-direction: column;
+  }
+}
