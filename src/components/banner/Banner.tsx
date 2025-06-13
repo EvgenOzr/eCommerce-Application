@@ -14,7 +14,7 @@ const Banner = ({ textMain, textAdd }: BannerProps) => {
   }
 
   return (
-    <div className="banner">
+    <div className="banner" data-testid="banner-container">
       <div className="banner_textfield">
         <div className="banner_textMain">
           {textMain}

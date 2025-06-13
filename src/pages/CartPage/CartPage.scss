@@ -19,7 +19,7 @@
 .cart-wrapper {
   display: flex;
   min-height: 70vh;
-  
+
   &_items {
     width: 65%;
     margin-right: 15px;
@@ -64,7 +64,7 @@
           align-items: center;
         }
       }
-      &-wrapper{
+      &-wrapper {
         display: flex;
         gap: 20px;
       }
@@ -142,7 +142,7 @@
   }
 }
 
-.cart-img img{
+.cart-img img {
   max-width: 116px;
 }
 

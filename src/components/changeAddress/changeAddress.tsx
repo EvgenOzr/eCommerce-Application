@@ -62,7 +62,7 @@ const ChangeAddress = () => {
   }
 
   if (!profile) {
-    return <ClockLoader size={150} color="#8b4513" />;
+    return <ClockLoader size={150} color="#8b4513" data-testid="loader" />;
   }
 
   return (

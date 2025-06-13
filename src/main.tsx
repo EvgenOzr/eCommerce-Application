@@ -14,6 +14,7 @@ import { ProductDetailPage } from "./pages/ProductDetailPage/ProductDetailPage";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import ChangeAddress from "./components/changeAddress/changeAddress";
 import CartPage from "./pages/CartPage/CartPage";
+import AboutPage from "./pages/AboutPage/AboutPage";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -24,6 +25,7 @@ createRoot(document.getElementById("root")!).render(
           <Routes>
             <Route path="/" element={<MainPage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/about" element={<AboutPage />} />
             <Route path="/registration" element={<RegPage />} />
             <Route path="*" element={<NotFoundPage />} />
             <Route path="/products" element={<ProductList />} />
