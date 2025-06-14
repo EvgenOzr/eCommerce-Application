@@ -169,3 +169,31 @@
 .sale-icon {
   width: 30px;
 }
+
+.empty-cart-message {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 50vh;
+}
+
+.empty-cart-title {
+  font-family: "Lato";
+  font-size: 24px;
+  color: #757575;
+}
+
+.empty-cart-button {
+  color: #3e3e3e;
+  transition: 0.3s ease-in-out;
+  font-family: "Lato";
+          font-size: 18px;
+          color: #757575;
+
+  &:hover {
+    color: #8b4513;
+  }
+}
