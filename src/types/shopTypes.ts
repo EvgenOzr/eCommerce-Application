@@ -124,3 +124,9 @@ export type ProductItems = {
   product: ProductProjection;
   onClick: (productId: string) => void;
 };
+
+export type ClearCartParams = {
+  cartId: string;
+  cartVersion: number;
+  isAuthenticated: boolean;
+};

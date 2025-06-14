@@ -5,7 +5,8 @@
   gap: 15px;
   flex-direction: column;
   max-width: 1345px;
-  width: 100%;
+  width: 96%;
+  margin-left: 20px;
 
   &_title {
     font-family: variables.$primaryFont;
@@ -36,7 +37,7 @@
 
         &_title {
           font-family: "Lato";
-          font-size: 24px;
+          font-size: min(2vw, 24px);
           color: variables.$textColor;
         }
 
@@ -44,13 +45,13 @@
           display: flex;
           align-items: center;
           font-family: "Lato";
-          font-size: 20px;
+          font-size: min(2vw, 20px);
           color: #757575;
           text-decoration: line-through;
 
           &_discount {
             font-family: "Lato";
-            font-size: 20px;
+            font-size: min(2vw, 20px);
             color: red;
           }
         }
@@ -84,7 +85,7 @@
 
       &_title {
         font-family: "Lato";
-        font-size: 32px;
+        font-size: min(2vw, 32px);
         color: variables.$textColor;
         text-align: left;
       }
@@ -98,7 +99,7 @@
     background-color: #8b4513;
     color: #fff;
     font-family: "Lato";
-    font-size: 20px;
+    font-size: min(2vw, 20px);
     border: none;
     cursor: pointer;
     transition: 0.3s ease-in-out;
@@ -128,7 +129,7 @@
     &_subtitle {
       font-family: "Lato";
       color: #757575;
-      font-size: 24px;
+      font-size: min(2vw, 24px);
     }
   }
 
@@ -137,7 +138,7 @@
     &_subtitle {
       font-family: "Lato";
       color: variables.$textColor;
-      font-size: 24px;
+      font-size: min(2vw, 24px);
     }
   }
 }
@@ -147,7 +148,7 @@
 }
 
 .count_button {
-  font-size: 20px;
+  font-size: min(2vw, 20px);
   border: none;
   background-color: transparent;
 }
@@ -182,7 +183,7 @@
 
 .empty-cart-title {
   font-family: "Lato";
-  font-size: 24px;
+  font-size: min(2vw, 24px);
   color: #757575;
 }
 
@@ -190,10 +191,34 @@
   color: #3e3e3e;
   transition: 0.3s ease-in-out;
   font-family: "Lato";
-          font-size: 18px;
-          color: #757575;
+  font-size: min(2vw, 18px);
+  color: #757575;
 
   &:hover {
     color: #8b4513;
+  }
+}
+
+@media (max-width: 600px) {
+
+  .cart-container {
+    width: 90%;
+    margin-left: 0;
+  }
+
+  .cart-wrapper {
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .cart-wrapper_items_item-inf_count {
+    width: 100px;
+    padding: 5px 10px;
+  }
+
+  .cart-wrapper_items_item {
+    display: flex;
+    flex-direction: column;
   }
 }

@@ -1,4 +1,4 @@
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useState } from "react";
 import Banner from "../../components/banner/Banner";
 import "./CartPage.scss";
 import saleIcon from "../../assets/images/Product/sale-icon.png";
@@ -8,24 +8,37 @@ import { updateItemQuantity } from "../../API/UpdateItemQuantity";
 import { removeItemFromCart } from "../../API/RemoveItemFromCart";
 import { CONVERT_CENT_USD } from "../../types/constants";
 import { Link } from "react-router";
+import Button from "../../components/button/Button";
+import { clearCart } from "../../API/ClearCart";
+import { ClockLoader } from "react-spinners";
 
 function CartPage() {
   const { cart, setCart, customerId, anonymousId, isLoginned } =
     useContext(ShopContext);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchCart = async () => {
-      const activeCart = await getActiveCart({
-        customerId: isLoginned ? customerId : undefined,
-        anonymousId: !isLoginned ? anonymousId : undefined,
-      });
-      if (activeCart) {
-        setCart(activeCart);
+      setIsLoading(true);
+      try {
+        const activeCart = await getActiveCart({
+          customerId: isLoginned ? customerId : undefined,
+          anonymousId: !isLoginned ? anonymousId : undefined,
+        });
+        if (activeCart) {
+          setCart(activeCart);
+        }
+      } catch (error) {
+        console.error("Error fetching cart:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     if (!cart) {
       fetchCart();
+    } else {
+      setIsLoading(false);
     }
   }, [cart, customerId, anonymousId, setCart, isLoginned]);
 
@@ -52,6 +65,31 @@ function CartPage() {
     });
     setCart(updatedCart);
   };
+
+  const handleClearCart = async () => {
+    if (!cart) return;
+
+    try {
+      const updatedCart = await clearCart({
+        cartId: cart.id,
+        cartVersion: cart.version,
+        isAuthenticated: isLoginned,
+      });
+      setCart(updatedCart);
+    } catch (error) {
+      console.error("Failed to clear cart:", error);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <section className="cart-container">
+        <div className="item-container_loader">
+          <ClockLoader size={150} color="#8b4513" />
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="cart-container">
@@ -127,6 +165,11 @@ function CartPage() {
                 </button>
               </div>
             ))}
+            <Button
+              value="Delete all cart"
+              className="cart-delete"
+              onClick={handleClearCart}
+            />
           </div>
           <div className="cart-wrapper_order">
             <div className="cart-wrapper_order-item">
@@ -136,10 +179,10 @@ function CartPage() {
                 textAdd=" Use promo code"
               />
               <div className="order-item-price">
-                <div className="order-item-price-subtotal">
+                {/* <div className="order-item-price-subtotal">
                   <p className="order-item-price-subtotal_title">Subtotal</p>
                   <p className="order-item-price-subtotal_subtitle">300.00$</p>
-                </div>
+                </div> */}
                 <div className="order-item-price-total">
                   <p className="order-item-price-total_title">Total</p>
                   <p className="order-item-price-total_subtitle">
