@@ -7,6 +7,7 @@ import { ShopContext } from "../../context/shopContext";
 import { addItemToCart } from "../../API/AddItemToCart";
 import { ProductItems } from "../../types/shopTypes";
 import { CONVERT_CENT_USD } from "../../types/constants";
+import { removeItemFromCart } from "../../API/RemoveItemFromCart";
 
 export const ProductItem = ({ product, onClick }: ProductItems) => {
   const productDescription = product.description?.["en-GB"]
@@ -28,22 +29,36 @@ export const ProductItem = ({ product, onClick }: ProductItems) => {
     (item) => item.productId === product.id
   );
 
+  const lineItem = cart?.lineItems.find(
+    (item) => item.productId === product.id
+  );
+
   const handleAddToCart = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.stopPropagation();
 
-    if (!cart || isInCart) return;
+    if (!cart) return;
 
     try {
-      const updatedCart = await addItemToCart(
-        cart.id,
-        cart.version,
-        product.id,
-        product.masterVariant.id,
-        isLoginned
-      );
-      setCart(updatedCart);
+      if (isInCart && lineItem) {
+        const updatedCart = await removeItemFromCart({
+          cartId: cart.id,
+          cartVersion: cart.version,
+          lineItemId: lineItem.id,
+          isAuthenticated: isLoginned,
+        });
+        setCart(updatedCart);
+      } else {
+        const updatedCart = await addItemToCart(
+          cart.id,
+          cart.version,
+          product.id,
+          product.masterVariant.id,
+          isLoginned
+        );
+        setCart(updatedCart);
+      }
     } catch (error) {
       console.error("Failed to add item to cart", error);
     }
@@ -89,10 +104,9 @@ export const ProductItem = ({ product, onClick }: ProductItems) => {
         </div>
       )}
       <Button
-        value={isInCart ? "Already in cart" : "Add to cart"}
-        className={isInCart ? "disabled" : "add"}
+        value={isInCart ? "Delete from cart" : "Add to cart"}
+        className={isInCart ? "delete" : "add"}
         onClick={handleAddToCart}
-        disabled={isInCart}
       />
     </div>
   );
