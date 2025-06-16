@@ -12,6 +12,7 @@ import Button from "../../components/button/Button";
 import { ShopContext } from "../../context/shopContext";
 import { addItemToCart } from "../../API/AddItemToCart";
 import { CONVERT_CENT_USD } from "../../types/constants";
+import { removeItemFromCart } from "../../API/RemoveItemFromCart";
 
 export function ProductDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -66,26 +67,35 @@ export function ProductDetailPage() {
     setSelectedImage(null);
   };
 
-  const isInCart = (productId: string) => {
-    return cart?.lineItems.some((item) => item.productId === productId);
-  };
+  const isInCart = cart?.lineItems.some(
+    (item) => item.productId === detailProduct?.id
+  );
+  const lineItem = cart?.lineItems.find(
+    (item) => item.productId === detailProduct?.id
+  );
 
-  const handleAddToCart = async () => {
+  const handleCartAction = async () => {
     if (!detailProduct || !cart) return;
 
-    const alreadyInCart = isInCart(detailProduct.id);
-
-    if (alreadyInCart) return;
-
     try {
-      const updatedCart = await addItemToCart(
-        cart.id,
-        cart.version,
-        detailProduct.id,
-        detailProduct.masterVariant.id,
-        isLoginned
-      );
-      setCart(updatedCart);
+      if (isInCart && lineItem) {
+        const updatedCart = await removeItemFromCart({
+          cartId: cart.id,
+          cartVersion: cart.version,
+          lineItemId: lineItem.id,
+          isAuthenticated: isLoginned,
+        });
+        setCart(updatedCart);
+      } else {
+        const updatedCart = await addItemToCart(
+          cart.id,
+          cart.version,
+          detailProduct.id,
+          detailProduct.masterVariant.id,
+          isLoginned
+        );
+        setCart(updatedCart);
+      }
     } catch (error) {
       console.error("Failed to add item to cart", error);
     }
@@ -203,20 +213,11 @@ export function ProductDetailPage() {
               <p className="item-container_product_description">
                 {detailProduct?.description?.["en-GB"]}
               </p>
-
-              {isInCart(detailProduct.id) ? (
-                <Button
-                  className="disabled"
-                  value={"Already in cart"}
-                  disabled
-                />
-              ) : (
-                <Button
-                  className="add"
-                  value={"Add to cart"}
-                  onClick={handleAddToCart}
-                />
-              )}
+              <Button
+                value={isInCart ? "Delete from cart" : "Add to cart"}
+                className={isInCart ? "delete" : "add"}
+                onClick={handleCartAction}
+              />
             </div>
             {selectedImage && hasImages && (
               <ModalImage

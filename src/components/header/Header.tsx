@@ -7,8 +7,9 @@ const Header = () => {
   const [userStyle, setUserStyle] = useState("");
   const [exitStyle, setExitStyle] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [cartItemsCount, setCartItemsCount] = useState(0);
 
-  const { isLoginned, setLogin, setIsLoginned } = useContext(ShopContext);
+  const { isLoginned, setLogin, setIsLoginned, cart } = useContext(ShopContext);
 
   const handleLogOut = () => {
     localStorage.removeItem("Token");
@@ -30,6 +31,15 @@ const Header = () => {
       setExitStyle("");
     }
   }, [isLoginned]);
+
+  useEffect(() => {
+    if (cart?.lineItems) {
+      const count = cart.lineItems.length;
+      setCartItemsCount(count);
+    } else {
+      setCartItemsCount(0);
+    }
+  }, [cart]);
 
   return (
     <header className="header">
@@ -87,7 +97,11 @@ const Header = () => {
           </svg>
         </Link>
         <Link to={"/registration"} className="header_active__reg"></Link>
-        <Link to={"/cart"} className="header_active__cart"></Link>
+        <Link to={"/cart"} className="header_active__cart">
+          {cartItemsCount > 0 && (
+            <span className="cart-badge">{cartItemsCount}</span>
+          )}
+        </Link>
         <a
           href="#"
           className={`header_active__exit ${exitStyle}`}
