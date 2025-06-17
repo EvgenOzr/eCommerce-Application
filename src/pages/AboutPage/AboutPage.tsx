@@ -15,6 +15,21 @@ const AboutPage = () => {
               <div className="about-card_personal_role">
                 Role in project: {item.role}
               </div>
+              <div className="about-card-contributions">
+                <div className="about-card-contributions_title">
+                  Contributions
+                </div>
+                <ul className="about-card-contributions_list">
+                  {item.contributions?.map((cont) => {
+                    return (
+                      <li className="about-card-contributions_item">
+                        <div className="about-card-contributions_point"></div>
+                        {cont}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
               <a href={item.github} className="about-card_personal_github">
                 Github profile
               </a>
