@@ -16,7 +16,15 @@
     line-height: 130%;
   }
 }
-
+.cart-promocode {
+  border: 1px solid #8b4513;
+  color: #8b4513;
+  font-family: "Lato";
+  width: 100%;
+  height: 33px;
+  padding-left: 10px;
+  outline: none;
+}
 .cart-wrapper {
   display: flex;
   min-height: 70vh;
@@ -122,6 +130,7 @@
   &-total {
     display: flex;
     justify-content: space-between;
+    align-items: baseline;
   }
 
   &-subtotal {
@@ -137,8 +146,14 @@
     &_title,
     &_subtitle {
       font-family: "Lato";
-      color: variables.$textColor;
+      // color: variables.$textColor;
+      color: red;
       font-size: min(2vw, 24px);
+    }
+    &_subtitle_promo {
+      font-size: min(2vw, 20px);
+      color: gray;
+      text-decoration: line-through;
     }
   }
 }

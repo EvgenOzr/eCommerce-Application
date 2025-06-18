@@ -15,6 +15,11 @@ const AboutPage = () => {
               <div className="about-card_personal_role">
                 Role in project: {item.role}
               </div>
+              <a href={item.github} className="about-card_personal_github">
+                Github profile
+              </a>
+            </div>
+            <div className="about-card_footer">
               <div className="about-card-contributions">
                 <div className="about-card-contributions_title">
                   Contributions
@@ -30,12 +35,9 @@ const AboutPage = () => {
                   })}
                 </ul>
               </div>
-              <a href={item.github} className="about-card_personal_github">
-                Github profile
-              </a>
-            </div>
-            <div className="about-card_foto">
-              <img src={item.foto} alt="profilefoto" />
+              <div className="about-card_foto">
+                <img src={item.foto} alt="profilefoto" />
+              </div>
             </div>
           </div>
         );

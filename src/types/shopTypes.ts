@@ -130,3 +130,10 @@ export type ClearCartParams = {
   cartVersion: number;
   isAuthenticated: boolean;
 };
+
+export type addPromoParams = {
+  cartId: string;
+  cartVersion: number;
+  isAuthenticated: boolean;
+  promocode: string;
+};

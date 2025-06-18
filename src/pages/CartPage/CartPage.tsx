@@ -1,4 +1,4 @@
-import { useEffect, useContext, useState } from "react";
+import { useEffect, useContext, useState, ChangeEvent } from "react";
 import Banner from "../../components/banner/Banner";
 import "./CartPage.scss";
 import saleIcon from "../../assets/images/Product/sale-icon.png";
@@ -11,11 +11,13 @@ import { Link } from "react-router";
 import Button from "../../components/button/Button";
 import { clearCart } from "../../API/ClearCart";
 import { ClockLoader } from "react-spinners";
+import { addPromocode } from "../../API/AddPromocode";
 
 function CartPage() {
   const { cart, setCart, customerId, anonymousId, isLoginned } =
     useContext(ShopContext);
   const [isLoading, setIsLoading] = useState(true);
+  const [promocode, setPromocode] = useState("");
 
   useEffect(() => {
     const fetchCart = async () => {
@@ -78,6 +80,28 @@ function CartPage() {
       setCart(updatedCart);
     } catch (error) {
       console.error("Failed to clear cart:", error);
+    }
+  };
+
+  const handlePromoChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setPromocode(e.target.value);
+  };
+
+  const handleActivatePromocode = async () => {
+    if (!cart) return;
+
+    try {
+      const addPromo = await addPromocode({
+        cartId: cart.id,
+        cartVersion: cart.version,
+        isAuthenticated: isLoginned,
+        promocode: promocode,
+      });
+      setCart(addPromo);
+    } catch (error) {
+      console.error("Failed to add promo cart:", error);
+    } finally {
+      setPromocode("");
     }
   };
 
@@ -175,9 +199,22 @@ function CartPage() {
             <div className="cart-wrapper_order-item">
               <h3 className="cart-wrapper_order-item_title">SHOPPING INFO</h3>
               <Banner
-                textMain="Hooray! You have promo code"
-                textAdd=" Use promo code"
+                textMain="Hooray! You have promo code - "
+                textAdd="SUMMER10"
               />
+              <input
+                type="text"
+                className="cart-promocode"
+                placeholder="Use promo here"
+                onChange={handlePromoChange}
+                value={promocode}
+              />
+              <button
+                className="cart-wrapper_button"
+                onClick={handleActivatePromocode}
+              >
+                Activate promocode
+              </button>
               <div className="order-item-price">
                 {/* <div className="order-item-price-subtotal">
                   <p className="order-item-price-subtotal_title">Subtotal</p>
@@ -185,6 +222,11 @@ function CartPage() {
                 </div> */}
                 <div className="order-item-price-total">
                   <p className="order-item-price-total_title">Total</p>
+                  <p className="order-item-price-total_subtitle_promo">
+                    {cart?.discountOnTotalPrice
+                      ? `${(cart.discountOnTotalPrice?.discountedAmount.centAmount / CONVERT_CENT_USD + cart.totalPrice.centAmount / CONVERT_CENT_USD).toFixed(2)} ${cart.totalPrice.currencyCode}`
+                      : ""}
+                  </p>
                   <p className="order-item-price-total_subtitle">
                     {cart?.totalPrice
                       ? `${(cart.totalPrice.centAmount / CONVERT_CENT_USD).toFixed(2)} ${cart.totalPrice.currencyCode}`
