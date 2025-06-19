@@ -213,6 +213,19 @@
   }
 }
 
+.cart-modal {
+  position: "absolute";
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  background-color: variables.$mainColor;
+  box-shadow: 24;
+  &_buttons {
+    justify-content: center !important;
+  }
+}
+
 @media (max-width: 600px) {
   .cart-container {
     width: 90%;

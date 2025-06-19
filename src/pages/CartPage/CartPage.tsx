@@ -12,12 +12,16 @@ import Button from "../../components/button/Button";
 import { clearCart } from "../../API/ClearCart";
 import { ClockLoader } from "react-spinners";
 import { addPromocode } from "../../API/AddPromocode";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogTitle from "@mui/material/DialogTitle";
 
 function CartPage() {
   const { cart, setCart, customerId, anonymousId, isLoginned } =
     useContext(ShopContext);
   const [isLoading, setIsLoading] = useState(true);
   const [promocode, setPromocode] = useState("");
+  const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
     const fetchCart = async () => {
@@ -80,11 +84,20 @@ function CartPage() {
       setCart(updatedCart);
     } catch (error) {
       console.error("Failed to clear cart:", error);
+    } finally {
+      handleCloseModal();
     }
   };
 
   const handlePromoChange = (e: ChangeEvent<HTMLInputElement>) => {
     setPromocode(e.target.value);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+  const handleOpenModal = () => {
+    setOpenModal(true);
   };
 
   const handleActivatePromocode = async () => {
@@ -192,7 +205,8 @@ function CartPage() {
             <Button
               value="Delete all cart"
               className="cart-delete"
-              onClick={handleClearCart}
+              // onClick={handleClearCart}
+              onClick={handleOpenModal}
             />
           </div>
           <div className="cart-wrapper_order">
@@ -216,10 +230,6 @@ function CartPage() {
                 Activate promocode
               </button>
               <div className="order-item-price">
-                {/* <div className="order-item-price-subtotal">
-                  <p className="order-item-price-subtotal_title">Subtotal</p>
-                  <p className="order-item-price-subtotal_subtitle">300.00$</p>
-                </div> */}
                 <div className="order-item-price-total">
                   <p className="order-item-price-total_title">Total</p>
                   <p className="order-item-price-total_subtitle_promo">
@@ -241,6 +251,27 @@ function CartPage() {
           </div>
         </div>
       )}
+      <Dialog
+        open={openModal}
+        onClose={handleCloseModal}
+        aria-labelledby="alert-dialog-title"
+      >
+        <DialogTitle id="alert-dialog-title">
+          Are you sure delete all cart value?
+        </DialogTitle>
+        <DialogActions className="cart-modal_buttons">
+          <Button
+            className="cart-delete"
+            value="Ok"
+            onClick={handleClearCart}
+          />
+          <Button
+            className="cart-delete"
+            value="Cancel"
+            onClick={handleCloseModal}
+          />
+        </DialogActions>
+      </Dialog>
     </section>
   );
 }
