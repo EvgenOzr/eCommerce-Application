@@ -7,8 +7,9 @@ const Header = () => {
   const [userStyle, setUserStyle] = useState("");
   const [exitStyle, setExitStyle] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [cartItemsCount, setCartItemsCount] = useState(0);
 
-  const { isLoginned, setLogin, setIsLoginned } = useContext(ShopContext);
+  const { isLoginned, setLogin, setIsLoginned, cart } = useContext(ShopContext);
 
   const handleLogOut = () => {
     localStorage.removeItem("Token");
@@ -31,29 +32,46 @@ const Header = () => {
     }
   }, [isLoginned]);
 
+  useEffect(() => {
+    if (cart?.lineItems) {
+      const count = cart.lineItems.length;
+      setCartItemsCount(count);
+    } else {
+      setCartItemsCount(0);
+    }
+  }, [cart]);
+
   return (
     <header className="header">
       <div className="header_title">modeva</div>
       <div
         className={`header_burger ${isMenuOpen ? "active" : ""}`}
         onClick={toggleMenu}
+        data-testid="burger-button"
       >
         <span></span>
         <span></span>
         <span></span>
       </div>
-      <div className={`header_menu ${isMenuOpen ? "active" : ""}`}>
+      <div
+        className={`header_menu ${isMenuOpen ? "active" : ""}`}
+        data-testid="menu"
+      >
         <Link to="/" className="header_menu_item">
           Main page
         </Link>
         <Link className="header_menu_item" to={"/products"}>
           Catalog
         </Link>
+        <Link className="header_menu_item" to={"/about"}>
+          About us
+        </Link>
       </div>
       <div className="header_active">
         <Link
           to={!isLoginned ? "/login" : "/profile"}
           className={`header_active__user ${userStyle}`}
+          aria-label={isLoginned ? "User profile" : "Login"}
         >
           <svg
             width="24"
@@ -79,11 +97,16 @@ const Header = () => {
           </svg>
         </Link>
         <Link to={"/registration"} className="header_active__reg"></Link>
-        <a href="#" className="header_active__cart"></a>
+        <Link to={"/cart"} className="header_active__cart">
+          {cartItemsCount > 0 && (
+            <span className="cart-badge">{cartItemsCount}</span>
+          )}
+        </Link>
         <a
           href="#"
           className={`header_active__exit ${exitStyle}`}
           onClick={handleLogOut}
+          aria-label="Logout"
         ></a>
       </div>
     </header>

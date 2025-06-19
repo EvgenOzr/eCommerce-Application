@@ -8,10 +8,15 @@ export default function ModalImage({
   modalPrev,
 }: ModalType) {
   return (
-    <div className="modal_overlay" onClick={closeModal}>
+    <div
+      className="modal_overlay"
+      onClick={closeModal}
+      data-testid="modal-overlay"
+    >
       <div
         className="modal_overlay_content"
         onClick={(e) => e.stopPropagation()}
+        data-testid="modal-content"
       >
         <span className="close_button" onClick={closeModal}>
           &times;

@@ -1,12 +1,20 @@
-import { ctpClient } from "./BuildClient";
-import {
-  //TODO   ApiRoot,
-  createApiBuilderFromCtpClient,
-} from "@commercetools/platform-sdk";
+import { ctpClient, ctpAnonymousClient, ctpUserClient } from "./BuildClient";
+import { createApiBuilderFromCtpClient } from "@commercetools/platform-sdk";
+import { projectKey } from "../types/constants";
 
 export const apiRoot = createApiBuilderFromCtpClient(ctpClient).withProjectKey({
-  projectKey: import.meta.env.VITE_CTP_PROJECT_KEY,
+  projectKey,
 });
+
+export const apiRootAnonymous = createApiBuilderFromCtpClient(
+  ctpAnonymousClient
+).withProjectKey({
+  projectKey,
+});
+
+export const apiRootUser = createApiBuilderFromCtpClient(
+  ctpUserClient
+).withProjectKey({ projectKey });
 
 export const getProject = () => {
   return apiRoot.get().execute();

@@ -1,0 +1,272 @@
+@use "../../assets/variables.scss" as variables;
+
+.cart-container {
+  display: flex;
+  gap: 15px;
+  flex-direction: column;
+  max-width: 1345px;
+  width: 96%;
+  margin-left: 20px;
+
+  &_title {
+    font-family: variables.$primaryFont;
+    font-size: min(7vw, 76px);
+    color: variables.$textColor;
+    font-weight: 400;
+    line-height: 130%;
+  }
+}
+.cart-promocode {
+  border: 1px solid #8b4513;
+  color: #8b4513;
+  font-family: "Lato";
+  width: 100%;
+  height: 33px;
+  padding-left: 10px;
+  outline: none;
+}
+.cart-wrapper {
+  display: flex;
+  min-height: 70vh;
+
+  &_items {
+    width: 65%;
+    margin-right: 15px;
+
+    &_item {
+      display: flex;
+      justify-content: space-between;
+      margin: 10px 0;
+
+      &-inf {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+
+        &_title {
+          font-family: "Lato";
+          font-size: min(2vw, 24px);
+          color: variables.$textColor;
+        }
+
+        &_price {
+          display: flex;
+          align-items: center;
+          font-family: "Lato";
+          font-size: min(2vw, 20px);
+          color: #757575;
+          text-decoration: line-through;
+
+          &_discount {
+            font-family: "Lato";
+            font-size: min(2vw, 20px);
+            color: red;
+          }
+        }
+
+        &_count {
+          display: flex;
+          justify-content: space-between;
+          width: 156px;
+          padding: 15px 20px;
+          border: 1px solid #3e3e3e;
+          align-items: center;
+        }
+      }
+      &-wrapper {
+        display: flex;
+        gap: 20px;
+      }
+    }
+  }
+
+  &_order {
+    display: flex;
+    justify-content: center;
+    width: 35%;
+
+    &-item {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      min-width: 60%;
+
+      &_title {
+        font-family: "Lato";
+        font-size: min(2vw, 32px);
+        color: variables.$textColor;
+        text-align: left;
+      }
+    }
+  }
+
+  &_button {
+    display: flex;
+    align-self: center;
+    justify-content: center;
+    background-color: #8b4513;
+    color: #fff;
+    font-family: "Lato";
+    font-size: 20px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    padding: 10px;
+    min-width: 100%;
+
+    &:hover {
+      background-color: rgba(62, 62, 62, 0.641);
+    }
+  }
+}
+
+.order-item-price {
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+  width: 100%;
+
+  &-subtotal,
+  &-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  &-subtotal {
+    &_title,
+    &_subtitle {
+      font-family: "Lato";
+      color: #757575;
+      font-size: 20px;
+    }
+  }
+
+  &-total {
+    &_title,
+    &_subtitle {
+      font-family: "Lato";
+      color: red;
+      font-size: min(2vw, 24px);
+    }
+    &_subtitle_promo {
+      font-size: min(2vw, 20px);
+      color: gray;
+      text-decoration: line-through;
+    }
+  }
+}
+
+.cart-img img {
+  max-width: 116px;
+}
+
+.count_button {
+  font-size: min(2vw, 20px);
+  border: none;
+  background-color: transparent;
+}
+
+.delete_button {
+  border: none;
+  background-color: transparent;
+  align-self: flex-end;
+  font-family: variables.$secondaryFont;
+  background-color: variables.$mainColor;
+  color: #fff;
+  transition: 0.3s ease-in-out;
+  padding: 10px;
+  &:hover {
+    background-color: rgba(62, 62, 62, 0.641);
+  }
+}
+
+.sale-icon {
+  width: 30px;
+}
+
+.empty-cart-message {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 50vh;
+}
+
+.empty-cart-title {
+  font-family: "Lato";
+  font-size: min(2vw, 24px);
+  color: #757575;
+}
+
+.empty-cart-button {
+  color: #3e3e3e;
+  transition: 0.3s ease-in-out;
+  font-family: "Lato";
+  font-size: min(2vw, 18px);
+  color: #757575;
+
+  &:hover {
+    color: #8b4513;
+  }
+}
+
+.cart-modal {
+  position: "absolute";
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  background-color: variables.$mainColor;
+  box-shadow: 24;
+  &_buttons {
+    justify-content: center !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .cart-container {
+    width: 90%;
+    margin-left: 0;
+  }
+
+  .cart-wrapper {
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    &_order {
+      width: 100%;
+      &-item_title {
+        font-size: 20px;
+      }
+    }
+  }
+  .cart-wrapper_items_item-inf {
+    &_count {
+      width: 100px;
+      padding: 5px 10px;
+    }
+    &_title,
+    &_price {
+      font-size: 14px;
+    }
+  }
+
+  .cart-wrapper_items_item {
+    display: flex;
+    flex-direction: column;
+  }
+  .order-item-price-total {
+    &_title {
+      font-size: 20px;
+    }
+    &_subtitle {
+      font-size: 20px;
+      &_promo {
+        font-size: 20px;
+      }
+    }
+  }
+}

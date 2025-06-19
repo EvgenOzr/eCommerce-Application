@@ -1,14 +1,15 @@
-import { ProductProjection } from "@commercetools/platform-sdk";
 import "./ProductItem.scss";
 import saleIcon from "../../assets/images/Product/sale-icon.png";
 import { formatPrice } from "../../utils/formatPrice";
+import Button from "../button/Button";
+import { useContext } from "react";
+import { ShopContext } from "../../context/shopContext";
+import { addItemToCart } from "../../API/AddItemToCart";
+import { ProductItems } from "../../types/shopTypes";
+import { CONVERT_CENT_USD } from "../../types/constants";
+import { removeItemFromCart } from "../../API/RemoveItemFromCart";
 
-type ProductItem = {
-  product: ProductProjection;
-  onClick: (productId: string) => void;
-};
-
-export const ProductItem = ({ product, onClick }: ProductItem) => {
+export const ProductItem = ({ product, onClick }: ProductItems) => {
   const productDescription = product.description?.["en-GB"]
     ? product.description["en-GB"].length > 30
       ? `${product.description["en-GB"].slice(0, 100)}...`
@@ -16,10 +17,52 @@ export const ProductItem = ({ product, onClick }: ProductItem) => {
     : "No description available";
 
   const productPrice =
-    (product.masterVariant?.prices?.[0]?.value?.centAmount ?? 0) / 100;
+    (product.masterVariant?.prices?.[0]?.value?.centAmount ?? 0) /
+    CONVERT_CENT_USD;
   const productName = product.name["en-GB"];
 
   const productDiscount = product.masterVariant?.prices?.[0].discounted;
+
+  const { cart, setCart, isLoginned } = useContext(ShopContext);
+
+  const isInCart = cart?.lineItems.some(
+    (item) => item.productId === product.id
+  );
+
+  const lineItem = cart?.lineItems.find(
+    (item) => item.productId === product.id
+  );
+
+  const handleAddToCart = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.stopPropagation();
+
+    if (!cart) return;
+
+    try {
+      if (isInCart && lineItem) {
+        const updatedCart = await removeItemFromCart({
+          cartId: cart.id,
+          cartVersion: cart.version,
+          lineItemId: lineItem.id,
+          isAuthenticated: isLoginned,
+        });
+        setCart(updatedCart);
+      } else {
+        const updatedCart = await addItemToCart(
+          cart.id,
+          cart.version,
+          product.id,
+          product.masterVariant.id,
+          isLoginned
+        );
+        setCart(updatedCart);
+      }
+    } catch (error) {
+      console.error("Failed to add item to cart", error);
+    }
+  };
 
   return (
     <div className="product-item-container" onClick={() => onClick(product.id)}>
@@ -50,7 +93,7 @@ export const ProductItem = ({ product, onClick }: ProductItem) => {
             className="product-item-container_price_icon"
           />
           <p className="product-item-container_price_discount">
-            {formatPrice(productDiscount.value.centAmount / 100)} $
+            {formatPrice(productDiscount.value.centAmount / CONVERT_CENT_USD)} $
           </p>
         </div>
       ) : (
@@ -60,6 +103,11 @@ export const ProductItem = ({ product, onClick }: ProductItem) => {
           </p>
         </div>
       )}
+      <Button
+        value={isInCart ? "Delete from cart" : "Add to cart"}
+        className={isInCart ? "delete" : "add"}
+        onClick={handleAddToCart}
+      />
     </div>
   );
 };

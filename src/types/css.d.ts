@@ -6,3 +6,7 @@ declare module "*.sass" {
   const css: { [key: string]: string };
   export default css;
 }
+declare module "*.jpg" {
+  const src: string;
+  export default src;
+}

@@ -1,4 +1,6 @@
 import { Address, Category, Customer } from "@commercetools/platform-sdk";
+import { Cart } from "@commercetools/platform-sdk";
+import { ProductProjection } from "@commercetools/platform-sdk";
 
 export interface BannerProps {
   textMain: string;
@@ -39,9 +41,13 @@ export type contextType = {
   login: string;
   isLoginned: boolean;
   customerId: string;
+  anonymousId: string;
+  cart: Cart | null;
   setLogin: (login: string) => void;
   setIsLoginned: (isLoginned: boolean) => void;
   setCustomerId: (customerId: string) => void;
+  setAnonymousId: (anonymousId: string) => void;
+  setCart: (cart: Cart | null) => void;
 };
 
 export type ModalType = {
@@ -105,4 +111,29 @@ export type SortProps = {
   setSearchParams: (
     updater: (prev: URLSearchParams) => URLSearchParams
   ) => void;
+};
+
+export type ButtonProps = {
+  className: string;
+  value: string;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  disabled?: boolean;
+};
+
+export type ProductItems = {
+  product: ProductProjection;
+  onClick: (productId: string) => void;
+};
+
+export type ClearCartParams = {
+  cartId: string;
+  cartVersion: number;
+  isAuthenticated: boolean;
+};
+
+export type addPromoParams = {
+  cartId: string;
+  cartVersion: number;
+  isAuthenticated: boolean;
+  promocode: string;
 };
